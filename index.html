@@ -30,10 +30,11 @@
 				<button class="btn btn-active btn-try-again">Try again?</button>
 			</section>
 			<section class="card-questions no-display">
-				<p>Placeholder Question?</p>
+				<p class="question">Placeholder Question?</p>
 				<form class="answers">
 					<fieldset>
 						<legend>Answer: </legend>
+						<div class="answer-list">
 						<input type="radio" name="answer" id="ans1" value="0" required>
 						<label for="ans1">Answer 1</label>
 						<input type="radio" name="answer" id="ans2" value="1" required>
@@ -42,8 +43,9 @@
 						<label for="ans3">Answer 3</label>
 						<input type="radio" name="answer" id="ans4" value="3" required>
 						<label for="ans4">Answer 4</label>
+						</div>
 					</fieldset>
-					<input type="submit" class="btn btn-active btn-submit-answer">Submit</input>
+					<input type="submit" class="btn btn-active btn-submit-answer">
 					<button class="btn btn-inactive btn-next-question">Next Question</button>
 				</form>
 				<div class="answer-reply no-display">

@@ -42,24 +42,14 @@ function updateQuestionNumber() {
 
 function displayQuestion( num ) {
     updateQuestionNumber();
+    $('.question').text(`${QUESTIONS[num].question}`);
+
     let html = "";
-    html += `<p>${QUESTIONS[num].question}</p>`;
-    html += `<form class="answers">
-                <fieldset>
-                    <legend>Answer: </legend>`;
     for ( let i = 0 ; i < QUESTIONS[num].answers.length ; i++ ) {
         html += `<input type="radio" name="answer" id="ans${i}" value="${i}" required>
                  <label for="ans${i}">${QUESTIONS[num].answers[i]}</label>`
     }
-    html += `
-        </fieldset>
-        <button type="submit" class="btn btn-active btn-submit-answer">Sumbit</button>
-        <button class="btn btn-inactive btn-next-question" disabled>Next Question</button>
-    </form>
-    <div class="answer-reply no-display">
-        <p>Some text about your answer</p>
-    </div>`;
-    $('.card-questions').html( html );
+    $('.answer-list').html( html );
     $('#ans0').focus();
 }
 
@@ -99,12 +89,12 @@ $( function() {
 
         console.log(answer);
         // Change button activation
-        $(this).children('.btn-submit-answer').attr('disabled', true);
-        $(this).children('.btn-next-question').attr('disabled', false);
+        $('.btn-submit-answer').attr('disabled', true);
+        $('.btn-next-question').attr('disabled', false);
         // Show the text about the answer
         $('.answer-reply').toggleClass('no-display');
         // Focus on the next question button
-        $(this).children('.btn-next-question').focus();
+        $('.btn-next-question').focus();
     });
 })
 
@@ -115,9 +105,10 @@ $( function() {
             displayEndCard();
         } else {
             displayQuestion( currentQuestion ); // Display the next question
-            $(this).children('.btn-next-question').attr('disabled', true);
-            $(this).children('.btn-submit-answer').attr('disabled', false);
+            $('.btn-next-question').attr('disabled', true);
+            $('.btn-submit-answer').attr('disabled', false);
         }
+        $('.answer-reply').toggleClass('no-display');
     });
 })
 
