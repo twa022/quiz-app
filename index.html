@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width">
+		<title>Quiz about Something!</title>
+		<meta name="description" content="Challenge your knowledge of TBD!">
+		
+		<!-- Stylesheets -->
+		<link href="main.css" rel="stylesheet" type="text/css">
+	</head>
+
+	<body>
+		<main>
+			<div class="container">
+			<section>
+				<h1>Quiz about Something!</h1>
+			</section>
+			<section>
+				<p>Question: <span class="question-number">a</span> / <span class="question-total">b</span></p>
+				<p>Score: <span class="score-correct">0</span> / <span class="score-answered">0</span></p>
+			</section>
+			<section class="card-start">
+				<p>Ready to Start?</p>
+				<button class="btn btn-active btn-start">Start Quiz</button>
+			</section>
+			<section class="card-end no-display">
+				<p>You did blank!</p>
+				<p>Final score: <span class="score-correct">x</span> / <span class="score-answered">y</span></p>
+				<button class="btn btn-active btn-try-again">Try again?</button>
+			</section>
+			<section class="card-questions no-display">
+				<p>Placeholder Question?</p>
+				<form class="answers">
+					<fieldset>
+						<legend>Answer: </legend>
+						<input type="radio" name="answer" id="ans1" value="0" required>
+						<label for="ans1">Answer 1</label>
+						<input type="radio" name="answer" id="ans2" value="1" required>
+						<label for="ans2">Answer 2</label>
+						<input type="radio" name="answer" id="ans3" value="2" required>
+						<label for="ans3">Answer 3</label>
+						<input type="radio" name="answer" id="ans4" value="3" required>
+						<label for="ans4">Answer 4</label>
+					</fieldset>
+					<input type="submit" class="btn btn-active btn-submit-answer">Submit</input>
+					<button class="btn btn-inactive btn-next-question">Next Question</button>
+				</form>
+				<div class="answer-reply no-display">
+					<p>Some text about your answer</p>
+				</div>
+			</section>
+			</div>
+		</main>
+		<!-- Call our javascript! -->
+		<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+		<script src="main.js"></script>
+	</body>
+</html>

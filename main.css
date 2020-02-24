@@ -1,0 +1,25 @@
+* {
+    box-sizing: border-box;
+}
+
+main {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.no-display {
+    display: none;
+}
+
+.container {
+    display: inline-block;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30%;
+    margin-right: auto;
+    margin-left: auto;
+    background-color: grey;
+    text-align: center;
+    padding: 12px;
+}
