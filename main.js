@@ -102,8 +102,10 @@ function displayQuestion( num ) {
 
     let html = "";
     for ( let i = 0 ; i < QUESTIONS[num].answers.length ; i++ ) {
-        html += `<input type="radio" name="answer" id="ans${i}" value="${i}">
-                 <label for="ans${i}">${QUESTIONS[num].answers[i]}</label>`;
+        html += `<div class="radio-line">
+                     <input type="radio" name="answer" id="ans${i}" value="${i}">
+                    <label for="ans${i}">${QUESTIONS[num].answers[i]}</label>
+                </div>`;
     }
     $('.answer-list').html( html );
     if ( alreadyAnswered ) {
@@ -112,13 +114,14 @@ function displayQuestion( num ) {
         $(`#ans${answers[currentQuestion]}`).attr('checked', true);
         console.log( 'done applying check');
         $('input[type="radio"]:not(:checked)').attr('disabled', true);
-        $('.answer-reply').removeClass('no-display');
+        $('.answer-reply').slideDown();
         $('.btn-submit-answer').attr('disabled', true);
         $('.btn-next-question').focus();
     } else {
-        $('.answer-reply').addClass('no-display');
+        $('.answer-reply').slideUp();
         $('#ans0').focus();
         $('.btn-submit-answer').attr('disabled', false);
+        $('.btn-next-question').attr('disabled', true);
     }
  
     if ( currentQuestion > 0 ) {
@@ -130,8 +133,8 @@ function displayQuestion( num ) {
  * Switch card display model to display the end card
  */
 function displayEndCard() {
-    $('.card-end').removeClass('no-display');
-    $('.card-questions').addClass('no-display');
+    $('.card-questions').slideUp();
+    $('.card-end').slideDown();
     $('.btn-try-again').focus();
 }
 
@@ -180,8 +183,8 @@ function previousQuestionHandler() {
  */
 function startHandler() {
     $('.btn-start').click( function( event ) {
-        $('.card-start').addClass('no-display');
-        $('.card-questions').removeClass('no-display');
+        $('.card-start').slideUp();
+        $('.card-questions').slideDown();
         displayQuestion( Math.floor( Math.random() * unasked.length ) );
     });
 }
@@ -201,6 +204,9 @@ function submitHandler() {
         answers.push(answer);
         // Update the reply text about your answer
         updateReply();
+        if ( answer === QUESTIONS[currentQuestion].correctAnswer ) {
+            score++;
+        }
         // Update the score 
         updateScore();
 
@@ -210,7 +216,7 @@ function submitHandler() {
         $('.btn-next-question').attr('disabled', false);
         // Show the text about the answer
         console.log(`classes: ${$('.answer-reply').attr('class')}`);
-        $('.answer-reply').removeClass('no-display');
+        $('.answer-reply').slideDown();
         // Focus on the next question button
         $('.btn-next-question').focus();
     });
@@ -241,9 +247,9 @@ function tryAgainHandler() {
     $('.btn-try-again').click( function( event ) {
         reset();
         displayQuestion( unasked[ Math.floor( Math.random() * unasked.length ) ] );
-        $('.card-end').addClass('no-display');
-        $('.card-questions').removeClass('no-display');
-        updateScore( score, answers.length );
+        $('.card-end').slideUp();
+        $('.card-questions').slideDown();
+        updateScore();
         updateQuestionNumber();
     });
 }

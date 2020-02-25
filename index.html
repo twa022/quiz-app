@@ -11,25 +11,25 @@
 	</head>
 
 	<body>
-		<main>
-			<div class="container">
-			<section>
+		<div class="background"></div>
+		<div class="container">
+			<section class="head">
 				<h1>Quiz about Something!</h1>
 			</section>
-			<section>
+			<section class="score">
 				<p>Question: <span class="question-number">a</span> / <span class="question-total">b</span></p>
 				<p>Score: <span class="score-correct">0</span> / <span class="score-answered">0</span></p>
 			</section>
-			<section class="card-start">
+			<section class="card card-start">
 				<p>Ready to Start?</p>
 				<button class="btn btn-active btn-start">Start Quiz</button>
 			</section>
-			<section class="card-end no-display">
+			<section class="card card-end no-display">
 				<p>You did blank!</p>
 				<p>Final score: <span class="score-correct">x</span> / <span class="score-answered">y</span></p>
 				<button class="btn btn-active btn-try-again">Try again?</button>
 			</section>
-			<section class="card-questions no-display">
+			<section class="card card-questions no-display">
 				<p class="question">Placeholder Question?</p>
 				<form class="answers">
 					<fieldset>
@@ -53,8 +53,7 @@
 					<p>Some text about your answer</p>
 				</div>
 			</section>
-			</div>
-		</main>
+		</div>
 		<!-- Call our javascript! -->
 		<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 		<script src="main.js"></script>
