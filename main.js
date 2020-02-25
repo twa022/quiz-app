@@ -59,6 +59,10 @@ const answers = [];
 
 const QUESTIONS_PER_SESSION = 3;
 
+/* ********************************
+ *           FUNCTIONS            *
+ **********************************/
+
 function updateScore( correct, answered ) {
     $('.score-correct').text(correct);
     $('.score-answered').text(answered);
@@ -131,7 +135,11 @@ function updateReply() {
     }
 }
 
-$( function() {
+/* ********************************
+ *        EVENT HANDLERS          *
+ **********************************/
+
+function previousQuestionHandler() {
     $('.btn-prev').click( function( event ) {
         event.stopPropagation();
         currentQuestion--;
@@ -144,17 +152,17 @@ $( function() {
         $('.btn-next-question').attr('disabled', false);
         console.log(`after displaying question answers: ${answers}`);
     });
-})
+}
 
-$( function () {
+function startHandler() {
     $('.btn-start').click( function( event ) {
         $('.card-start').addClass('no-display');
         $('.card-questions').removeClass('no-display');
-        displayQuestion( currentQuestion );
+        displayQuestion( Math.floor( Math.random() * unasked.length ) );
     });
-})
+}
 
-$( function() {
+function submitHandler() {
     $('.card-questions').on('submit', '.answers', function( event ) {
         event.preventDefault();
         console.log('called the submit answer handler');
@@ -185,7 +193,7 @@ $( function() {
         // Focus on the next question button
         $('.btn-next-question').focus();
     });
-})
+}
 
 function nextQuestionHandler() {
     $('.card-questions').on('click', '.btn-next-question', function( event ) {
@@ -202,18 +210,18 @@ function nextQuestionHandler() {
     });
 }
 
-$( function() {
+function tryAgainHandler() {
     $('.btn-try-again').click( function( event ) {
-        resetVals();
+        reset();
         displayQuestion( unasked[ Math.floor( Math.random() * unasked.length ) ] );
         $('.card-end').addClass('no-display');
         $('.card-questions').removeClass('no-display');
         updateScore( score, answers.length );
         updateQuestionNumber();
     });
-})
+}
 
-function resetVals() {
+function reset() {
     if ( unasked.length === 0 ) {
         for ( let i = 0 ; i < QUESTIONS.length ; i++ ) {
             unasked.push(i);
@@ -225,8 +233,16 @@ function resetVals() {
     currentQuestion = 0;
 }
 
-updateQuestionNumber();
-resetVals();
-$('.btn-start').focus();
+function main() {
+    updateQuestionNumber();
+    reset();
+    $('.btn-start').focus();
 
-$( nextQuestionHandler );
+    $( nextQuestionHandler );
+    $( previousQuestionHandler );
+    $( tryAgainHandler );
+    $( submitHandler );
+    $( startHandler );
+}
+
+main();
