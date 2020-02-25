@@ -44,7 +44,8 @@ const QUESTIONS = [
         'correctAnswer': 2,
         correctMessage() { return 'That&apos;s right!'; },
         incorrectMessage() { return `Good try, but the answer is ${this.correctAnswer}`; },
-    },];
+    },
+];
 
 /* The question which you are currently displaying */
 let currentQuestion = 0;
@@ -56,24 +57,34 @@ const asked = [];
 const unasked = [];
 /* The answers you gave to the questions in the order they were asked */
 const answers = [];
-
+/* The maximum number of quesitons per session */
 const QUESTIONS_PER_SESSION = 3;
 
 /* ********************************
  *           FUNCTIONS            *
  **********************************/
 
-function updateScore( correct, answered ) {
-    $('.score-correct').text(correct);
-    $('.score-answered').text(answered);
+ /**
+  * Update the score text
+  */
+function updateScore() {
+    $('.score-correct').text( score );
+    $('.score-answered').text( answers.length );
 }
 
+/**
+ * Update the question number text
+ */
 function updateQuestionNumber() {
     $('.question-number').text( ( currentQuestion + 1) );
     let q = ( QUESTIONS.length < QUESTIONS_PER_SESSION ) ? QUESTIONS.length : QUESTIONS_PER_SESSION;
     $('.question-total').text(q);
 }
 
+/**
+ * Display a question
+ * @param {Number} num The index from the QUESTIONS array of the question to display
+ */
 function displayQuestion( num ) {
     updateQuestionNumber();
     updateReply();
@@ -115,12 +126,19 @@ function displayQuestion( num ) {
     }
 }
 
+/**
+ * Switch card display model to display the end card
+ */
 function displayEndCard() {
     $('.card-end').removeClass('no-display');
     $('.card-questions').addClass('no-display');
     $('.btn-try-again').focus();
 }
 
+/**
+ * Update the reply text based on the current question and answer
+ * This does not display or hide the element, just updates the text.
+ */
 function updateReply() {
     if ( currentQuestion >= answers.length ) {
         $('.answer-reply').html(`<p></p>`);
@@ -139,6 +157,9 @@ function updateReply() {
  *        EVENT HANDLERS          *
  **********************************/
 
+ /**
+  * Event handler when previous questions button is clicked
+  */
 function previousQuestionHandler() {
     $('.btn-prev').click( function( event ) {
         event.stopPropagation();
@@ -154,6 +175,9 @@ function previousQuestionHandler() {
     });
 }
 
+/**
+ * Event handler when start quiz button is clicked
+ */
 function startHandler() {
     $('.btn-start').click( function( event ) {
         $('.card-start').addClass('no-display');
@@ -162,6 +186,9 @@ function startHandler() {
     });
 }
 
+/**
+ * Event handler when an answer is submitted
+ */
 function submitHandler() {
     $('.card-questions').on('submit', '.answers', function( event ) {
         event.preventDefault();
@@ -170,18 +197,12 @@ function submitHandler() {
         let answer = Number($('input:radio[name=answer]:checked').val());
         // Did we get an answer?
         if ( answer === NaN || answer === undefined ) return;
-
-        console.log(   `pushing ${answer} to the answers array`);
+        console.log(`pushing ${answer} to the answers array`);
         answers.push(answer);
-        // Is it correct
-        if ( Number(answer) === QUESTIONS[currentQuestion].correctAnswer ) {
-            $('.answer-reply').html(`<p>${QUESTIONS[asked[currentQuestion]].correctMessage()}</p>`);
-            score++;
-        } else {
-            $('.answer-reply').html(`<p>${QUESTIONS[asked[currentQuestion]].incorrectMessage()}</p>`);
-        }
+        // Update the reply text about your answer
+        updateReply();
         // Update the score 
-        updateScore( score, answers.length );
+        updateScore();
 
         console.log(answer);
         // Change button activation
@@ -195,6 +216,9 @@ function submitHandler() {
     });
 }
 
+/**
+ * Event handler when next question button is clicked
+ */
 function nextQuestionHandler() {
     $('.card-questions').on('click', '.btn-next-question', function( event ) {
         event.stopPropagation();
@@ -210,6 +234,9 @@ function nextQuestionHandler() {
     });
 }
 
+/**
+ * Event handler when try again button is clicked
+ */
 function tryAgainHandler() {
     $('.btn-try-again').click( function( event ) {
         reset();
@@ -221,6 +248,10 @@ function tryAgainHandler() {
     });
 }
 
+/**
+ * Reset the global state variables to the initial states
+ * Only reset the list of unasked questions if all questions have been asked
+ */
 function reset() {
     if ( unasked.length === 0 ) {
         for ( let i = 0 ; i < QUESTIONS.length ; i++ ) {
