@@ -26,9 +26,18 @@ const QUESTIONS = [
     },
 ];
 
+/* The question which you are currently displaying */
 let currentQuestion = 0;
+/* Your current number of correct questions */
 let score = 0;
-let answered = 0;
+/* The numbers of the questions that have been asked in the order they were asked */
+const asked = [];
+/* The numbers of the questions that have not yet been asked */
+const unasked = [];
+/* The answers you gave to the questions in the order they were asked */
+const answers = [];
+
+const QUESTIONS_PER_SESSION = 10;
 
 function updateScore( correct, answered ) {
     $('.score-correct').text(correct);
@@ -42,14 +51,23 @@ function updateQuestionNumber() {
 
 function displayQuestion( num ) {
     updateQuestionNumber();
+    console.log(`Asking question ${num}`);
     $('.question').text(`${QUESTIONS[num].question}`);
+    asked.push(num);
+    unasked.splice(unasked.indexOf(num), 1);
+    console.log(`asked: ${asked}`);
+    console.log(`answers: ${answers}`);
+    console.log(`unasked: ${unasked}`);
 
     let html = "";
     for ( let i = 0 ; i < QUESTIONS[num].answers.length ; i++ ) {
         html += `<input type="radio" name="answer" id="ans${i}" value="${i}" required>
-                 <label for="ans${i}">${QUESTIONS[num].answers[i]}</label>`
+                 <label for="ans${i}">${QUESTIONS[num].answers[i]}</label>`;
     }
     $('.answer-list').html( html );
+    if ( currentQuestion > 0 ) {
+        $('.btn-prev').attr('disabled', false);
+    }
     $('#ans0').focus();
 }
 
@@ -58,6 +76,18 @@ function displayEndCard() {
     $('.card-questions').toggleClass('no-display');
     $('.btn-try-again').focus();
 }
+
+$( function() {
+    $('.btn-prev').click( function( event ) {
+        currentQuestion--;
+        displayQuestion( asked[currentQuestion] );
+        if ( currentQuestion === 0 ) {
+            $(this).attr('disabled', true);
+        }
+        $('.btn-submit-answer').attr('disabled', true);
+        $('.btn-next-question').attr('disabled', false);
+    });
+})
 
 $( function () {
     $('.btn-start').click( function( event ) {
@@ -76,16 +106,16 @@ $( function() {
         // Did we get an answer?
         if ( answer === undefined ) return;
 
+        answers.push(answer);
         // Is it correct
         if ( Number(answer) === QUESTIONS[currentQuestion].correctAnswer ) {
-            $('.answer-reply').html(`<p>${QUESTIONS[currentQuestion].correctMessage()}</p>`);
+            $('.answer-reply').html(`<p>${QUESTIONS[asked[currentQuestion]].correctMessage()}</p>`);
             score++;
         } else {
-            $('.answer-reply').html(`<p>${QUESTIONS[currentQuestion].incorrectMessage()}</p>`);
+            $('.answer-reply').html(`<p>${QUESTIONS[asked[currentQuestion]].incorrectMessage()}</p>`);
         }
-        answered++;
         // Update the score 
-        updateScore( score, answered );
+        updateScore( score, answers.length );
 
         console.log(answer);
         // Change button activation
@@ -98,32 +128,47 @@ $( function() {
     });
 })
 
-$( function() {
+function nextQuestionHandler() {
     $('.card-questions').on('click', '.btn-next-question', function( event ) {
         currentQuestion++;
-        if ( currentQuestion === QUESTIONS.length ) {
+        let noQ = ( QUESTIONS.length < QUESTIONS_PER_SESSION ) ? QUESTIONS.length : QUESTIONS_PER_SESSION;
+        if ( unasked.length === 0 || asked.length === noQ ) {
             displayEndCard();
         } else {
-            displayQuestion( currentQuestion ); // Display the next question
-            $('.btn-next-question').attr('disabled', true);
-            $('.btn-submit-answer').attr('disabled', false);
+            console.log(Math.floor( Math.random() * noQ ) );
+            displayQuestion( unasked[ Math.floor( Math.random() * unasked.length ) ] );
         }
+        $('.btn-next-question').attr('disabled', true);
+        $('.btn-submit-answer').attr('disabled', false);
         $('.answer-reply').toggleClass('no-display');
     });
-})
+}
 
 $( function() {
     $('.btn-try-again').click( function( event ) {
-        currentQuestion = 0;
-        score = 0;
-        answered = 0;
-        displayQuestion( 0 );
+        resetVals();
+        displayQuestion( unasked[ Math.floor( Math.random() * unasked.length ) ] );
         $('.card-end').toggleClass('no-display');
         $('.card-questions').toggleClass('no-display');
-        updateScore( score, answered );
+        updateScore( score, answers.length );
         updateQuestionNumber();
     });
 })
 
+function resetVals() {
+    if ( unasked.length === 0 ) {
+        for ( let i = 0 ; i < QUESTIONS.length ; i++ ) {
+            unasked.push(i);
+        }
+    }
+    asked.splice(0, asked.length);
+    answers.splice(0, answers.length);
+    score = 0;
+    currentQuestion = 0;
+}
+
 updateQuestionNumber();
+resetVals();
 $('.btn-start').focus();
+
+$( nextQuestionHandler );
