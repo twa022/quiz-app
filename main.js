@@ -2,51 +2,8 @@
  *               GLOBALS               *
  ***************************************/
 
-const QUESTIONS = [
-    {
-        'question': 'This is question 1',
-        'answers': [ 'longer answer text blah de blah', 'ans2', 'ans3', 'ans4' ],
-        'correctAnswer': 2,
-        correctMessage() { return 'That&apos;s right!'; },
-        incorrectMessage() { return `Good try, but the answer is ${this.answers[this.correctAnswer]}`; },
-    },
-    {
-        'question': 'This is question 2',
-        'answers': [ 'longer answer text blah de blah', 'ans2', 'ans3', 'ans4' ],
-        'correctAnswer': 2,
-        correctMessage() { return 'That&apos;s right!'; },
-        incorrectMessage() { return `Good try, but the answer is ${this.answers[this.correctAnswer]}`; },
-    },
-    {
-        'question': 'This is question 3',
-        'answers': [ 'longer answer text blah de blah', 'ans2', 'ans3', 'ans4' ],
-        'correctAnswer': 2,
-        correctMessage() { return 'That&apos;s right!'; },
-        incorrectMessage() { return `Good try, but the answer is ${this.answers[this.correctAnswer]}`; },
-    },
-    {
-        'question': 'This is question 4',
-        'answers': [ 'ans1', 'ans2', 'ans3', 'ans4' ],
-        'correctAnswer': 2,
-        correctMessage() { return 'That&apos;s right!'; },
-        incorrectMessage() { return `Good try, but the answer is ${this.answers[this.correctAnswer]}`; },
-    },
-    {
-        'question': 'This is question 5',
-        'answers': [ 'ans1', 'ans2', 'ans3' ],
-        'correctAnswer': 2,
-        correctMessage() { return 'That&apos;s right!'; },
-        incorrectMessage() { return `Good try, but the answer is ${this.answers[this.correctAnswer]}`; },
-    },
-    {
-        'question': 'This is question 6',
-        'answers': [ 'ans1', 'ans2', 'ans3', 'ans4', 'ans5' ],
-        'correctAnswer': 2,
-        correctMessage() { return 'That&apos;s right!'; },
-        incorrectMessage() { return `Good try, but the answer is ${this.answers[this.correctAnswer]}`; },
-    },
-];
-
+/* Questions will be loaded from an external json file */
+const QUESTIONS = [];
 /* The question which you are currently displaying */
 let currentQuestion = 0;
 /* Your current number of correct questions */
@@ -70,6 +27,14 @@ const QUESTIONS_PER_SESSION = 3;
 function updateScore() {
     $('.score-correct').text( score );
     $('.score-answered').text( answers.length );
+}
+
+function correctMessage() {
+    return "That's right!";
+}
+
+function incorrectMessage( idx ) {
+    return `Good try, but the answer is ${QUESTIONS[idx].answers[QUESTIONS[idx].correctAnswer]}`;
 }
 
 /**
@@ -180,9 +145,9 @@ function updateReply() {
     let correct = ( QUESTIONS[asked[currentQuestion]].correctAnswer === answers[currentQuestion] );
     console.log(`Question: ${currentQuestion} Expected answer: ${QUESTIONS[asked[currentQuestion]].correctAnswer}, answer: ${answers[currentQuestion]}`);
     if ( correct ) {
-        $('.answer-reply').html(`<p>${QUESTIONS[asked[currentQuestion]].correctMessage()}</p>`);
+        $('.answer-reply').html(`<p>${correctMessage(asked[currentQuestion])}</p>`);
     } else {
-        $('.answer-reply').html(`<p>${QUESTIONS[asked[currentQuestion]].incorrectMessage()}</p>`);
+        $('.answer-reply').html(`<p>${incorrectMessage(asked[currentQuestion])}</p>`);
     }
 }
 
@@ -303,8 +268,22 @@ function reset() {
 }
 
 function main() {
-    updateQuestionNumber();
-    reset();
+       fetch('quiz.json')
+        .then(res => res.json())
+        .then((out) => {
+            console.log('Output: ', typeof( out ), out);
+            out.forEach( function( q)  {
+                QUESTIONS.push(q);
+            })
+        })
+        // These functions need to be called after the json file is loaded and parsed.
+        .then( x => {
+            updateQuestionNumber();
+            console.log( `loaded ${QUESTIONS.length} questions` );
+            reset();
+        })
+        .catch(err => console.error(err));
+
     $('.btn-start').focus();
 
     $( nextQuestionHandler );
