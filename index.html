@@ -6,7 +6,10 @@
 		<title>Quiz about Something!</title>
 		<meta name="description" content="Challenge your knowledge of TBD!">
 		
+		<!-- Fonts -->
+		<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap" rel="stylesheet">
 		<!-- Stylesheets -->
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" rel="stylesheet" type="text/css">
 		<link href="main.css" rel="stylesheet" type="text/css">
 	</head>
 
@@ -27,7 +30,7 @@
 			<section class="card card-end no-display">
 				<p>You did blank!</p>
 				<p>Final score: <span class="score-correct">x</span> / <span class="score-answered">y</span></p>
-				<button class="btn btn-active btn-try-again">Try again?</button>
+				<button class="btn btn-active btn-try-again">Try Again</button>
 			</section>
 			<section class="card card-questions no-display">
 				<p class="question">Placeholder Question?</p>
@@ -45,10 +48,10 @@
 						<label for="ans4">Answer 4</label>
 						</div>
 					</fieldset>
-					<input type="submit" class="btn btn-active btn-submit-answer">
+					<input type="submit" class="btn btn-active btn-submit-answer no-display">
 				</form>
-				<button class="btn btn-inactive btn-prev" disabled>Previous Question</button>
-				<button class="btn btn-inactive btn-next-question" disabled>Next Question</button>
+				<button class="btn btn-inactive btn-prev" disabled>Previous</button>
+				<button class="btn btn-inactive btn-next-question" disabled>Next</button>
 				<div class="answer-reply no-display">
 					<p>Some text about your answer</p>
 				</div>

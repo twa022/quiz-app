@@ -5,45 +5,45 @@
 const QUESTIONS = [
     {
         'question': 'This is question 1',
-        'answers': [ 'ans1', 'ans2', 'ans3', 'ans4' ],
+        'answers': [ 'longer answer text blah de blah', 'ans2', 'ans3', 'ans4' ],
         'correctAnswer': 2,
         correctMessage() { return 'That&apos;s right!'; },
-        incorrectMessage() { return `Good try, but the answer is ${this.correctAnswer}`; },
+        incorrectMessage() { return `Good try, but the answer is ${this.answers[this.correctAnswer]}`; },
     },
     {
         'question': 'This is question 2',
-        'answers': [ 'ans1', 'ans2', 'ans3', 'ans4' ],
+        'answers': [ 'longer answer text blah de blah', 'ans2', 'ans3', 'ans4' ],
         'correctAnswer': 2,
         correctMessage() { return 'That&apos;s right!'; },
-        incorrectMessage() { return `Good try, but the answer is ${this.correctAnswer}`; },
+        incorrectMessage() { return `Good try, but the answer is ${this.answers[this.correctAnswer]}`; },
     },
     {
         'question': 'This is question 3',
-        'answers': [ 'ans1', 'ans2', 'ans3', 'ans4' ],
+        'answers': [ 'longer answer text blah de blah', 'ans2', 'ans3', 'ans4' ],
         'correctAnswer': 2,
         correctMessage() { return 'That&apos;s right!'; },
-        incorrectMessage() { return `Good try, but the answer is ${this.correctAnswer}`; },
+        incorrectMessage() { return `Good try, but the answer is ${this.answers[this.correctAnswer]}`; },
     },
     {
         'question': 'This is question 4',
         'answers': [ 'ans1', 'ans2', 'ans3', 'ans4' ],
         'correctAnswer': 2,
         correctMessage() { return 'That&apos;s right!'; },
-        incorrectMessage() { return `Good try, but the answer is ${this.correctAnswer}`; },
+        incorrectMessage() { return `Good try, but the answer is ${this.answers[this.correctAnswer]}`; },
     },
     {
         'question': 'This is question 5',
         'answers': [ 'ans1', 'ans2', 'ans3' ],
         'correctAnswer': 2,
         correctMessage() { return 'That&apos;s right!'; },
-        incorrectMessage() { return `Good try, but the answer is ${this.correctAnswer}`; },
+        incorrectMessage() { return `Good try, but the answer is ${this.answers[this.correctAnswer]}`; },
     },
     {
         'question': 'This is question 6',
         'answers': [ 'ans1', 'ans2', 'ans3', 'ans4', 'ans5' ],
         'correctAnswer': 2,
         correctMessage() { return 'That&apos;s right!'; },
-        incorrectMessage() { return `Good try, but the answer is ${this.correctAnswer}`; },
+        incorrectMessage() { return `Good try, but the answer is ${this.answers[this.correctAnswer]}`; },
     },
 ];
 
@@ -103,17 +103,23 @@ function displayQuestion( num ) {
     let html = "";
     for ( let i = 0 ; i < QUESTIONS[num].answers.length ; i++ ) {
         html += `<div class="radio-line">
-                     <input type="radio" name="answer" id="ans${i}" value="${i}">
-                    <label for="ans${i}">${QUESTIONS[num].answers[i]}</label>
+                     <input type="radio" name="answer" class="answer no-display" id="ans${i}" value="${i}">
+                    <label for="ans${i}" class="lbl-button">${QUESTIONS[num].answers[i]}</label>
                 </div>`;
     }
     $('.answer-list').html( html );
+    if ( currentQuestion === 0 ) {
+        $('.btn-prev').attr('disabled', true);
+    }
     if ( alreadyAnswered ) {
         $('.btn-answer-question').attr('disabled', true);
         console.log( 'applying check');
         $(`#ans${answers[currentQuestion]}`).attr('checked', true);
         console.log( 'done applying check');
         $('input[type="radio"]:not(:checked)').attr('disabled', true);
+        $('label[class="lbl-button"]').addClass('lbl-button-disabled');
+        $(`label[for="ans${answers[currentQuestion]}`).addClass('lbl-button-answered');
+        $(`label[for="ans${QUESTIONS[asked[currentQuestion]].correctAnswer}"]`).addClass('lbl-button-correct');
         $('.answer-reply').slideDown();
         $('.btn-submit-answer').attr('disabled', true);
         $('.btn-next-question').focus();
@@ -169,9 +175,6 @@ function previousQuestionHandler() {
         currentQuestion--;
         console.log(`before displaying question answers: ${answers}`);
         displayQuestion( asked[currentQuestion] );
-        if ( currentQuestion === 0 ) {
-            $(this).attr('disabled', true);
-        }
         $('.btn-submit-answer').attr('disabled', true);
         $('.btn-next-question').attr('disabled', false);
         console.log(`after displaying question answers: ${answers}`);
@@ -193,7 +196,7 @@ function startHandler() {
  * Event handler when an answer is submitted
  */
 function submitHandler() {
-    $('.card-questions').on('submit', '.answers', function( event ) {
+    $('.card-questions').on('change', '.answer', function( event ) {
         event.preventDefault();
         console.log('called the submit answer handler');
         event.stopPropagation();
@@ -214,6 +217,9 @@ function submitHandler() {
         // Change button activation
         $('.btn-submit-answer').attr('disabled', true);
         $('.btn-next-question').attr('disabled', false);
+        $('label[class="lbl-button"]').addClass('lbl-button-disabled');
+        $(`label[for="ans${answers[currentQuestion]}`).addClass('lbl-button-answered');
+        $(`label[for="ans${QUESTIONS[asked[currentQuestion]].correctAnswer}"]`).addClass('lbl-button-correct');
         // Show the text about the answer
         console.log(`classes: ${$('.answer-reply').attr('class')}`);
         $('.answer-reply').slideDown();
