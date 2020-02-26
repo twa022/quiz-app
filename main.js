@@ -93,13 +93,10 @@ function displayQuestion( num ) {
     let alreadyAsked = asked.includes( num );
     let alreadyAnswered = ( alreadyAsked && answers.length > asked.indexOf( num) );
     if ( !alreadyAsked ) {
+        // Add the question number to the asked array and remove it from the unasked array
         asked.push(num);
         unasked.splice(unasked.indexOf(num), 1);
     }
-    console.log(`asked: ${asked}`);
-    console.log(`answers: ${answers}`);
-    console.log(`unasked: ${unasked}`);
-
     let html = "";
     for ( let i = 0 ; i < QUESTIONS[num].answers.length ; i++ ) {
         html += `<div class="radio-line">
@@ -108,30 +105,39 @@ function displayQuestion( num ) {
                 </div>`;
     }
     $('.answer-list').html( html );
-    if ( currentQuestion === 0 ) {
-        $('.btn-prev').attr('disabled', true);
-    }
+    // Previous button should be enabled unless we're on the first question
+    $('.btn-prev').attr('disabled', ( currentQuestion === 0 ) );
+    // Next button should be disabled if the question hasn't been answered
+    $('.btn-next').attr('disabled', !alreadyAnswered );
+    // Submit button should be disabled if the question has already been answered
+    $('.btn-submit-answer').attr('disabled', alreadyAnswered);
+
     if ( alreadyAnswered ) {
-        $('.btn-answer-question').attr('disabled', true);
-        console.log( 'applying check');
+        // Disable submit button
+        //$('.btn-submit-answer').attr('disabled', true);
+        // Check the radio button that corresponds to the answer that was given
         $(`#ans${answers[currentQuestion]}`).attr('checked', true);
-        console.log( 'done applying check');
+        // Disable all the radio buttons since we don't want to be able to make a selection
         $('input[type="radio"]:not(:checked)').attr('disabled', true);
+        // Add the disabled styling to the labels (which we display like buttons)
         $('label[class="lbl-button"]').addClass('lbl-button-disabled');
+        // Add the answered (wrong) styling to the labels which corresponds to what we answered
         $(`label[for="ans${answers[currentQuestion]}`).addClass('lbl-button-answered');
+        // Add the correct answer styling to the labe for the correct answer (this will override the styling for answered,
+        // So if we selected the correct answer it will style it wrong, then restyle it correct)
         $(`label[for="ans${QUESTIONS[asked[currentQuestion]].correctAnswer}"]`).addClass('lbl-button-correct');
+        // Display the reply text
         $('.answer-reply').slideDown();
-        $('.btn-submit-answer').attr('disabled', true);
-        $('.btn-next-question').focus();
+        // Focus on the next question button
+        $('.btn-next').focus();
     } else {
+        // Hide the reply text
         $('.answer-reply').slideUp();
-        $('#ans0').focus();
-        $('.btn-submit-answer').attr('disabled', false);
-        $('.btn-next-question').attr('disabled', true);
-    }
- 
-    if ( currentQuestion > 0 ) {
-        $('.btn-prev').attr('disabled', false);
+        //$('#ans0').focus();
+        // Enable the submit button
+        //$('.btn-submit-answer').attr('disabled', false);
+        // Disable the next button until the user submits an answer
+        //$('.btn-next').attr('disabled', true);
     }
 }
 
@@ -176,7 +182,7 @@ function previousQuestionHandler() {
         console.log(`before displaying question answers: ${answers}`);
         displayQuestion( asked[currentQuestion] );
         $('.btn-submit-answer').attr('disabled', true);
-        $('.btn-next-question').attr('disabled', false);
+        $('.btn-next').attr('disabled', false);
         console.log(`after displaying question answers: ${answers}`);
     });
 }
@@ -216,7 +222,7 @@ function submitHandler() {
         console.log(answer);
         // Change button activation
         $('.btn-submit-answer').attr('disabled', true);
-        $('.btn-next-question').attr('disabled', false);
+        $('.btn-next').attr('disabled', false);
         $('label[class="lbl-button"]').addClass('lbl-button-disabled');
         $(`label[for="ans${answers[currentQuestion]}`).addClass('lbl-button-answered');
         $(`label[for="ans${QUESTIONS[asked[currentQuestion]].correctAnswer}"]`).addClass('lbl-button-correct');
@@ -224,7 +230,7 @@ function submitHandler() {
         console.log(`classes: ${$('.answer-reply').attr('class')}`);
         $('.answer-reply').slideDown();
         // Focus on the next question button
-        $('.btn-next-question').focus();
+        $('.btn-next').focus();
     });
 }
 
@@ -232,7 +238,7 @@ function submitHandler() {
  * Event handler when next question button is clicked
  */
 function nextQuestionHandler() {
-    $('.card-questions').on('click', '.btn-next-question', function( event ) {
+    $('.card-questions').on('click', '.btn-next', function( event ) {
         event.stopPropagation();
         currentQuestion++;
         let noQ = ( QUESTIONS.length < QUESTIONS_PER_SESSION ) ? QUESTIONS.length : QUESTIONS_PER_SESSION;
