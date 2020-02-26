@@ -19,9 +19,9 @@ body {
     height: 100%;
     background-image: linear-gradient(to bottom right, rgba( 0.4, 0.4, 0.4, 0.4), rgba( 0.1, 0.1, 0.1, 0.2)),
                       url('https://www.thebostoncalendar.com/system/events/photos/000/297/473/original/Great_Horned_Owl_Shannon_Quinn_APA_Email-Web_Ready_Image_0.jpg');
-                      ;
     background-repeat: none;
     background-size: cover;
+    background-position: center;
     filter: blur(8px);
     border-radius: 40px;
     border-top-left-radius: 70px;
