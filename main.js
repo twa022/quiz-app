@@ -81,6 +81,24 @@ function updateQuestionNumber() {
     $('.question-total').text(q);
 }
 
+function collapseAnswers(method="hide") {
+    for ( let i = 0 ; i < QUESTIONS[asked[currentQuestion]].answers.length ; i++ ) {
+        if ( i ===  QUESTIONS[asked[currentQuestion]].correctAnswer ) {
+            $(`label[for="ans${i}"]`).addClass('lbl-button-correct');
+        } else if ( i === answers[currentQuestion] ) {
+            $(`label[for="ans${i}`).addClass('lbl-button-answered');
+        } else {
+           /* if ( method.localeCompare("slide") === 0 ) {
+                $(`label[for="ans${i}`).slideUp();
+            } else {*/
+                console.log(`trying to hide button ${i}`);
+                $(`label[for="ans${i}`).addClass('no-display');
+                $(`label[for="ans${i}`).attr('hidden', true);
+            // /}
+        }
+    }
+}
+
 /**
  * Display a question
  * @param {Number} num The index from the QUESTIONS array of the question to display
@@ -99,10 +117,8 @@ function displayQuestion( num ) {
     }
     let html = "";
     for ( let i = 0 ; i < QUESTIONS[num].answers.length ; i++ ) {
-        html += `<div class="radio-line">
-                     <input type="radio" name="answer" class="answer no-display" id="ans${i}" value="${i}">
-                    <label for="ans${i}" class="lbl-button">${QUESTIONS[num].answers[i]}</label>
-                </div>`;
+        html += `<input type="radio" name="answer" class="answer no-display" id="ans${i}" value="${i}">
+                    <label for="ans${i}" class="lbl-button">${QUESTIONS[num].answers[i]}</label>`;
     }
     $('.answer-list').html( html );
     // Previous button should be enabled unless we're on the first question
@@ -121,6 +137,7 @@ function displayQuestion( num ) {
         $('input[type="radio"]:not(:checked)').attr('disabled', true);
         // Add the disabled styling to the labels (which we display like buttons)
         $('label[class="lbl-button"]').addClass('lbl-button-disabled');
+        //collapseAnswers();
         // Add the answered (wrong) styling to the labels which corresponds to what we answered
         $(`label[for="ans${answers[currentQuestion]}`).addClass('lbl-button-answered');
         // Add the correct answer styling to the labe for the correct answer (this will override the styling for answered,
@@ -146,6 +163,7 @@ function displayQuestion( num ) {
  */
 function displayEndCard() {
     $('.card-questions').slideUp();
+    $('.score').slideUp();
     $('.card-end').slideDown();
     $('.btn-try-again').focus();
 }
@@ -228,6 +246,7 @@ function submitHandler() {
         $(`label[for="ans${QUESTIONS[asked[currentQuestion]].correctAnswer}"]`).addClass('lbl-button-correct');
         // Show the text about the answer
         console.log(`classes: ${$('.answer-reply').attr('class')}`);
+        //collapseAnswers("slide");
         $('.answer-reply').slideDown();
         // Focus on the next question button
         $('.btn-next').focus();
@@ -261,6 +280,7 @@ function tryAgainHandler() {
         displayQuestion( unasked[ Math.floor( Math.random() * unasked.length ) ] );
         $('.card-end').slideUp();
         $('.card-questions').slideDown();
+        $('.score').slideDown();
         updateScore();
         updateQuestionNumber();
     });

@@ -8,21 +8,25 @@ html {
 }
 
 body {
-    height: 100%;
     min-height: 100%;
+    min-width: 350px;
+    position: relative;
+    padding-top: 20px;
+    padding-bottom: 20px;
 }
 
 .background {
     position: absolute;
     left: 0;
     top: 0;
+    display: inline-block;
     width: 100%;
     height: 100%;
     background-image: linear-gradient(to bottom right, rgba( 0.4, 0.4, 0.4, 0.4), rgba( 0.1, 0.1, 0.1, 0.2)),
                       url('https://www.thebostoncalendar.com/system/events/photos/000/297/473/original/Great_Horned_Owl_Shannon_Quinn_APA_Email-Web_Ready_Image_0.jpg');
     background-repeat: none;
-    background-size: cover;
-    background-position: center;
+    background-size: auto 100%;
+    background-position: center top;
     filter: blur(8px);
     border-radius: 40px;
     border-top-left-radius: 70px;
@@ -38,19 +42,12 @@ main {
     height: 100%;
 }
 
-.no-display {
-    display: none;
-}
-
 .container {
     display: inline-block;
     position: relative;
     left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 50%;
-    min-width: 400px;
-    max-width: 600px;
+    transform: translateX(-50%);
+    width: 90%;
     margin-right: auto;
     margin-left: auto;
     background-color: rgba( 0, 0, 0, 0.0 );
@@ -92,9 +89,13 @@ main {
     border-bottom-right-radius: 40px;
 }
 
+.card-questions {
+    position: relative;
+}
+
 h1 {
     margin: 0;
-    font-size: 2.4rem;
+    font-size: 2.2rem;
 }
 
 fieldset {
@@ -108,9 +109,10 @@ fieldset > legend {
 }
 
 .btn, .lbl-button {
+    display: inline-block;
     background-color: rgba( 0, 0, 0, 0.4);
     color: white;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     border: white 2px solid;
     border-radius: 10px;
     padding: 4px;
@@ -124,6 +126,8 @@ fieldset > legend {
     padding: 8px;
     padding-left: 16px;
     padding-right: 16px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     display: inline-block;
     width: 75%;
 }
@@ -152,4 +156,61 @@ fieldset > legend {
 .radio-line {
     /*padding: 12px;*/
     margin-bottom: 25px;
+}
+
+@media screen and ( min-width: 600px ) {
+    .container {
+        width: 80%;
+        min-width: 400px;
+        max-width: 1000px;
+    }
+}
+
+@media screen and ( min-width: 1000px) {
+    .lbl-button {
+        width: 40%;
+    }
+}
+
+.no-display {
+    display: none;
+}
+
+.nav-btns {
+    margin-top: 16px;
+    position: relative;
+    height: 2.4rem;
+}
+
+button.btn-nav {
+    position: absolute;
+    font-size: 4.0rem;
+    transform: translateY(-50%);
+    border: none;
+    background-color: unset;
+}
+
+button.btn-prev {
+    top: 50%;
+    left: 0%;
+    transform: translateY(-50%);
+}
+
+button.btn-next {
+    right: 0%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.btn-nav:enabled:hover {
+    border: white 2px solid;
+}
+
+.btn-nav:enabled:focus {
+    color: cyan;
+    border: cyan 2px solid;
+}
+
+.btn-nav:disabled, .btn-nav:disabled:hover {
+    border: unset;
 }
