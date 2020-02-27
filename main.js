@@ -85,6 +85,10 @@ function populateStartCard() {
     });
 }
 
+function displayRandomUnaskedQuestion() {
+    displayQuestion( unasked[ Math.floor( Math.random() * unasked.length ) ] );
+}
+
 /**
  * Display a question
  * @param {Number} num The index from the QUESTIONS array of the question to display
@@ -198,7 +202,7 @@ function startHandler() {
     $('.btn-start').click( function( event ) {
         $('.card-start').slideUp();
         $('.card-questions').slideDown();
-        displayQuestion( Math.floor( Math.random() * unasked.length ) );
+        displayRandomUnaskedQuestion();
     });
 }
 
@@ -206,10 +210,11 @@ function quizHandler() {
     $('.card-start').on('click', '.btn-quiz', async function( event ) {
         let quiz = $(this).attr('_idx');
         loadTheme( QUIZZES[quiz].theme );
+        // We have to wait for the quiz to load before we can proceed
         await loadQuiz( QUIZZES[quiz].quiz );
         $('.card-start').slideUp();
         $('.card-questions').slideDown();
-        displayQuestion( Math.floor( Math.random() * unasked.length ) );
+        displayRandomUnaskedQuestion();
     })
 }
 
@@ -280,7 +285,7 @@ function nextQuestionHandler() {
         } else if ( currentQuestion < asked.length ) {
             displayQuestion( asked[currentQuestion] );
         } else {
-            displayQuestion( unasked[ Math.floor( Math.random() * unasked.length ) ] );
+            displayRandomUnaskedQuestion();
         }
     });
 }
@@ -291,7 +296,7 @@ function nextQuestionHandler() {
 function tryAgainHandler() {
     $('.btn-try-again').click( function( event ) {
         reset();
-        displayQuestion( unasked[ Math.floor( Math.random() * unasked.length ) ] );
+        displayRandomUnaskedQuestion();
         $('.card-end').slideUp();
         $('.card-questions').slideDown();
         $('.score').slideDown();
