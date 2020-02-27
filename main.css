@@ -3,6 +3,20 @@
     font-family: 'Source Sans Pro';
 }
 
+:root {
+    --section: rgba( 0, 0, 0, 0.4);
+    --border: rgba( 0, 0, 0, 0.4);
+    --button: rgba( 0, 0, 0, 0.4);
+    --highlight: cyan;
+    --correct: lightgreen;
+    --incorrect: red;
+    --active: white;
+    --inactive: #a2a2a2;
+    --inactive-border: grey;
+    --font-color: white;
+    --background-image: url('https://www.thebostoncalendar.com/system/events/photos/000/297/473/original/Great_Horned_Owl_Shannon_Quinn_APA_Email-Web_Ready_Image_0.jpg');
+}
+
 html {
     height: 100%;
 }
@@ -23,7 +37,7 @@ body {
     width: 100%;
     height: 100%;
     background-image: linear-gradient(to bottom right, rgba( 0.4, 0.4, 0.4, 0.4), rgba( 0.1, 0.1, 0.1, 0.2)),
-                      url('https://www.thebostoncalendar.com/system/events/photos/000/297/473/original/Great_Horned_Owl_Shannon_Quinn_APA_Email-Web_Ready_Image_0.jpg');
+                      var(--background-image);
     background-repeat: none;
     background-size: auto 100%;
     background-position: center top;
@@ -38,7 +52,7 @@ main {
     position: relative;
 /*    margin-top: 20px;
     margin-bottom: 20px;*/
-    color: white;
+    color: var(--font-color);
     height: 100%;
 }
 
@@ -50,26 +64,26 @@ main {
     width: 90%;
     margin-right: auto;
     margin-left: auto;
-    background-color: rgba( 0, 0, 0, 0.0 );
+    background-color: rgba(0, 0, 0, 0.0);
     text-align: center;
     padding: 25px;
-    border: rgba( 0, 0, 0, 0.4) 5px solid;
+    border: var(--border) 5px solid;
     border-radius: 40px;
     border-top-left-radius: 70px;
     border-bottom-right-radius: 70px;
     font-size: 1.5rem;
-    color: white;
+    color: var(--font-color);
 }
 
 .head {
-    background-color: rgba( 0, 0, 0, 0.4);
+    background-color: var(--section);
     padding: 10px;
     border-radius: 20px;
     border-top-left-radius: 40px;
 }
 
 .score {
-    background-color: rgba( 0, 0, 0, 0.4);
+    background-color: var(--section);
     /*padding: 10px;*/
     margin-top: 20px;
     border-radius: 20px;
@@ -82,7 +96,7 @@ main {
 }
 
 .card {
-    background-color: rgba( 0, 0, 0, 0.4);
+    background-color: var(--section);
     padding: 10px;
     margin-top: 20px;
     border-radius: 20px;
@@ -110,10 +124,10 @@ fieldset > legend {
 
 .btn, .lbl-button {
     display: inline-block;
-    background-color: rgba( 0, 0, 0, 0.4);
-    color: white;
+    background-color: var(--button);
+    color: var(--font-color);
     font-size: 1.2rem;
-    border: white 2px solid;
+    border: var(--active) 2px solid;
     border-radius: 10px;
     padding: 4px;
     padding-left: 10px;
@@ -133,24 +147,24 @@ fieldset > legend {
 }
 
 .btn:disabled, .btn:disabled:hover {
-    color: #a2a2a2;
-    border: grey 2px solid;
+    color: var(--inactive);
+    border: var(--inactive-border) 2px solid;
 }
 
 .btn:hover, .btn:focus, .lbl-button:hover {
-    border: cyan 2px solid;
+    border: var(--highlight) 2px solid;
 }
 
 .lbl-button-disabled:hover {
-    border: white 2px solid;
+    border: var(--active) 2px solid;
 }
 
 .lbl-button-answered, .lbl-button-answered:hover {
-    border: red 2px solid;
+    border: var(--incorrect) 2px solid;
 }
 
 .lbl-button-correct, .lbl-button-correct:hover {
-    border: lightgreen 2px solid;
+    border: var(--correct) 2px solid;
 }
 
 .radio-line {
@@ -207,8 +221,8 @@ button.btn-next {
 }
 
 .btn-nav:enabled:focus {
-    color: cyan;
-    border: cyan 2px solid;
+    color: var(--highlight);
+    border: var(--highlight) 2px solid;
 }
 
 .btn-nav:disabled, .btn-nav:disabled:hover {

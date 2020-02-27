@@ -4,6 +4,19 @@
 
 /* Questions will be loaded from an external json file */
 const QUESTIONS = [];
+
+const QUIZZES = [ 
+    {
+        name: 'Owl Quiz',
+        theme: 'owl/owl.css',
+        quiz: 'owl/owl.json'
+    },
+    {
+        name: 'Planets Quiz',
+        theme: 'planets/planets.css',
+        quiz: 'planets/planets.json'
+    }
+];
 /* The question which you are currently displaying */
 let currentQuestion = 0;
 /* Your current number of correct questions */
@@ -62,6 +75,14 @@ function collapseAnswers(method="hide") {
             // /}
         }
     }
+}
+
+function populateStartCard() {
+    QUIZZES.forEach( function( quiz, idx ) {
+        $('.card-start').append(`
+            <button _idx="${idx}" class="btn btn-quiz btn-${quiz.name.toLowerCase().replace(/\s+/, '-')}">${quiz.name}</button>`
+        );
+    });
 }
 
 /**
@@ -181,6 +202,34 @@ function startHandler() {
     });
 }
 
+function quizHandler() {
+    $('.card-start').on('click', '.btn-quiz', async function( event ) {
+        let quiz = $(this).attr('_idx');
+        loadTheme( QUIZZES[quiz].theme );
+        await loadQuiz( QUIZZES[quiz].quiz );
+        $('.card-start').slideUp();
+        $('.card-questions').slideDown();
+        displayQuestion( Math.floor( Math.random() * unasked.length ) );
+    })
+}
+
+function loadTheme( theme ) {
+    $('head').append(`<link href="${theme}" rel="stylesheet" type="text/css">`);
+}
+
+async function loadQuiz( quiz ) {
+    let response = await fetch( quiz );
+    let json = await response.json();
+    json.forEach( function( q)  {
+        QUESTIONS.push(q);
+    });
+    // These functions need to be called after the json file is loaded and parsed.
+    
+    updateQuestionNumber();
+    console.log( `loaded ${QUESTIONS.length} questions` );
+    reset();
+}
+
 /**
  * Event handler when an answer is submitted
  */
@@ -268,29 +317,15 @@ function reset() {
 }
 
 function main() {
-       fetch('quiz.json')
-        .then(res => res.json())
-        .then((out) => {
-            console.log('Output: ', typeof( out ), out);
-            out.forEach( function( q)  {
-                QUESTIONS.push(q);
-            })
-        })
-        // These functions need to be called after the json file is loaded and parsed.
-        .then( x => {
-            updateQuestionNumber();
-            console.log( `loaded ${QUESTIONS.length} questions` );
-            reset();
-        })
-        .catch(err => console.error(err));
-
-    $('.btn-start').focus();
+    populateStartCard();
+    //$('.btn-start').focus();
 
     $( nextQuestionHandler );
     $( previousQuestionHandler );
     $( tryAgainHandler );
     $( submitHandler );
     $( startHandler );
+    $( quizHandler );
 }
 
 main();
