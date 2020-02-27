@@ -1,13 +1,13 @@
 :root {
-    --section: rgba( 0, 0, 0, 0.4);
-    --border: rgba( 0, 0, 0, 0.4);
-    --button: rgba( 0, 0, 0, 0.4);
-    --highlight: cyan;
-    --correct: lightgreen;
-    --incorrect: red;
-    --active: white;
-    --inactive: #a2a2a2;
-    --inactive-border: grey;
-    --font-color: white;
-    --background-image: url('https://www.thebostoncalendar.com/system/events/photos/000/297/473/original/Great_Horned_Owl_Shannon_Quinn_APA_Email-Web_Ready_Image_0.jpg');
+	--section: rgba( 0, 0, 0, 0.4);
+	--border: rgba( 0, 0, 0, 0.4);
+	--button: rgba( 0, 0, 0, 0.4);
+	--highlight: cyan;
+	--correct: lightgreen;
+	--incorrect: red;
+	--active: white;
+	--inactive: #a2a2a2;
+	--inactive-border: grey;
+	--font-color: white;
+	--background-image: url('https://www.thebostoncalendar.com/system/events/photos/000/297/473/original/Great_Horned_Owl_Shannon_Quinn_APA_Email-Web_Ready_Image_0.jpg');
 }

@@ -1,13 +1,13 @@
 :root {
-    --section: rgba( 128, 77, 64, 0.4);
-    --border: rgba( 128, 77, 64, 0.4);
-    --button: rgba( 0, 0, 0, 0.4);
-    --highlight: red;
-    --correct: lightgreen;
-    --incorrect: red;
-    --active: white;
-    --inactive: #a2a2a2;
-    --inactive-border: grey;
-    --font-color: white;
-    --background-image: url('https://www.pbs.org/wgbh/nova/media/images/Jupiter_Centered.width-2500.jpg');
+	--section: rgba( 128, 77, 64, 0.4);
+	--border: rgba( 128, 77, 64, 0.4);
+	--button: rgba( 0, 0, 0, 0.4);
+	--highlight: red;
+	--correct: lightgreen;
+	--incorrect: red;
+	--active: white;
+	--inactive: #a2a2a2;
+	--inactive-border: grey;
+	--font-color: white;
+	--background-image: url('https://www.pbs.org/wgbh/nova/media/images/Jupiter_Centered.width-2500.jpg');
 }
