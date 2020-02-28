@@ -98,6 +98,10 @@ function collapseAnswers(method="hide") {
  * Populate the start card with the quiz list from the external json file
  */
 async function populateStartCard() {
+	// TODO: This works okay with the two quizzes I have, but it would be good to make it display better 
+	// if there were more buttons.
+	// Display X at a time; display the forward and backwards arrows?
+	// Use the same principles to decide how many buttons per row as the questions card?
 	await loadQuizList();
 	QUIZZES.forEach( function( quiz, idx ) {
 		// We use the meaningless _idx attribute to help figure out which quiz we chose when the button is clicked
