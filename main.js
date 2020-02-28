@@ -2,12 +2,14 @@
  *			   GLOBALS			   *
  ***************************************/
 
+"using strict";
+
 /* Questions will be loaded from an external json file */
-const QUESTIONS = [];
+let QUESTIONS = [];
 /* The file that contains the listing of available quizzes */
 const QUIZ_FILE = 'quizzes.json';
 /* The quiz objects of available quizzes. Will be loaded from the external QUIZ_FILE json file */
-const QUIZZES = [];
+let QUIZZES = [];
 /* The question which you are currently displaying */
 let currentQuestion = 0;
 /* Your current number of correct questions */
@@ -218,9 +220,7 @@ function loadTheme( theme ) {
 async function loadQuiz( quiz ) {
 	let response = await fetch( quiz );
 	let json = await response.json();
-	json.forEach( function( q)  {
-		QUESTIONS.push(q);
-	});
+	QUESTIONS = json.questions;
 	// These functions need to be called after the json file is loaded and parsed.
 	
 	updateQuestionNumber();
@@ -231,9 +231,7 @@ async function loadQuiz( quiz ) {
 async function loadQuizList() {
 	let response = await fetch( QUIZ_FILE );
 	let json = await response.json();
-	json.forEach( function( q )  {
-		QUIZZES.push( q );
-	});
+	QUIZZES = json.quizzes;
 	console.log( `loaded ${QUIZZES.length} quizzes` );
 }
 
