@@ -36,10 +36,16 @@ function updateScore() {
 }
 
 function correctMessage() {
+	if ( Object.keys( QUESTIONS[asked[currentQuestion]]).includes( 'correctMessage' ) ) {
+		return QUESTIONS[asked[currentQuestion]].correctMessage;
+	}
 	return "That's right!";
 }
 
 function incorrectMessage( idx ) {
+	if ( Object.keys( QUESTIONS[idx]).includes( 'incorrectMessage' ) ) {
+		return QUESTIONS[idx].incorrectMessage;
+	}
 	return `Good try, but the answer is ${QUESTIONS[idx].answers[QUESTIONS[idx].correctAnswer]}`;
 }
 
@@ -217,8 +223,7 @@ function fullReset() {
 
 function main() {
 	populateStartCard();
-	//$('.btn-start').focus();
-
+	// Activate the event handlers
 	$( nextQuestionHandler );
 	$( previousQuestionHandler );
 	$( tryAgainHandler );
