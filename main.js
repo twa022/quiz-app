@@ -35,13 +35,23 @@ function updateScore() {
 	$('.score-answered').text( answers.length );
 }
 
-function correctMessage() {
-	if ( Object.keys( QUESTIONS[asked[currentQuestion]]).includes( 'correctMessage' ) ) {
-		return QUESTIONS[asked[currentQuestion]].correctMessage;
+/**
+ * Return the correct answer message either from the quiz json file or a default message 
+ * @param {number} idx: The index in the questions array to find the message for
+ * @return The correct answer message
+ */
+function correctMessage( idx ) {
+	if ( Object.keys( QUESTIONS[idx]).includes( 'correctMessage' ) ) {
+		return QUESTIONS[idx].correctMessage;
 	}
 	return "That's right!";
 }
 
+/**
+ * Return the incorrect answer message either from the quiz json file or a default message 
+ * @param {number} idx: The index in the questions array to find the message for
+ * @return The incorrect answer message
+ */
 function incorrectMessage( idx ) {
 	if ( Object.keys( QUESTIONS[idx]).includes( 'incorrectMessage' ) ) {
 		return QUESTIONS[idx].incorrectMessage;
@@ -58,6 +68,12 @@ function updateQuestionNumber() {
 	$('.question-total').text(q);
 }
 
+/**
+ * Hide the answers on a question page other than the correct answer and the answer that was chosen
+ * @param {String} method How to hide the other buttons. 
+ *            hide: Just don't display the buttons (default)
+ *            slide: Slide up the buttons to hide them
+ */
 function collapseAnswers(method="hide") {
 	for ( let i = 0 ; i < QUESTIONS[asked[currentQuestion]].answers.length ; i++ ) {
 		if ( i ===  QUESTIONS[asked[currentQuestion]].correctAnswer ) {
@@ -65,17 +81,20 @@ function collapseAnswers(method="hide") {
 		} else if ( i === answers[currentQuestion] ) {
 			$(`label[for="ans${i}`).addClass('lbl-button-answered');
 		} else {
-		   /* if ( method.localeCompare("slide") === 0 ) {
+			if ( method.localeCompare("slide") === 0 ) {
 				$(`label[for="ans${i}`).slideUp();
-			} else {*/
+			} else {
 				console.log(`trying to hide button ${i}`);
 				$(`label[for="ans${i}`).addClass('no-display');
 				$(`label[for="ans${i}`).attr('hidden', true);
-			// /}
+			}
 		}
 	}
 }
 
+/**
+ * Populate the start card with the quiz list from the external json file
+ */
 async function populateStartCard() {
 	await loadQuizList();
 	QUIZZES.forEach( function( quiz, idx ) {
@@ -86,6 +105,9 @@ async function populateStartCard() {
 	});
 }
 
+/**
+ * Display a random question from the list of unasked questions
+ */
 function displayRandomUnaskedQuestion() {
 	displayQuestion( unasked[ Math.floor( Math.random() * unasked.length ) ] );
 }
@@ -174,10 +196,18 @@ function updateReply() {
 	}
 }
 
+/**
+ * Apply a theme from an external CSS file
+ * @param {String} theme The theme css file. Should be relative to root or an absolute path
+ */
 function loadTheme( theme ) {
 	$('head').append(`<link href="${theme}" rel="stylesheet" type="text/css">`);
 }
 
+/**
+ * Load a quiz from an external JSON file
+ * @param {String} quiz The quiz JSON file. Should be relative to root or an absolute path
+ */
 async function loadQuiz( quiz ) {
 	let response = await fetch( quiz );
 	let json = await response.json();
@@ -189,6 +219,9 @@ async function loadQuiz( quiz ) {
 	reset();
 }
 
+/**
+ * Load the list of quizzes from the external JSON file in the hardcoded QUIZ_FILE constant.
+ */
 async function loadQuizList() {
 	let response = await fetch( QUIZ_FILE );
 	let json = await response.json();
@@ -212,6 +245,10 @@ function reset() {
 	currentQuestion = 0;
 }
 
+/**
+ * Reset all global state variables to the initial states
+ * This resets the unasked question list as well, so should be used when changing quizzes.
+ */
 function fullReset() {
 	unasked.splice(0, unasked.length);
 	asked.splice(0, asked.length);
@@ -221,6 +258,9 @@ function fullReset() {
 	currentQuestion = 0;
 }
 
+/**
+ * Program start. Create the initial card view and activate all the event handlers
+ */
 function main() {
 	populateStartCard();
 	// Activate the event handlers
@@ -254,16 +294,8 @@ function previousQuestionHandler() {
 }
 
 /**
- * Event handler when start quiz button is clicked
+ * Event handler when a quiz button from the list of quizzes is clicked
  */
-function startHandler() {
-	$('.btn-start').click( function( event ) {
-		$('.card-start').slideUp();
-		$('.card-questions').slideDown();
-		displayRandomUnaskedQuestion();
-	});
-}
-
 function quizHandler() {
 	$('.card-start').on('click', '.btn-quiz', async function( event ) {
 		let quiz = $(this).attr('_idx');
