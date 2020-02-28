@@ -269,7 +269,6 @@ function main() {
 	$( tryAgainHandler );
 	$( restartHandler );
 	$( submitHandler );
-	$( startHandler );
 	$( quizHandler );
 }
 
