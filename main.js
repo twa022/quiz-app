@@ -73,8 +73,9 @@ function collapseAnswers(method="hide") {
 async function populateStartCard() {
 	await loadQuizList();
 	QUIZZES.forEach( function( quiz, idx ) {
+		// We use the meaningless _idx attribute to help figure out which quiz we chose when the button is clicked
 		$('.card-start').append(`
-			<button _idx="${idx}" class="btn btn-quiz btn-${quiz.name.toLowerCase().replace(/\s+/, '-')}">${quiz.name}</button>`
+			<button _idx="${idx}" class="btn btn-quiz">${quiz.name}</button>`
 		);
 	});
 }
@@ -100,10 +101,10 @@ function displayQuestion( num ) {
 		unasked.splice(unasked.indexOf(num), 1);
 	}
 	let html = "";
-	for ( let i = 0 ; i < QUESTIONS[num].answers.length ; i++ ) {
+	QUESTIONS[num].answers.forEach( function( answer, i ) {
 		html += `<input type="radio" name="answer" class="answer no-display" id="ans${i}" value="${i}">
-		         <label for="ans${i}" class="lbl-button">${QUESTIONS[num].answers[i]}</label>`;
-	}
+		         <label for="ans${i}" class="lbl-button">${answer}</label>`;
+	});
 	$('.answer-list').html( html );
 	// Previous button should be enabled unless we're on the first question
 	$('.btn-prev').attr('disabled', ( currentQuestion === 0 ) );
@@ -113,17 +114,19 @@ function displayQuestion( num ) {
 	$('.btn-submit-answer').attr('disabled', alreadyAnswered);
 
 	if ( alreadyAnswered ) {
-		// Disable submit button
-		//$('.btn-submit-answer').attr('disabled', true);
+		let ans =answers[currentQuestion];
 		// Check the radio button that corresponds to the answer that was given
-		$(`#ans${answers[currentQuestion]}`).attr('checked', true);
+		$(`#ans${ans}`).attr('checked', true);
 		// Disable all the radio buttons since we don't want to be able to make a selection
 		$('input[type="radio"]:not(:checked)').attr('disabled', true);
 		// Add the disabled styling to the labels (which we display like buttons)
 		$('label[class="lbl-button"]').addClass('lbl-button-disabled');
-		//collapseAnswers();
+		if ( false ) { //Haven't decided if I like this behaviour yet or not...
+			// Collapse the answers other than the one we chose and the correct answer
+			collapseAnswers();
+		}
 		// Add the answered (wrong) styling to the labels which corresponds to what we answered
-		$(`label[for="ans${answers[currentQuestion]}`).addClass('lbl-button-answered');
+		$(`label[for="ans${ans}`).addClass('lbl-button-answered');
 		// Add the correct answer styling to the labe for the correct answer (this will override the styling for answered,
 		// So if we selected the correct answer it will style it wrong, then restyle it correct)
 		$(`label[for="ans${QUESTIONS[asked[currentQuestion]].correctAnswer}"]`).addClass('lbl-button-correct');
@@ -134,11 +137,6 @@ function displayQuestion( num ) {
 	} else {
 		// Hide the reply text
 		$('.answer-reply').slideUp();
-		//$('#ans0').focus();
-		// Enable the submit button
-		//$('.btn-submit-answer').attr('disabled', false);
-		// Disable the next button until the user submits an answer
-		//$('.btn-next').attr('disabled', true);
 	}
 }
 
@@ -169,6 +167,67 @@ function updateReply() {
 		$('.answer-reply').html(`<p>${incorrectMessage(asked[currentQuestion])}</p>`);
 	}
 }
+
+function loadTheme( theme ) {
+	$('head').append(`<link href="${theme}" rel="stylesheet" type="text/css">`);
+}
+
+async function loadQuiz( quiz ) {
+	let response = await fetch( quiz );
+	let json = await response.json();
+	QUESTIONS = json.questions;
+	// These functions need to be called after the json file is loaded and parsed.
+	
+	updateQuestionNumber();
+	console.log( `loaded ${QUESTIONS.length} questions` );
+	reset();
+}
+
+async function loadQuizList() {
+	let response = await fetch( QUIZ_FILE );
+	let json = await response.json();
+	QUIZZES = json.quizzes;
+	console.log( `loaded ${QUIZZES.length} quizzes` );
+}
+
+/**
+ * Reset the global state variables to the initial states
+ * Only reset the list of unasked questions if all questions have been asked
+ */
+function reset() {
+	if ( unasked.length === 0 ) {
+		for ( let i = 0 ; i < QUESTIONS.length ; i++ ) {
+			unasked.push(i);
+		}
+	}
+	asked.splice(0, asked.length);
+	answers.splice(0, answers.length);
+	score = 0;
+	currentQuestion = 0;
+}
+
+function fullReset() {
+	unasked.splice(0, unasked.length);
+	asked.splice(0, asked.length);
+	QUESTIONS.splice(0, QUESTIONS.length);
+	answers.splice(0, answers.length);
+	score = 0;
+	currentQuestion = 0;
+}
+
+function main() {
+	populateStartCard();
+	//$('.btn-start').focus();
+
+	$( nextQuestionHandler );
+	$( previousQuestionHandler );
+	$( tryAgainHandler );
+	$( restartHandler );
+	$( submitHandler );
+	$( startHandler );
+	$( quizHandler );
+}
+
 
 /* ********************************
  *		EVENT HANDLERS		  *
@@ -211,28 +270,6 @@ function quizHandler() {
 		$('.card-questions').slideDown();
 		displayRandomUnaskedQuestion();
 	})
-}
-
-function loadTheme( theme ) {
-	$('head').append(`<link href="${theme}" rel="stylesheet" type="text/css">`);
-}
-
-async function loadQuiz( quiz ) {
-	let response = await fetch( quiz );
-	let json = await response.json();
-	QUESTIONS = json.questions;
-	// These functions need to be called after the json file is loaded and parsed.
-	
-	updateQuestionNumber();
-	console.log( `loaded ${QUESTIONS.length} questions` );
-	reset();
-}
-
-async function loadQuizList() {
-	let response = await fetch( QUIZ_FILE );
-	let json = await response.json();
-	QUIZZES = json.quizzes;
-	console.log( `loaded ${QUIZZES.length} quizzes` );
 }
 
 /**
@@ -279,8 +316,8 @@ function nextQuestionHandler() {
 	$('.card-questions').on('click', '.btn-next', function( event ) {
 		event.stopPropagation();
 		currentQuestion++;
-		let noQ = ( QUESTIONS.length < QUESTIONS_PER_SESSION ) ? QUESTIONS.length : QUESTIONS_PER_SESSION;
-		if ( answers.length === noQ ) {
+		let numberQuestions = ( QUESTIONS.length < QUESTIONS_PER_SESSION ) ? QUESTIONS.length : QUESTIONS_PER_SESSION;
+		if ( answers.length === numberQuestions ) {
 			displayEndCard();
 		} else if ( currentQuestion < asked.length ) {
 			displayQuestion( asked[currentQuestion] );
@@ -320,44 +357,6 @@ function restartHandler() {
 		$('.question-total').text('_');
 		$('.head').find('h1').text( 'Quiz about Something!' );
 	});
-}
-
-/**
- * Reset the global state variables to the initial states
- * Only reset the list of unasked questions if all questions have been asked
- */
-function reset() {
-	if ( unasked.length === 0 ) {
-		for ( let i = 0 ; i < QUESTIONS.length ; i++ ) {
-			unasked.push(i);
-		}
-	}
-	asked.splice(0, asked.length);
-	answers.splice(0, answers.length);
-	score = 0;
-	currentQuestion = 0;
-}
-
-function fullReset() {
-	unasked.splice(0, unasked.length);
-	asked.splice(0, asked.length);
-	QUESTIONS.splice(0, QUESTIONS.length);
-	answers.splice(0, answers.length);
-	score = 0;
-	currentQuestion = 0;
-}
-
-function main() {
-	populateStartCard();
-	//$('.btn-start').focus();
-
-	$( nextQuestionHandler );
-	$( previousQuestionHandler );
-	$( tryAgainHandler );
-	$( restartHandler );
-	$( submitHandler );
-	$( startHandler );
-	$( quizHandler );
 }
 
 main();
