@@ -6,6 +6,8 @@
 
 /* Questions will be loaded from an external json file */
 let QUESTIONS = [];
+
+let MESSAGES = {};
 /* The file that contains the listing of available quizzes */
 const QUIZ_FILE = 'quizzes.json';
 /* The quiz objects of available quizzes. Will be loaded from the external QUIZ_FILE json file */
@@ -169,11 +171,56 @@ function displayQuestion( num ) {
 }
 
 /**
+ * Return a results message based on the user's score. Use the messages from the quiz JSON file if available or 
+ * default messages otherwise.
+ * @param {Number} pct The percentage of correct answers
+ */
+function resultsMessage( pct ) {
+	let message = "";
+	if ( pct >= 1 ) {
+		try {
+			message = MESSAGES.perfect;
+		} catch ( e ) {
+			message = "Perfect!"
+		};
+	} else if ( pct >= 0.8 ) {
+		try {
+			message = MESSAGES.great;
+		} catch ( e ) { 
+			message = "Great Job!"
+		}
+	} else if ( pct >= 0.6 ) {
+		try {
+			message = MESSAGES.good;
+		} catch ( e ) {
+			message = "Good Job!"
+		}
+	} else if ( pct >= 0.4 ) {
+		try {
+			message = MESSAGES.bad;
+		} catch ( e ) { 
+			message = "Keep Trying!" 
+		}
+	} else {
+		try {
+			message = MESSAGES.terrible;
+		} catch ( e ) {
+			message = "Better Luck Next Time!"
+		}
+	}
+	console.log( message );
+	return message;
+}
+
+/**
  * Switch card display model to display the end card
  */
 function displayEndCard() {
 	$('.card-questions').slideUp();
 	$('.score').slideUp();
+	// How did we do?
+	let numberQuestions = ( QUESTIONS.length < QUESTIONS_PER_SESSION ) ? QUESTIONS.length : QUESTIONS_PER_SESSION;
+	$('.results-msg').text( resultsMessage( score / numberQuestions ) );
 	$('.card-end').slideDown();
 	$('.btn-try-again').focus();
 }
@@ -212,6 +259,7 @@ async function loadQuiz( quiz ) {
 	let response = await fetch( quiz );
 	let json = await response.json();
 	QUESTIONS = json.questions;
+	MESSAGES = json.messages;
 	// These functions need to be called after the json file is loaded and parsed.
 	
 	updateQuestionNumber();

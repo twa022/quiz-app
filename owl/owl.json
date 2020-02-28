@@ -31,5 +31,12 @@
 			"answers": [ "ans1", "ans2", "ans3", "ans4", "ans5" ],
 			"correctAnswer": 2
 		}
-	]
+	],
+	"messages": {
+		"perfect": "You're an owl expert!",
+		"great": "You really know your owls!",
+		"good": "Hoot hoot",
+		"bad": "Better luck next time",
+		"terrible": "Hope you learned something about owls!"
+	}
 }
