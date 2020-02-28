@@ -1,0 +1,12 @@
+[
+    {
+		"name": "Owl Quiz",
+		"theme": "owl/owl.css",
+		"quiz": "owl/owl.json"
+	},
+	{
+		"name": "Planets Quiz",
+		"theme": "planets/planets.css",
+		"quiz": "planets/planets.json"
+	}
+]

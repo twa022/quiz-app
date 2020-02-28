@@ -4,19 +4,10 @@
 
 /* Questions will be loaded from an external json file */
 const QUESTIONS = [];
-
-const QUIZZES = [ 
-	{
-		name: 'Owl Quiz',
-		theme: 'owl/owl.css',
-		quiz: 'owl/owl.json'
-	},
-	{
-		name: 'Planets Quiz',
-		theme: 'planets/planets.css',
-		quiz: 'planets/planets.json'
-	}
-];
+/* The file that contains the listing of available quizzes */
+const QUIZ_FILE = 'quizzes.json';
+/* The quiz objects of available quizzes. Will be loaded from the external QUIZ_FILE json file */
+const QUIZZES = [];
 /* The question which you are currently displaying */
 let currentQuestion = 0;
 /* Your current number of correct questions */
@@ -77,7 +68,8 @@ function collapseAnswers(method="hide") {
 	}
 }
 
-function populateStartCard() {
+async function populateStartCard() {
+	await loadQuizList();
 	QUIZZES.forEach( function( quiz, idx ) {
 		$('.card-start').append(`
 			<button _idx="${idx}" class="btn btn-quiz btn-${quiz.name.toLowerCase().replace(/\s+/, '-')}">${quiz.name}</button>`
@@ -234,6 +226,15 @@ async function loadQuiz( quiz ) {
 	updateQuestionNumber();
 	console.log( `loaded ${QUESTIONS.length} questions` );
 	reset();
+}
+
+async function loadQuizList() {
+	let response = await fetch( QUIZ_FILE );
+	let json = await response.json();
+	json.forEach( function( q )  {
+		QUIZZES.push( q );
+	});
+	console.log( `loaded ${QUIZZES.length} quizzes` );
 }
 
 /**
