@@ -212,6 +212,7 @@ function quizHandler() {
 		loadTheme( QUIZZES[quiz].theme );
 		// We have to wait for the quiz to load before we can proceed
 		await loadQuiz( QUIZZES[quiz].quiz );
+		$('.head').find('h1').text( QUIZZES[quiz].name );
 		$('.card-start').slideUp();
 		$('.card-questions').slideDown();
 		displayRandomUnaskedQuestion();
@@ -306,6 +307,23 @@ function tryAgainHandler() {
 }
 
 /**
+ * Event handler when restart button is clicked
+ */
+function restartHandler() {
+	$('.btn-restart').click( function( event ) {
+		console.log('Calling restart handler');
+		fullReset();
+		$('.card-end').slideUp();
+		$('.card-start').slideDown();
+		$('.score').slideDown();
+		updateScore();
+		$('.question-number').text('_');
+		$('.question-total').text('_');
+		$('.head').find('h1').text( 'Quiz about Something!' );
+	});
+}
+
+/**
  * Reset the global state variables to the initial states
  * Only reset the list of unasked questions if all questions have been asked
  */
@@ -321,6 +339,15 @@ function reset() {
 	currentQuestion = 0;
 }
 
+function fullReset() {
+	unasked.splice(0, unasked.length);
+	asked.splice(0, asked.length);
+	QUESTIONS.splice(0, QUESTIONS.length);
+	answers.splice(0, answers.length);
+	score = 0;
+	currentQuestion = 0;
+}
+
 function main() {
 	populateStartCard();
 	//$('.btn-start').focus();
@@ -328,6 +355,7 @@ function main() {
 	$( nextQuestionHandler );
 	$( previousQuestionHandler );
 	$( tryAgainHandler );
+	$( restartHandler );
 	$( submitHandler );
 	$( startHandler );
 	$( quizHandler );
