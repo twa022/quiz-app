@@ -259,7 +259,7 @@ div.nowrap {
 	white-space: nowrap;
 }
 
-@media screen and ( min-width: 600px ) and ( orientation: portrait ) {
+@media screen and ( min-width: 600px ) and ( orientation: portrait ), ( min-width: 900px ) {
 	.container {
 		width: 80%;
 		min-width: 400px;
@@ -300,12 +300,12 @@ div.nowrap {
 		padding: 25px;
 	}
 
-	.score, .card {
+	.score, .card, .card-question {
 		margin-top: 20px;
 	}
 }
 
-@media screen and ( orientation: landscape ) and ( max-width: 1000px ) {
+@media screen and ( orientation: landscape ) and ( max-width: 900px ) {
 	.flex-container {
 		flex-direction: row;
 		align-items: flex-start;
@@ -354,8 +354,13 @@ div.nowrap {
 	}
 }
 
-@media screen and ( min-width: 1000px) {
+@media screen and ( min-width: 900px) {
 	.lbl-button {
 		width: 40%;
+	}
+
+	.end-btn-container {
+		flex-direction: row;
+		justify-content: center;
 	}
 }
