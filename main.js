@@ -155,8 +155,8 @@ function displayQuestion( num ) {
 		$('input[type="radio"]:not(:checked)').attr('disabled', true);
 		// Add the disabled styling to the labels (which we display like buttons)
 		$('label[class="lbl-button"]').addClass('lbl-button-disabled');
-		if ( false ) { //Haven't decided if I like this behaviour yet or not...
-			// Collapse the answers other than the one we chose and the correct answer
+		// Collapse the answers other than the one we chose and the correct answer
+			if ( window.orientation === 90 || window.orientation === -90 ) {
 			collapseAnswers();
 		}
 		// Add the answered (wrong) styling to the labels which corresponds to what we answered
@@ -220,7 +220,8 @@ function resultsMessage( pct ) {
  * Switch card display model to display the end card
  */
 function displayEndCard() {
-	$('.card-questions').slideUp();
+	$('.card-question').slideUp();
+	$('.card-answers').slideUp();
 	$('.score').slideUp();
 	// How did we do?
 	let numberQuestions = ( QUESTIONS.length < QUESTIONS_PER_SESSION ) ? QUESTIONS.length : QUESTIONS_PER_SESSION;
@@ -324,7 +325,6 @@ function main() {
 	$( quizHandler );
 }
 
-
 /* ********************************
  *		EVENT HANDLERS		  *
  **********************************/
@@ -355,7 +355,8 @@ function quizHandler() {
 		await loadQuiz( QUIZZES[quiz].quiz );
 		$('.head').find('h1').text( QUIZZES[quiz].name );
 		$('.card-start').slideUp();
-		$('.card-questions').slideDown();
+		$('.card-question').slideDown();
+		$('.card-answers').slideDown();
 		displayRandomUnaskedQuestion();
 	})
 }
@@ -364,7 +365,7 @@ function quizHandler() {
  * Event handler when an answer is submitted
  */
 function submitHandler() {
-	$('.card-questions').on('change', '.answer', function( event ) {
+	$('.card-answers').on('change', '.answer', function( event ) {
 		event.preventDefault();
 		console.log('called the submit answer handler');
 		event.stopPropagation();
@@ -390,7 +391,10 @@ function submitHandler() {
 		$(`label[for="ans${QUESTIONS[asked[currentQuestion]].correctAnswer}"]`).addClass('lbl-button-correct');
 		// Show the text about the answer
 		console.log(`classes: ${$('.answer-reply').attr('class')}`);
-		//collapseAnswers("slide");
+		// Collapse the answers other than the one we chose and the correct answer
+		if ( window.orientation === 90 || window.orientation === -90 ) {
+			collapseAnswers();
+		}
 		$('.answer-reply').slideDown();
 		// Focus on the next question button
 		$('.btn-next').focus();
@@ -401,7 +405,7 @@ function submitHandler() {
  * Event handler when next question button is clicked
  */
 function nextQuestionHandler() {
-	$('.card-questions').on('click', '.btn-next', function( event ) {
+	$('.card-answers').on('click', '.btn-next', function( event ) {
 		event.stopPropagation();
 		currentQuestion++;
 		let numberQuestions = ( QUESTIONS.length < QUESTIONS_PER_SESSION ) ? QUESTIONS.length : QUESTIONS_PER_SESSION;
@@ -423,7 +427,8 @@ function tryAgainHandler() {
 		reset();
 		displayRandomUnaskedQuestion();
 		$('.card-end').slideUp();
-		$('.card-questions').slideDown();
+		$('.card-question').slideDown();
+		$('.card-answers').slideDown();
 		$('.score').slideDown();
 		updateScore();
 		updateQuestionNumber();

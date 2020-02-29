@@ -75,6 +75,17 @@ main {
 	color: var(--font-color);
 }
 
+.flex-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+}
+.container-left {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+}
+
 .head {
 	background-color: var(--section);
 	padding: 10px;
@@ -85,12 +96,23 @@ main {
 
 .score {
 	background-color: var(--section);
-	/*padding: 10px;*/
+	padding: 10px;
 	margin-top: 10px;
 	border-radius: 20px;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-evenly;
+}
+
+.card-question {
+	background-color: var(--section);
+	padding: 10px;
+	margin-top: 10px;
+	border-radius: 20px;
+}
+
+.card-question > p {
+	margin: 0;
 }
 
 .card {
@@ -103,7 +125,7 @@ main {
 	border-bottom-left-radius: 40px;
 }
 
-.card-questions {
+.card-answers {
 	position: relative;
 }
 
@@ -218,7 +240,25 @@ button.btn-next {
 	border: unset;
 }
 
-@media screen and ( min-width: 600px ) {
+.end-btn-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.end-btn-container > * {
+	margin: 6px;
+}
+
+div.inline {
+	display: inline-block;
+}
+
+div.nowrap {
+	white-space: nowrap;
+}
+
+@media screen and ( min-width: 600px ) and ( orientation: portrait ) {
 	.container {
 		width: 80%;
 		min-width: 400px;
@@ -262,6 +302,55 @@ button.btn-next {
 
 	.score, .card {
 		margin-top: 20px;
+	}
+}
+
+@media screen and ( orientation: landscape ) and ( max-width: 1000px ) {
+	.flex-container {
+		flex-direction: row;
+		align-items: flex-start;
+	}
+
+	.card-answers {
+		margin-top: 0px;
+		margin-left: 10px;
+		flex: 1 0;
+	}
+
+	.head {
+		border-top-right-radius: 20px;
+	}
+
+	.container-left {
+		flex: 1 1;
+	}
+
+	.lbl-button {
+		padding: 10px;
+		padding-top: 5px;
+		padding-bottom: 5px;
+		margin-bottom: 8px;
+	}
+
+	button.btn-nav {
+		font-size: 2.2rem;
+	}
+
+	button.btn-prev {
+		left: -3%;
+		top: 50px;
+	}
+
+	button.btn-next {
+		right: -3%;
+		top: 50px;
+	}
+
+	.end-btn-container {
+		display: flex;
+		flex-direction: row;
+		align-items: flex-start;
+		justify-content: center;
 	}
 }
 
