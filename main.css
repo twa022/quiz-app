@@ -23,10 +23,10 @@ html {
 
 body {
 	min-height: 100%;
-	min-width: 350px;
+	min-width: 320px;
 	position: relative;
-	padding-top: 20px;
-	padding-bottom: 20px;
+	padding-top: 10px;
+	padding-bottom: 10px;
 }
 
 .background {
@@ -61,50 +61,81 @@ main {
 	position: relative;
 	left: 50%;
 	transform: translateX(-50%);
-	width: 90%;
+	width: 95%;
+	max-width: 1000px;
 	margin-right: auto;
 	margin-left: auto;
 	background-color: rgba(0, 0, 0, 0.0);
 	text-align: center;
-	padding: 25px;
+	padding: 10px;
 	border: var(--border) 5px solid;
 	border-radius: 40px;
 	border-top-left-radius: 70px;
 	border-bottom-right-radius: 70px;
-	font-size: 1.5rem;
+	font-size: 1.4rem;
 	color: var(--font-color);
+}
+
+.flex-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+}
+.container-left {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
 }
 
 .head {
 	background-color: var(--section);
 	padding: 10px;
 	border-radius: 20px;
-	border-top-left-radius: 40px;
+	border-top-left-radius: 60px;
+	border-top-right-radius: 40px;
 }
 
 .score {
 	background-color: var(--section);
-	/*padding: 10px;*/
-	margin-top: 20px;
+	padding: 10px;
+	margin-top: 10px;
 	border-radius: 20px;
-}
-
-.score {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-evenly;
 }
 
+.card-question {
+	background-color: var(--section);
+	padding: 10px;
+	margin-top: 10px;
+	border-radius: 20px;
+}
+
+.card-question > p {
+	margin: 0;
+}
+
 .card {
 	background-color: var(--section);
 	padding: 10px;
-	margin-top: 20px;
+	padding-bottom: 20px;
+	margin-top: 10px;
 	border-radius: 20px;
-	border-bottom-right-radius: 40px;
+	border-bottom-right-radius: 60px;
+	border-bottom-left-radius: 40px;
 }
 
-.card-questions {
+.card-answers {
 	position: relative;
+}
+
+p {
+	margin: 10px;
+}
+
+.card-end p {
+	margin: 20px;
 }
 
 h1 {
@@ -167,25 +198,6 @@ fieldset > legend {
 	border: var(--correct) 2px solid;
 }
 
-.radio-line {
-	/*padding: 12px;*/
-	margin-bottom: 25px;
-}
-
-@media screen and ( min-width: 600px ) {
-	.container {
-		width: 80%;
-		min-width: 400px;
-		max-width: 1000px;
-	}
-}
-
-@media screen and ( min-width: 1000px) {
-	.lbl-button {
-		width: 40%;
-	}
-}
-
 .no-display {
 	display: none;
 }
@@ -198,7 +210,7 @@ fieldset > legend {
 
 button.btn-nav {
 	position: absolute;
-	font-size: 4.0rem;
+	font-size: 2.5rem;
 	transform: translateY(-50%);
 	border: none;
 	background-color: unset;
@@ -206,12 +218,12 @@ button.btn-nav {
 
 button.btn-prev {
 	top: 50%;
-	left: 0%;
+	left: -3%;
 	transform: translateY(-50%);
 }
 
 button.btn-next {
-	right: 0%;
+	right: -3%;
 	top: 50%;
 	transform: translateY(-50%);
 }
@@ -227,4 +239,128 @@ button.btn-next {
 
 .btn-nav:disabled, .btn-nav:disabled:hover {
 	border: unset;
+}
+
+.end-btn-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.end-btn-container > * {
+	margin: 6px;
+}
+
+div.inline {
+	display: inline-block;
+}
+
+div.nowrap {
+	white-space: nowrap;
+}
+
+@media screen and ( min-width: 600px ) and ( orientation: portrait ), ( min-width: 900px ) {
+	.container {
+		width: 80%;
+		min-width: 400px;
+		font-size: 1.5rem;
+	}
+
+	button.btn-nav {
+		font-size: 4.0rem;
+	}
+
+	button.btn-prev {
+		left: 0%;
+	}
+
+	button.btn-next {
+		right: 0%;
+	}
+
+	body {
+		padding-top: 20px;
+		padding-bottom: 20px;
+	}
+
+	.head {
+		border-top-left-radius: 40px;
+		border-top-right-radius: 20px;
+	}
+
+	.card {
+		border-bottom-right-radius: 40px;
+		border-bottom-left-radius: 20px;
+	}
+
+	.container {
+		width: 90%;
+		margin-right: auto;
+		margin-left: auto;
+		padding: 25px;
+	}
+
+	.score, .card, .card-question {
+		margin-top: 20px;
+	}
+}
+
+@media screen and ( orientation: landscape ) and ( max-width: 900px ) {
+	.flex-container {
+		flex-direction: row;
+		align-items: flex-start;
+	}
+
+	.card-answers {
+		margin-top: 0px;
+		margin-left: 10px;
+		flex: 1 0;
+	}
+
+	.head {
+		border-top-right-radius: 20px;
+	}
+
+	.container-left {
+		flex: 1 1;
+	}
+
+	.lbl-button {
+		padding: 10px;
+		padding-top: 5px;
+		padding-bottom: 5px;
+		margin-bottom: 8px;
+	}
+
+	button.btn-nav {
+		font-size: 2.2rem;
+	}
+
+	button.btn-prev {
+		left: -3%;
+		top: 50px;
+	}
+
+	button.btn-next {
+		right: -3%;
+		top: 50px;
+	}
+
+	.end-btn-container {
+		display: flex;
+		flex-direction: row;
+		align-items: flex-start;
+		justify-content: center;
+	}
+}
+
+@media screen and ( min-width: 900px) {
+	.lbl-button {
+		width: 40%;
+	}
+
+	.end-btn-container {
+		flex-direction: row;
+		justify-content: center;
+	}
 }
