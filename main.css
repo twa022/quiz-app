@@ -137,7 +137,7 @@ h1 {
 	margin: 0;
 }
 
-.card-answers {
+.card-answers, .card-start {
 	position: relative;
 }
 
@@ -159,6 +159,14 @@ h1 {
 	margin-left: 6px;
 }
 
+.btn-quiz {
+	padding: 8px;
+	padding-left: 16px;
+	padding-right: 16px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	width: 40%;
+}
 .btn-answer {
 	padding: 8px;
 	padding-left: 16px;
@@ -189,7 +197,7 @@ h1 {
 	border: var(--correct) 2px solid;
 }
 
-.btn-nav {
+.btn-nav, .btn-quizlist-nav {
 	position: absolute;
 	font-size: 2.5rem;
 	transform: translateY(-50%);
@@ -197,16 +205,24 @@ h1 {
 	background-color: unset;
 }
 
-.btn-prev {
+.btn-prev, .btn-quizlist-prev {
 	top: 50%;
 	left: -3%;
 	transform: translateY(-50%);
 }
 
-.btn-next {
+.btn-next, .btn-quizlist-next {
 	right: -3%;
 	top: 50%;
 	transform: translateY(-50%);
+}
+
+.btn-quizlist-prev {
+	left: 2%;
+}
+
+.btn-quizlist-next {
+	right: 2%;
 }
 
 .btn-nav:enabled:hover {
@@ -318,7 +334,7 @@ h1 {
 		margin-bottom: 8px;
 	}
 
-	.btn-nav {
+	.btn-nav, .btn-quizlist-nav {
 		font-size: 2.2rem;
 	}
 

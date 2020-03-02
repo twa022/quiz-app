@@ -25,6 +25,7 @@ const answers = [];
 /* The maximum number of quesitons per session */
 const QUESTIONS_PER_SESSION = 3;
 
+const QUIZZES_PER_PAGE = 8;
 /* ********************************
  *		   FUNCTIONS			*
  **********************************/
@@ -99,12 +100,24 @@ async function populateStartCard() {
 	// Display X at a time; display the forward and backwards arrows?
 	// Use the same principles to decide how many buttons per row as the questions card?
 	await loadQuizList();
-	QUIZZES.forEach( function( quiz, idx ) {
+	let nQuizzes;
+	if ( QUIZZES.length > QUIZZES_PER_PAGE ) {
+		nQuizzes = QUIZZES_PER_PAGE;
+		$('.btn-quizlist-nav').removeClass('no-display');
+		$('.btn-quizlist-next').attr('disabled', false);
+		$('.btn-quizlist-prev').attr('disabled', true);
+	} else {
+		nQuizzes = QUIZZES.length;
+		$('.btn-quizlist-nav').addClass('no-display');
+		$('.btn-quizlist-nav').attr('disabled', true);
+	}
+	for ( let idx = 0 ; idx < nQuizzes ; idx++ ) {
+	//QUIZZES.forEach( function( quiz, idx ) {
 		// We use the meaningless _idx attribute to help figure out which quiz we chose when the button is clicked
 		$('.card-start').append(`
-			<button _idx="${idx}" class="btn btn-quiz">${quiz.name}</button>`
+			<button _idx="${idx}" class="btn btn-quiz">${QUIZZES[idx].name}</button>`
 		);
-	});
+	}
 }
 
 /**
