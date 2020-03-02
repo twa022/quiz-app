@@ -33,8 +33,7 @@ const QUESTIONS_PER_SESSION = 3;
   * Update the score text
   */
 function updateScore() {
-	$('.score-correct').text( score );
-	$('.score-answered').text( answers.length );
+	$('.score-number').text( `${score} / ${answers.length}` );
 }
 
 /**
@@ -65,9 +64,8 @@ function incorrectMessage( idx ) {
  * Update the question number text
  */
 function updateQuestionNumber() {
-	$('.question-number').text( ( currentQuestion + 1) );
 	let q = ( QUESTIONS.length < QUESTIONS_PER_SESSION ) ? QUESTIONS.length : QUESTIONS_PER_SESSION;
-	$('.question-total').text(q);
+	$('.question-number').text( `${currentQuestion + 1} / ${q}` );
 }
 
 /**
@@ -432,8 +430,7 @@ function restartHandler() {
 		$('.card-start').slideDown();
 		$('.score').slideDown();
 		updateScore();
-		$('.question-number').text('_');
-		$('.question-total').text('_');
+		$('.question-number').text('_ / _');
 		$('.head').find('h1').text( 'Quiz about Something!' );
 	});
 }
