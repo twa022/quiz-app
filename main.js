@@ -278,28 +278,23 @@ async function loadQuizList() {
 
 /**
  * Reset the global state variables to the initial states
- * Only reset the list of unasked questions if all questions have been asked
+ * @param {Boolean} full Whether or not to do a full reset
+ *         false (default) Only reset the list of unasked questions if all questions have been asked
+ *         true: Reset all the globals to their initial empty state.
  */
-function reset() {
-	if ( unasked.length === 0 ) {
-		for ( let i = 0 ; i < QUESTIONS.length ; i++ ) {
-			unasked.push(i);
+function reset( full = false ) {
+	if ( full ) {
+		unasked.splice(0, unasked.length );
+		QUESTIONS.splice(0, QUESTIONS.length);
+	} else { // do a partial reset (doing the same quiz)
+		// Reset the unasked question array
+		if ( unasked.length === 0 ) {
+			for ( let i = 0 ; i < QUESTIONS.length ; i++ ) {
+				unasked.push(i);
+			}
 		}
 	}
 	asked.splice(0, asked.length);
-	answers.splice(0, answers.length);
-	score = 0;
-	currentQuestion = 0;
-}
-
-/**
- * Reset all global state variables to the initial states
- * This resets the unasked question list as well, so should be used when changing quizzes.
- */
-function fullReset() {
-	unasked.splice(0, unasked.length);
-	asked.splice(0, asked.length);
-	QUESTIONS.splice(0, QUESTIONS.length);
 	answers.splice(0, answers.length);
 	score = 0;
 	currentQuestion = 0;
@@ -434,7 +429,7 @@ function tryAgainHandler() {
 function restartHandler() {
 	$('.btn-restart').click( function( event ) {
 		console.log('Calling restart handler');
-		fullReset();
+		reset( true );
 		$('.card-end').slideUp();
 		$('.card-start').slideDown();
 		$('.score').slideDown();
