@@ -376,13 +376,12 @@ function submitHandler() {
 		answers.push(answer);
 		// Update the reply text about your answer
 		updateReply();
-		if ( answer === QUESTIONS[currentQuestion].correctAnswer ) {
+		if ( answer === QUESTIONS[asked[currentQuestion]].correctAnswer ) {
 			score++;
 		}
 		// Update the score 
 		updateScore();
 
-		console.log(answer);
 		// Change button activation
 		$('.btn-submit-answer').attr('disabled', true);
 		$('.btn-next').attr('disabled', false);
