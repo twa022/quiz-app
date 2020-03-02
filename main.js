@@ -79,9 +79,9 @@ function updateQuestionNumber() {
 function collapseAnswers(method="hide") {
 	for ( let i = 0 ; i < QUESTIONS[asked[currentQuestion]].answers.length ; i++ ) {
 		if ( i ===  QUESTIONS[asked[currentQuestion]].correctAnswer ) {
-			$(`button[_answer="${i}"]`).addClass('lbl-button-correct');
+			$(`button[_answer="${i}"]`).addClass('btn-answer-correct');
 		} else if ( i === answers[currentQuestion] ) {
-			$(`button[_answer="${i}"`).addClass('lbl-button-answered');
+			$(`button[_answer="${i}"`).addClass('btn-answer-answered');
 		} else {
 			if ( method.localeCompare("slide") === 0 ) {
 				$(`button[_answer="${i}"`).slideUp();
@@ -134,7 +134,7 @@ function displayQuestion( num ) {
 	}
 	$('.answer-list').html(''); // Clear out the answer buttons from any previous iterations
 	QUESTIONS[num].answers.forEach( function( answer, i ) {
-		$('.answer-list').append(`<button class="lbl-button answer" _answer=${i}>${answer}</button>`);
+		$('.answer-list').append(`<button class="btn btn-answer answer" _answer=${i}>${answer}</button>`);
 	});
 	// Previous button should be enabled unless we're on the first question
 	$('.btn-prev').attr('disabled', ( currentQuestion === 0 ) );
@@ -146,16 +146,16 @@ function displayQuestion( num ) {
 	if ( alreadyAnswered ) {
 		let ans = answers[currentQuestion];
 		// Add the disabled styling to the labels (which we display like buttons)
-		$('.answer-list').find('button').addClass('lbl-button-disabled');
+		$('.answer-list').find('button').addClass('btn-answer-disabled');
 		// Collapse the answers other than the one we chose and the correct answer
 			if ( window.orientation === 90 || window.orientation === -90 ) {
 			collapseAnswers();
 		}
 		// Add the answered (wrong) styling to the labels which corresponds to what we answered
-		$(`button[_answer="${ans}"]`).addClass('lbl-button-answered');
+		$(`button[_answer="${ans}"]`).addClass('btn-answer-answered');
 		// Add the correct answer styling to the labe for the correct answer (this will override the styling for answered,
 		// So if we selected the correct answer it will style it wrong, then restyle it correct)
-		$(`button[_answer="${QUESTIONS[asked[currentQuestion]].correctAnswer}"]`).addClass('lbl-button-correct');
+		$(`button[_answer="${QUESTIONS[asked[currentQuestion]].correctAnswer}"]`).addClass('btn-answer-correct');
 		// Display the reply text
 		$('.answer-reply').slideDown();
 		// Focus on the next question button
@@ -372,9 +372,9 @@ function submitHandler() {
 		// Change button activation
 		$('.btn-submit-answer').attr('disabled', true);
 		$('.btn-next').attr('disabled', false);
-		$('button[class="lbl-button"]').addClass('lbl-button-disabled');
-		$(`button[_answer="${answers[currentQuestion]}`).addClass('lbl-button-answered');
-		$(`button[_answer="${QUESTIONS[asked[currentQuestion]].correctAnswer}"]`).addClass('lbl-button-correct');
+		$('button[class="btn-answer"]').addClass('btn-answer-disabled');
+		$(`button[_answer="${answers[currentQuestion]}`).addClass('btn-answer-answered');
+		$(`button[_answer="${QUESTIONS[asked[currentQuestion]].correctAnswer}"]`).addClass('btn-answer-correct');
 		// Show the text about the answer
 		console.log(`classes: ${$('.answer-reply').attr('class')}`);
 		// Collapse the answers other than the one we chose and the correct answer

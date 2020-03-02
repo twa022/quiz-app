@@ -56,6 +56,27 @@ main {
 	height: 100%;
 }
 
+p {
+	margin: 10px;
+}
+
+h1 {
+	margin: 0;
+	font-size: 2.2rem;
+}
+
+.no-display {
+	display: none;
+}
+
+.inline {
+	display: inline-block;
+}
+
+.nowrap {
+	white-space: nowrap;
+}
+
 .outer-container {
 	display: inline-block;
 	position: relative;
@@ -107,10 +128,6 @@ main {
 }
 
 .score {
-	background-color: var(--section);
-	padding: 10px;
-	margin-top: 10px;
-	border-radius: 20px;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-evenly;
@@ -124,30 +141,11 @@ main {
 	position: relative;
 }
 
-p {
-	margin: 10px;
-}
-
 .card-end p {
 	margin: 20px;
 }
 
-h1 {
-	margin: 0;
-	font-size: 2.2rem;
-}
-
-fieldset {
-	border: 0;
-	padding: 0;
-	margin: 0;
-}
-
-fieldset > legend {
-	display: none;
-}
-
-.btn, .lbl-button {
+.btn {
 	display: inline-block;
 	background-color: var(--button);
 	color: var(--font-color);
@@ -161,13 +159,12 @@ fieldset > legend {
 	margin-left: 6px;
 }
 
-.lbl-button {
+.btn-answer {
 	padding: 8px;
 	padding-left: 16px;
 	padding-right: 16px;
 	margin-top: 10px;
 	margin-bottom: 10px;
-	display: inline-block;
 	width: 75%;
 }
 
@@ -176,33 +173,23 @@ fieldset > legend {
 	border: var(--inactive-border) 2px solid;
 }
 
-.btn:hover, .btn:focus, .lbl-button:hover {
+.btn:hover, .btn:focus {
 	border: var(--highlight) 2px solid;
 }
 
-.lbl-button-disabled:hover {
+.btn-answer-disabled:hover {
 	border: var(--active) 2px solid;
 }
 
-.lbl-button-answered, .lbl-button-answered:hover {
+.btn-answer-answered, .btn-answer-answered:hover {
 	border: var(--incorrect) 2px solid;
 }
 
-.lbl-button-correct, .lbl-button-correct:hover {
+.btn-answer-correct, .btn-answer-correct:hover {
 	border: var(--correct) 2px solid;
 }
 
-.no-display {
-	display: none;
-}
-
-.nav-btns {
-	margin-top: 16px;
-	position: relative;
-	height: 2.4rem;
-}
-
-button.btn-nav {
+.btn-nav {
 	position: absolute;
 	font-size: 2.5rem;
 	transform: translateY(-50%);
@@ -210,13 +197,13 @@ button.btn-nav {
 	background-color: unset;
 }
 
-button.btn-prev {
+.btn-prev {
 	top: 50%;
 	left: -3%;
 	transform: translateY(-50%);
 }
 
-button.btn-next {
+.btn-next {
 	right: -3%;
 	top: 50%;
 	transform: translateY(-50%);
@@ -245,14 +232,6 @@ button.btn-next {
 	margin: 6px;
 }
 
-div.inline {
-	display: inline-block;
-}
-
-div.nowrap {
-	white-space: nowrap;
-}
-
 @media screen and ( min-width: 600px ) and ( orientation: portrait ), ( min-width: 900px ) {
 	.outer-container {
 		width: 90%;
@@ -263,15 +242,15 @@ div.nowrap {
 		font-size: 1.5rem;
 	}
 
-	button.btn-nav {
+	.btn-nav {
 		font-size: 4.0rem;
 	}
 
-	button.btn-prev {
+	.btn-prev {
 		left: 0%;
 	}
 
-	button.btn-next {
+	.btn-next {
 		right: 0%;
 	}
 
@@ -332,23 +311,23 @@ div.nowrap {
 		flex: 1 1;
 	}
 
-	.lbl-button {
+	.btn-answer {
 		padding: 10px;
 		padding-top: 5px;
 		padding-bottom: 5px;
 		margin-bottom: 8px;
 	}
 
-	button.btn-nav {
+	.btn-nav {
 		font-size: 2.2rem;
 	}
 
-	button.btn-prev {
+	.btn-prev {
 		left: -3%;
 		top: 50px;
 	}
 
-	button.btn-next {
+	.btn-next {
 		right: -3%;
 		top: 50px;
 	}
@@ -362,7 +341,7 @@ div.nowrap {
 }
 
 @media screen and ( min-width: 900px) {
-	.lbl-button {
+	.btn-answer {
 		width: 40%;
 	}
 
