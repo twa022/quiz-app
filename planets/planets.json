@@ -6,9 +6,10 @@
 			"correctAnswer": 2
 		},
 		{
-			"question": "This is question 2",
-			"answers": [ "longer answer text blah de blah", "ans2", "ans3", "ans4" ],
-			"correctAnswer": 2
+			"question": "What is the largest moon in our solar system?",
+			"answers": [ "Earth's moon", "Ganymede", "Titan",  "Charon", "Io"],
+			"correctAnswer": 1,
+			"incorrectMessage": "Jupiter&apos;s moon Ganymede is the largest and is larger than Mercury!"
 		},
 		{
 			"question": "This is question 3",
