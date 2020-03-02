@@ -56,7 +56,28 @@ main {
 	height: 100%;
 }
 
-.container {
+p {
+	margin: 10px;
+}
+
+h1 {
+	margin: 0;
+	font-size: 2.2rem;
+}
+
+.no-display {
+	display: none;
+}
+
+.inline {
+	display: inline-block;
+}
+
+.nowrap {
+	white-space: nowrap;
+}
+
+.outer-container {
 	display: inline-block;
 	position: relative;
 	left: 50%;
@@ -76,84 +97,55 @@ main {
 	color: var(--font-color);
 }
 
-.flex-container {
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-}
-.container-left {
+.inner-container {
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
 }
 
-.head {
+.left-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+}
+
+.bubble {
 	background-color: var(--section);
 	padding: 10px;
 	border-radius: 20px;
+	margin-top: 10px;
+}
+
+.bubble-top {
+	margin-top: 0;
 	border-top-left-radius: 60px;
 	border-top-right-radius: 40px;
 }
 
+.bubble-bottom {
+	border-bottom-right-radius: 60px;
+	border-bottom-left-radius: 40px;
+}
+
 .score {
-	background-color: var(--section);
-	padding: 10px;
-	margin-top: 10px;
-	border-radius: 20px;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-evenly;
-}
-
-.card-question {
-	background-color: var(--section);
-	padding: 10px;
-	margin-top: 10px;
-	border-radius: 20px;
 }
 
 .card-question > p {
 	margin: 0;
 }
 
-.card {
-	background-color: var(--section);
-	padding: 10px;
-	padding-bottom: 20px;
-	margin-top: 10px;
-	border-radius: 20px;
-	border-bottom-right-radius: 60px;
-	border-bottom-left-radius: 40px;
-}
-
 .card-answers {
 	position: relative;
-}
-
-p {
-	margin: 10px;
 }
 
 .card-end p {
 	margin: 20px;
 }
 
-h1 {
-	margin: 0;
-	font-size: 2.2rem;
-}
-
-fieldset {
-	border: 0;
-	padding: 0;
-	margin: 0;
-}
-
-fieldset > legend {
-	display: none;
-}
-
-.btn, .lbl-button {
+.btn {
 	display: inline-block;
 	background-color: var(--button);
 	color: var(--font-color);
@@ -167,13 +159,12 @@ fieldset > legend {
 	margin-left: 6px;
 }
 
-.lbl-button {
+.btn-answer {
 	padding: 8px;
 	padding-left: 16px;
 	padding-right: 16px;
 	margin-top: 10px;
 	margin-bottom: 10px;
-	display: inline-block;
 	width: 75%;
 }
 
@@ -182,33 +173,23 @@ fieldset > legend {
 	border: var(--inactive-border) 2px solid;
 }
 
-.btn:hover, .btn:focus, .lbl-button:hover {
+.btn:hover, .btn:focus {
 	border: var(--highlight) 2px solid;
 }
 
-.lbl-button-disabled:hover {
+.btn-answer-disabled:hover {
 	border: var(--active) 2px solid;
 }
 
-.lbl-button-answered, .lbl-button-answered:hover {
+.btn-answer-answered, .btn-answer-answered:hover {
 	border: var(--incorrect) 2px solid;
 }
 
-.lbl-button-correct, .lbl-button-correct:hover {
+.btn-answer-correct, .btn-answer-correct:hover {
 	border: var(--correct) 2px solid;
 }
 
-.no-display {
-	display: none;
-}
-
-.nav-btns {
-	margin-top: 16px;
-	position: relative;
-	height: 2.4rem;
-}
-
-button.btn-nav {
+.btn-nav {
 	position: absolute;
 	font-size: 2.5rem;
 	transform: translateY(-50%);
@@ -216,13 +197,13 @@ button.btn-nav {
 	background-color: unset;
 }
 
-button.btn-prev {
+.btn-prev {
 	top: 50%;
 	left: -3%;
 	transform: translateY(-50%);
 }
 
-button.btn-next {
+.btn-next {
 	right: -3%;
 	top: 50%;
 	transform: translateY(-50%);
@@ -251,30 +232,25 @@ button.btn-next {
 	margin: 6px;
 }
 
-div.inline {
-	display: inline-block;
-}
-
-div.nowrap {
-	white-space: nowrap;
-}
-
 @media screen and ( min-width: 600px ) and ( orientation: portrait ), ( min-width: 900px ) {
-	.container {
-		width: 80%;
+	.outer-container {
+		width: 90%;
+		margin-right: auto;
+		margin-left: auto;
+		padding: 25px;
 		min-width: 400px;
 		font-size: 1.5rem;
 	}
 
-	button.btn-nav {
+	.btn-nav {
 		font-size: 4.0rem;
 	}
 
-	button.btn-prev {
+	.btn-prev {
 		left: 0%;
 	}
 
-	button.btn-next {
+	.btn-next {
 		right: 0%;
 	}
 
@@ -283,30 +259,24 @@ div.nowrap {
 		padding-bottom: 20px;
 	}
 
-	.head {
+	.bubble {
+		margin-top: 20px;
+	}
+
+	.bubble-top {
 		border-top-left-radius: 40px;
 		border-top-right-radius: 20px;
+		margin-top: 0px;
 	}
 
-	.card {
+	.bubble-bottom {
 		border-bottom-right-radius: 40px;
 		border-bottom-left-radius: 20px;
-	}
-
-	.container {
-		width: 90%;
-		margin-right: auto;
-		margin-left: auto;
-		padding: 25px;
-	}
-
-	.score, .card, .card-question {
-		margin-top: 20px;
 	}
 }
 
 @media screen and ( orientation: landscape ) and ( max-width: 900px ) {
-	.flex-container {
+	.inner-container {
 		flex-direction: row;
 		align-items: flex-start;
 	}
@@ -317,31 +287,47 @@ div.nowrap {
 		flex: 1 0;
 	}
 
-	.head {
-		border-top-right-radius: 20px;
+	.bubble-top, .bubble-bottom {
+		border-radius: 20px;
 	}
 
-	.container-left {
+	.bubble-bottom-right {
+		border-bottom-right-radius: 60px;
+	}
+	
+	.bubble-top-left {
+		border-top-left-radius: 60px;
+	}
+	
+	.bubble-bottom-left {
+		border-bottom-left-radius: 40px;
+	}
+	
+	.bubble-top-right {
+		border-top-right-radius: 40px;
+	}
+
+	.left-container {
 		flex: 1 1;
 	}
 
-	.lbl-button {
+	.btn-answer {
 		padding: 10px;
 		padding-top: 5px;
 		padding-bottom: 5px;
 		margin-bottom: 8px;
 	}
 
-	button.btn-nav {
+	.btn-nav {
 		font-size: 2.2rem;
 	}
 
-	button.btn-prev {
+	.btn-prev {
 		left: -3%;
 		top: 50px;
 	}
 
-	button.btn-next {
+	.btn-next {
 		right: -3%;
 		top: 50px;
 	}
@@ -355,7 +341,7 @@ div.nowrap {
 }
 
 @media screen and ( min-width: 900px) {
-	.lbl-button {
+	.btn-answer {
 		width: 40%;
 	}
 

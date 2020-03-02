@@ -16,20 +16,21 @@
 
 	<body>
 		<div class="background"></div>
-		<div class="container">
-			<div class="flex-container">
-				<div class="container-left">
-					<section class="head">
+		<div class="outer-container">
+			<div class="inner-container">
+				<div class="left-container">
+					<header class="head bubble bubble-top bubble-top-left">
 						<h1>Quiz about Something!</h1>
-					</section>
-					<section class="score">
+					</header>
+					<section class="score bubble">
+						<!-- Don't want to wrap the line in the middle of the score 2 / newline 3!-->
 						<div class="inline">Question: <div class="inline nowrap"><span class="question-number">_</span> / <span class="question-total">_</span></div></div>
 						<div class="inline">Score: <div class="inline nowrap"><span class="score-correct">0</span> / <span class="score-answered">0</span></div></div>
 					</section>
-					<section class="card card-start">
+					<section class="card card-start bubble bubble-bottom bubble-bottom-left bubble-bottom-right">
 						<p>Select your Quiz</p>
 					</section>
-					<section class="card card-end no-display">
+					<section class="card card-end bubble bubble-bottom bubble-bottom-right no-display">
 						<p class="results-msg">You did blank!</p>
 						<p>Final score: <span class="score-correct">x</span> / <span class="score-answered">y</span></p>
 						<div class="end-btn-container">
@@ -37,27 +38,14 @@
 							<button class="btn btn-active btn-restart">Choose a New Quiz</button>
 						</div>
 					</section>
-					<section class="card-question no-display">
+					<section class="card-question bubble bubble-bottom-left no-display">
 						<p class="question">Placeholder Question?</p>
 					</section>
 				</div>
-				<section class="card card-answers no-display">
-					<form class="answers">
-						<fieldset>
-							<legend>Answer: </legend>
-							<div class="answer-list">
-							<input type="radio" name="answer" id="ans0" value="0" required>
-							<label for="ans1">Answer 1</label>
-							<input type="radio" name="answer" id="ans1" value="1" required>
-							<label for="ans2">Answer 2</label>
-							<input type="radio" name="answer" id="ans2" value="2" required>
-							<label for="ans3">Answer 3</label>
-							<input type="radio" name="answer" id="ans3" value="3" required>
-							<label for="ans4">Answer 4</label>
-							</div>
-						</fieldset>
-						<input type="submit" class="btn btn-active btn-submit-answer no-display">
-					</form>
+				<section class="card card-answers bubble bubble-bottom bubble-bottom-right bubble-top-right no-display">
+					<div class="answer-list">
+						<!-- Answer buttons inserted here by main.js-->
+					</div>
 					<button class="btn btn-inactive btn-prev btn-nav" disabled><i class="fas fa-chevron-left"></i></button>
 					<button class="btn btn-inactive btn-next btn-nav" disabled><i class="fas fa-chevron-right"></i></button>
 					<div class="answer-reply no-display">
