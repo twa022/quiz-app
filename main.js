@@ -79,16 +79,16 @@ function updateQuestionNumber() {
 function collapseAnswers(method="hide") {
 	for ( let i = 0 ; i < QUESTIONS[asked[currentQuestion]].answers.length ; i++ ) {
 		if ( i ===  QUESTIONS[asked[currentQuestion]].correctAnswer ) {
-			$(`label[for="ans${i}"]`).addClass('lbl-button-correct');
+			$(`button[_answer="${i}"]`).addClass('lbl-button-correct');
 		} else if ( i === answers[currentQuestion] ) {
-			$(`label[for="ans${i}`).addClass('lbl-button-answered');
+			$(`button[_answer="${i}"`).addClass('lbl-button-answered');
 		} else {
 			if ( method.localeCompare("slide") === 0 ) {
-				$(`label[for="ans${i}`).slideUp();
+				$(`button[_answer="${i}"`).slideUp();
 			} else {
 				console.log(`trying to hide button ${i}`);
-				$(`label[for="ans${i}`).addClass('no-display');
-				$(`label[for="ans${i}`).attr('hidden', true);
+				$(`button[_answer="${i}"`).addClass('no-display');
+				$(`button[_answer="${i}"`).attr('hidden', true);
 			}
 		}
 	}
@@ -134,12 +134,10 @@ function displayQuestion( num ) {
 		asked.push(num);
 		unasked.splice(unasked.indexOf(num), 1);
 	}
-	let html = "";
+	$('.answer-list').html(''); // Clear out the answer buttons from any previous iterations
 	QUESTIONS[num].answers.forEach( function( answer, i ) {
-		html += `<input type="radio" name="answer" class="answer no-display" id="ans${i}" value="${i}">
-		         <label for="ans${i}" class="lbl-button">${answer}</label>`;
+		$('.answer-list').append(`<button class="lbl-button answer" _answer=${i}>${answer}</button>`);
 	});
-	$('.answer-list').html( html );
 	// Previous button should be enabled unless we're on the first question
 	$('.btn-prev').attr('disabled', ( currentQuestion === 0 ) );
 	// Next button should be disabled if the question hasn't been answered
@@ -148,22 +146,18 @@ function displayQuestion( num ) {
 	$('.btn-submit-answer').attr('disabled', alreadyAnswered);
 
 	if ( alreadyAnswered ) {
-		let ans =answers[currentQuestion];
-		// Check the radio button that corresponds to the answer that was given
-		$(`#ans${ans}`).attr('checked', true);
-		// Disable all the radio buttons since we don't want to be able to make a selection
-		$('input[type="radio"]:not(:checked)').attr('disabled', true);
+		let ans = answers[currentQuestion];
 		// Add the disabled styling to the labels (which we display like buttons)
-		$('label[class="lbl-button"]').addClass('lbl-button-disabled');
+		$('.answer-list').find('button').addClass('lbl-button-disabled');
 		// Collapse the answers other than the one we chose and the correct answer
 			if ( window.orientation === 90 || window.orientation === -90 ) {
 			collapseAnswers();
 		}
 		// Add the answered (wrong) styling to the labels which corresponds to what we answered
-		$(`label[for="ans${ans}`).addClass('lbl-button-answered');
+		$(`button[_answer="${ans}"]`).addClass('lbl-button-answered');
 		// Add the correct answer styling to the labe for the correct answer (this will override the styling for answered,
 		// So if we selected the correct answer it will style it wrong, then restyle it correct)
-		$(`label[for="ans${QUESTIONS[asked[currentQuestion]].correctAnswer}"]`).addClass('lbl-button-correct');
+		$(`button[_answer="${QUESTIONS[asked[currentQuestion]].correctAnswer}"]`).addClass('lbl-button-correct');
 		// Display the reply text
 		$('.answer-reply').slideDown();
 		// Focus on the next question button
@@ -365,11 +359,11 @@ function quizHandler() {
  * Event handler when an answer is submitted
  */
 function submitHandler() {
-	$('.card-answers').on('change', '.answer', function( event ) {
+	$('.card-answers').on('click', '.answer', function( event ) {
+		event.stopPropagation();
 		event.preventDefault();
 		console.log('called the submit answer handler');
-		event.stopPropagation();
-		let answer = Number($('input:radio[name=answer]:checked').val());
+		let answer = Number($(this).attr('_answer'));
 		// Did we get an answer?
 		if ( answer === NaN || answer === undefined ) return;
 		console.log(`pushing ${answer} to the answers array`);
@@ -385,9 +379,9 @@ function submitHandler() {
 		// Change button activation
 		$('.btn-submit-answer').attr('disabled', true);
 		$('.btn-next').attr('disabled', false);
-		$('label[class="lbl-button"]').addClass('lbl-button-disabled');
-		$(`label[for="ans${answers[currentQuestion]}`).addClass('lbl-button-answered');
-		$(`label[for="ans${QUESTIONS[asked[currentQuestion]].correctAnswer}"]`).addClass('lbl-button-correct');
+		$('button[class="lbl-button"]').addClass('lbl-button-disabled');
+		$(`button[_answer="${answers[currentQuestion]}`).addClass('lbl-button-answered');
+		$(`button[_answer="${QUESTIONS[asked[currentQuestion]].correctAnswer}"]`).addClass('lbl-button-correct');
 		// Show the text about the answer
 		console.log(`classes: ${$('.answer-reply').attr('class')}`);
 		// Collapse the answers other than the one we chose and the correct answer
