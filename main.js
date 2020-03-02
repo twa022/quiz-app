@@ -86,9 +86,7 @@ function collapseAnswers(method="hide") {
 			if ( method.localeCompare("slide") === 0 ) {
 				$(`button[_answer="${i}"`).slideUp();
 			} else {
-				console.log(`trying to hide button ${i}`);
 				$(`button[_answer="${i}"`).addClass('no-display');
-				$(`button[_answer="${i}"`).attr('hidden', true);
 			}
 		}
 	}
@@ -174,7 +172,7 @@ function displayQuestion( num ) {
  * @param {Number} pct The percentage of correct answers
  */
 function resultsMessage( pct ) {
-	let message = "";
+	let message;
 	if ( pct >= 1 ) {
 		try {
 			message = MESSAGES.perfect;

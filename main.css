@@ -56,7 +56,7 @@ main {
 	height: 100%;
 }
 
-.container {
+.outer-container {
 	display: inline-block;
 	position: relative;
 	left: 50%;
@@ -76,23 +76,34 @@ main {
 	color: var(--font-color);
 }
 
-.flex-container {
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-}
-.container-left {
+.inner-container {
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
 }
 
-.head {
+.left-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+}
+
+.bubble {
 	background-color: var(--section);
 	padding: 10px;
 	border-radius: 20px;
+	margin-top: 10px;
+}
+
+.bubble-top {
+	margin-top: 0;
 	border-top-left-radius: 60px;
 	border-top-right-radius: 40px;
+}
+
+.bubble-bottom {
+	border-bottom-right-radius: 60px;
+	border-bottom-left-radius: 40px;
 }
 
 .score {
@@ -105,25 +116,8 @@ main {
 	justify-content: space-evenly;
 }
 
-.card-question {
-	background-color: var(--section);
-	padding: 10px;
-	margin-top: 10px;
-	border-radius: 20px;
-}
-
 .card-question > p {
 	margin: 0;
-}
-
-.card {
-	background-color: var(--section);
-	padding: 10px;
-	padding-bottom: 20px;
-	margin-top: 10px;
-	border-radius: 20px;
-	border-bottom-right-radius: 60px;
-	border-bottom-left-radius: 40px;
 }
 
 .card-answers {
@@ -260,8 +254,11 @@ div.nowrap {
 }
 
 @media screen and ( min-width: 600px ) and ( orientation: portrait ), ( min-width: 900px ) {
-	.container {
-		width: 80%;
+	.outer-container {
+		width: 90%;
+		margin-right: auto;
+		margin-left: auto;
+		padding: 25px;
 		min-width: 400px;
 		font-size: 1.5rem;
 	}
@@ -283,30 +280,24 @@ div.nowrap {
 		padding-bottom: 20px;
 	}
 
-	.head {
+	.bubble {
+		margin-top: 20px;
+	}
+
+	.bubble-top {
 		border-top-left-radius: 40px;
 		border-top-right-radius: 20px;
+		margin-top: 0px;
 	}
 
-	.card {
+	.bubble-bottom {
 		border-bottom-right-radius: 40px;
 		border-bottom-left-radius: 20px;
-	}
-
-	.container {
-		width: 90%;
-		margin-right: auto;
-		margin-left: auto;
-		padding: 25px;
-	}
-
-	.score, .card, .card-question {
-		margin-top: 20px;
 	}
 }
 
 @media screen and ( orientation: landscape ) and ( max-width: 900px ) {
-	.flex-container {
+	.inner-container {
 		flex-direction: row;
 		align-items: flex-start;
 	}
@@ -317,11 +308,27 @@ div.nowrap {
 		flex: 1 0;
 	}
 
-	.head {
-		border-top-right-radius: 20px;
+	.bubble-top, .bubble-bottom {
+		border-radius: 20px;
 	}
 
-	.container-left {
+	.bubble-bottom-right {
+		border-bottom-right-radius: 60px;
+	}
+	
+	.bubble-top-left {
+		border-top-left-radius: 60px;
+	}
+	
+	.bubble-bottom-left {
+		border-bottom-left-radius: 40px;
+	}
+	
+	.bubble-top-right {
+		border-top-right-radius: 40px;
+	}
+
+	.left-container {
 		flex: 1 1;
 	}
 
