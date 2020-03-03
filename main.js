@@ -121,6 +121,7 @@ function displayQuizList( start = 0, filter = "", prev = false ) {
 				}
 			}			
 		} else {
+			$('.btn-quizlist-prev').attr('disabled', ( start === 0 ) );
 			for ( let idx = start ; idx < QUIZZES.length && found <= QUIZZES_PER_PAGE ; idx++ ) {
 				console.log(`Checking ${QUIZZES[idx].name} against filter ${filter}`);
 				if ( QUIZZES[idx].name.toLowerCase().includes( filter ) ) {
@@ -405,6 +406,7 @@ function quizHandler() {
 		loadTheme( QUIZZES[quiz].theme );
 		// We have to wait for the quiz to load before we can proceed
 		await loadQuiz( QUIZZES[quiz].quiz );
+		$('head').find('title').text( QUIZZES[quiz].name );
 		$('header').find('h1').text( QUIZZES[quiz].name );
 		$('.card-start').slideUp();
 		$('.score').slideDown();
@@ -498,6 +500,7 @@ function restartHandler() {
 		$('.card-start').slideDown();
 		updateScore();
 		$('.question-number').text('_ / _');
+		$('head').find('title').text( 'Quiz about Something!' );
 		$('header').find('h1').text( 'Quiz about Something!' );
 	});
 }
