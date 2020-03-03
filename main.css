@@ -152,8 +152,9 @@ h1 {
 }
 
 input[type="text"] {
-	padding: 4px;
+	padding: 2px;
 	width: 100%;
+	font-size: 1.2rem;
 }
 
 .btn {

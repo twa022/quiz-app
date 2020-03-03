@@ -405,7 +405,7 @@ function quizHandler() {
 		loadTheme( QUIZZES[quiz].theme );
 		// We have to wait for the quiz to load before we can proceed
 		await loadQuiz( QUIZZES[quiz].quiz );
-		$('.head').find('h1').text( QUIZZES[quiz].name );
+		$('header').find('h1').text( QUIZZES[quiz].name );
 		$('.card-start').slideUp();
 		$('.score').slideDown();
 		$('.card-question').slideDown();
@@ -498,7 +498,7 @@ function restartHandler() {
 		$('.card-start').slideDown();
 		updateScore();
 		$('.question-number').text('_ / _');
-		$('.head').find('h1').text( 'Quiz about Something!' );
+		$('header').find('h1').text( 'Quiz about Something!' );
 	});
 }
 
