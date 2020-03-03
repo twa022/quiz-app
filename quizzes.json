@@ -9,6 +9,86 @@
 			"name": "Planets Quiz",
 			"theme": "planets/planets.css",
 			"quiz": "planets/planets.json"
+		},
+		{
+			"name": "Placeholder",
+			"theme": "planets/planets.css",
+			"quiz": "planets/planets.json"
+		},
+		{
+			"name": "Placeholder",
+			"theme": "planets/planets.css",
+			"quiz": "planets/planets.json"
+		},
+		{
+			"name": "Placeholder",
+			"theme": "planets/planets.css",
+			"quiz": "planets/planets.json"
+		},
+		{
+			"name": "Placeholder",
+			"theme": "planets/planets.css",
+			"quiz": "planets/planets.json"
+		},
+		{
+			"name": "Placeholder",
+			"theme": "planets/planets.css",
+			"quiz": "planets/planets.json"
+		},
+		{
+			"name": "Placeholder",
+			"theme": "planets/planets.css",
+			"quiz": "planets/planets.json"
+		},
+		{
+			"name": "Placeholder",
+			"theme": "planets/planets.css",
+			"quiz": "planets/planets.json"
+		},
+		{
+			"name": "Placeholder",
+			"theme": "planets/planets.css",
+			"quiz": "planets/planets.json"
+		},
+		{
+			"name": "Placeholder",
+			"theme": "planets/planets.css",
+			"quiz": "planets/planets.json"
+		},
+		{
+			"name": "Placeholder",
+			"theme": "planets/planets.css",
+			"quiz": "planets/planets.json"
+		},
+		{
+			"name": "Placeholder",
+			"theme": "planets/planets.css",
+			"quiz": "planets/planets.json"
+		},
+		{
+			"name": "Placeholder",
+			"theme": "planets/planets.css",
+			"quiz": "planets/planets.json"
+		},
+		{
+			"name": "Placeholder",
+			"theme": "planets/planets.css",
+			"quiz": "planets/planets.json"
+		},
+		{
+			"name": "Placeholder",
+			"theme": "planets/planets.css",
+			"quiz": "planets/planets.json"
+		},
+		{
+			"name": "Placeholder",
+			"theme": "planets/planets.css",
+			"quiz": "planets/planets.json"
+		},
+		{
+			"name": "Placeholder",
+			"theme": "planets/planets.css",
+			"quiz": "planets/planets.json"
 		}
 	]
 }

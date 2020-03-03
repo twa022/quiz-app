@@ -12,6 +12,8 @@ let MESSAGES = {};
 const QUIZ_FILE = 'quizzes.json';
 /* The quiz objects of available quizzes. Will be loaded from the external QUIZ_FILE json file */
 let QUIZZES = [];
+
+let QUIZZES_FILTERED = [];
 /* The question which you are currently displaying */
 let currentQuestion = 0;
 /* Your current number of correct questions */
@@ -25,6 +27,7 @@ const answers = [];
 /* The maximum number of quesitons per session */
 const QUESTIONS_PER_SESSION = 3;
 
+const QUIZZES_PER_PAGE = 6;
 /* ********************************
  *		   FUNCTIONS			*
  **********************************/
@@ -90,6 +93,69 @@ function collapseAnswers(method="hide") {
 	}
 }
 
+function displayQuizList( start = 0, filter = "", prev = false ) {
+	let lastQuiz;
+	if ( start < 0 ) start = 0;
+	if ( start >= QUIZZES.length ) start = QUIZZES.length - QUIZZES_PER_PAGE;
+	$('.quizlist').html('');
+	if ( filter ) {
+		$('.btn-quizlist-next').attr('disabled', true);
+		$('.clear-search').removeClass('no-display');
+		$('.btn-random-quiz').addClass('no-display');
+		let found = 0;
+		filter = filter.toLowerCase();
+		if ( prev ) {
+			$('.btn-quizlist-next').attr('disabled', false);
+			$('.btn-quizlist-prev').attr('disabled', true);
+			for ( let idx = start ; idx >= 0 && found <= QUIZZES_PER_PAGE ; idx-- ) {
+				console.log(`Checking ${QUIZZES[idx].name} against filter ${filter}`);
+				if ( QUIZZES[idx].name.toLowerCase().includes( filter ) ) {
+					if ( found === QUIZZES_PER_PAGE ) {
+						$('.btn-quizlist-prev').attr('disabled', false);
+						break;
+					}
+					$('.quizlist').prepend(`
+						<button _idx="${idx}" class="btn btn-quiz">${QUIZZES[idx].name}</button>`
+					);
+					found++;
+				}
+			}			
+		} else {
+			$('.btn-quizlist-prev').attr('disabled', ( start === 0 ) );
+			for ( let idx = start ; idx < QUIZZES.length && found <= QUIZZES_PER_PAGE ; idx++ ) {
+				console.log(`Checking ${QUIZZES[idx].name} against filter ${filter}`);
+				if ( QUIZZES[idx].name.toLowerCase().includes( filter ) ) {
+					if ( found === QUIZZES_PER_PAGE ) {
+						$('.btn-quizlist-next').attr('disabled', false);
+						break;
+					}
+					$('.quizlist').append(`
+						<button _idx="${idx}" class="btn btn-quiz">${QUIZZES[idx].name}</button>`
+					);
+					found++;
+				}
+			}
+		}
+	} else {
+		$('.btn-quizlist-prev').attr('disabled', ( start === 0 ) );
+		if ( QUIZZES.length > start + QUIZZES_PER_PAGE ) {
+			lastQuiz = start + QUIZZES_PER_PAGE;
+			$('.btn-quizlist-next').attr('disabled', false);
+		} else {
+			lastQuiz = QUIZZES.length;
+			$('.btn-quizlist-next').attr('disabled', true);
+		}
+		$('.clear-search').addClass('no-display');
+		$('.btn-random-quiz').removeClass('no-display');
+		for ( let idx = start ; idx < lastQuiz ; idx++ ) {
+			$('.quizlist').append(`
+				<button _idx="${idx}" class="btn btn-quiz">${QUIZZES[idx].name}</button>`
+			);
+		}
+
+	}
+}
+
 /**
  * Populate the start card with the quiz list from the external json file
  */
@@ -99,12 +165,7 @@ async function populateStartCard() {
 	// Display X at a time; display the forward and backwards arrows?
 	// Use the same principles to decide how many buttons per row as the questions card?
 	await loadQuizList();
-	QUIZZES.forEach( function( quiz, idx ) {
-		// We use the meaningless _idx attribute to help figure out which quiz we chose when the button is clicked
-		$('.card-start').append(`
-			<button _idx="${idx}" class="btn btn-quiz">${quiz.name}</button>`
-		);
-	});
+	displayQuizList();
 }
 
 /**
@@ -308,6 +369,10 @@ function main() {
 	$( restartHandler );
 	$( submitHandler );
 	$( quizHandler );
+	$( searchQuizListHandler );
+	$( nextQuizPageHandler );
+	$( previousQuizPageHandler );
+	$( clearSearchHandler );
 }
 
 /* ********************************
@@ -335,11 +400,16 @@ function previousQuestionHandler() {
 function quizHandler() {
 	$('.card-start').on('click', '.btn-quiz', async function( event ) {
 		let quiz = $(this).attr('_idx');
+		if ( quiz === 'random' ) {
+			quiz = Math.floor( Math.random() * QUIZZES.length );
+		}
 		loadTheme( QUIZZES[quiz].theme );
 		// We have to wait for the quiz to load before we can proceed
 		await loadQuiz( QUIZZES[quiz].quiz );
-		$('.head').find('h1').text( QUIZZES[quiz].name );
+		$('head').find('title').text( QUIZZES[quiz].name );
+		$('header').find('h1').text( QUIZZES[quiz].name );
 		$('.card-start').slideUp();
+		$('.score').slideDown();
 		$('.card-question').slideDown();
 		$('.card-answers').slideDown();
 		displayRandomUnaskedQuestion();
@@ -428,11 +498,42 @@ function restartHandler() {
 		reset( true );
 		$('.card-end').slideUp();
 		$('.card-start').slideDown();
-		$('.score').slideDown();
 		updateScore();
 		$('.question-number').text('_ / _');
-		$('.head').find('h1').text( 'Quiz about Something!' );
+		$('head').find('title').text( 'Quiz about Something!' );
+		$('header').find('h1').text( 'Quiz about Something!' );
 	});
+}
+
+function searchQuizListHandler() {
+	$('.search-quizzes').change( function( event ) {
+		displayQuizList( 0, $('.search-quizzes').val() );
+	});
+}
+
+function nextQuizPageHandler() {
+	$('.btn-quizlist-next').click( function( event ) {
+		console.log(`clicked next quiz list page, will display starting with ${Number($('.btn-quiz:last-child').attr('_idx')) + 1}`);
+		displayQuizList( Number($('.btn-quiz:last-child').attr('_idx')) + 1, $('.search-quizzes').val() );
+	});
+}
+
+function previousQuizPageHandler() {
+	$('.btn-quizlist-prev').click( function( event ) {
+		console.log(`clicked previous quiz list page, will display starting with ${Number($('.btn-quiz:first-child').attr('_idx')) - QUIZZES_PER_PAGE}`);
+		if ( $('.search-quizzes').val() ) {
+			displayQuizList( Number($('.btn-quiz:first-child').attr('_idx')) - 1, $('.search-quizzes').val(), true );
+		} else {
+			displayQuizList( Number($('.btn-quiz:first-child').attr('_idx')) - QUIZZES_PER_PAGE );
+		}
+	});
+}
+
+function clearSearchHandler() {
+	$('.clear-search').click( function( event ) {
+		$('.search-quizzes').val('');
+		displayQuizList();
+	})
 }
 
 main();
