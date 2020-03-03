@@ -22,15 +22,23 @@
 					<header class="head bubble bubble-top bubble-top-left">
 						<h1>Quiz about Something!</h1>
 					</header>
-					<section class="score bubble">
+					<section class="score bubble no-display">
 						<!-- Don't want to wrap the line in the middle of the score 2 / newline 3!-->
 						<div class="inline">Question: <span class="question-number nowrap">_ / _</span></div>
 						<div class="inline">Score: <span class="score-number nowrap">0 / 0</span></div>
 					</section>
 					<section class="card card-start bubble bubble-bottom bubble-bottom-left bubble-bottom-right">
-						<p>Select your Quiz</p>
+						<label for="search-quizzes" class="no-display">Search Quizzes</label>
+						<div class="inline search-quizzes-container">
+							<input type="text" name="search-quizzes" id="search-quizzes" class="search-quizzes" placeholder="Search Quizzes">
+							<button class="clear-search no-display"><i class="fas fa-times-circle"></i></button>
+						</div>
 						<button class="btn btn-inactive btn-quizlist-prev btn-quizlist-nav" disabled><i class="fas fa-chevron-left"></i></button>
 						<button class="btn btn-inactive btn-quizlist-next btn-quizlist-nav" disabled><i class="fas fa-chevron-right"></i></button>
+						<div class="quizlist">
+							<!-- Quiz list buttons inserting here! -->
+						</div>
+						<button _idx="random" class="btn btn-quiz btn-random-quiz">Random Quiz</button>
 					</section>
 					<section class="card card-end bubble bubble-bottom bubble-bottom-right no-display">
 						<p class="results-msg">You did blank!</p>

@@ -65,10 +65,6 @@ h1 {
 	font-size: 2.2rem;
 }
 
-.no-display {
-	display: none;
-}
-
 .inline {
 	display: inline-block;
 }
@@ -127,6 +123,10 @@ h1 {
 	border-bottom-left-radius: 40px;
 }
 
+.card-start {
+	position: relative;
+}
+
 .score {
 	display: flex;
 	flex-direction: row;
@@ -145,6 +145,17 @@ h1 {
 	margin: 20px;
 }
 
+.search-quizzes-container {
+	position: relative;
+	max-width: 80%;
+	margin-bottom: 10px;
+}
+
+input[type="text"] {
+	padding: 4px;
+	width: 100%;
+}
+
 .btn {
 	display: inline-block;
 	background-color: var(--button);
@@ -160,13 +171,11 @@ h1 {
 }
 
 .btn-quiz {
-	padding: 8px;
-	padding-left: 16px;
-	padding-right: 16px;
-	margin-top: 10px;
-	margin-bottom: 10px;
-	width: 40%;
+	width: 75%;
+	margin-top: 5px;
+	margin-bottom: 5px;
 }
+
 .btn-answer {
 	padding: 8px;
 	padding-left: 16px;
@@ -199,30 +208,19 @@ h1 {
 
 .btn-nav, .btn-quizlist-nav {
 	position: absolute;
-	font-size: 2.5rem;
+	font-size: 1.8rem;
+	top: 50%;
 	transform: translateY(-50%);
 	border: none;
 	background-color: unset;
 }
 
 .btn-prev, .btn-quizlist-prev {
-	top: 50%;
 	left: -3%;
-	transform: translateY(-50%);
 }
 
 .btn-next, .btn-quizlist-next {
 	right: -3%;
-	top: 50%;
-	transform: translateY(-50%);
-}
-
-.btn-quizlist-prev {
-	left: 2%;
-}
-
-.btn-quizlist-next {
-	right: 2%;
 }
 
 .btn-nav:enabled:hover {
@@ -238,6 +236,16 @@ h1 {
 	border: unset;
 }
 
+button.clear-search {
+	border: 0px;
+	background-color: unset;
+	padding: 0;
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	right: 5px;
+}
+
 .end-btn-container {
 	display: flex;
 	flex-direction: column;
@@ -246,6 +254,10 @@ h1 {
 
 .end-btn-container > * {
 	margin: 6px;
+}
+
+.no-display {
+	display: none;
 }
 
 @media screen and ( min-width: 600px ) and ( orientation: portrait ), ( min-width: 900px ) {
@@ -258,15 +270,15 @@ h1 {
 		font-size: 1.5rem;
 	}
 
-	.btn-nav {
+	.btn-nav, .btn-quizlist-nav {
 		font-size: 4.0rem;
 	}
 
-	.btn-prev {
+	.btn-prev, .btn-quizlist-prev {
 		left: 0%;
 	}
 
-	.btn-next {
+	.btn-next, .btn-quizlist-next {
 		right: 0%;
 	}
 
@@ -340,14 +352,24 @@ h1 {
 
 	.btn-prev {
 		left: -3%;
-		top: 50px;
 	}
 
 	.btn-next {
 		right: -3%;
-		top: 50px;
 	}
 
+	.btn-quiz {
+		width: 40%;
+	}
+	
+	.btn-quizlist-prev {
+		left: 0%;
+	}
+
+	.btn-quizlist-next {
+		right: 0%;
+	}
+	
 	.end-btn-container {
 		display: flex;
 		flex-direction: row;
@@ -357,8 +379,16 @@ h1 {
 }
 
 @media screen and ( min-width: 900px) {
-	.btn-answer {
+	.btn-answer, .btn-quiz {
 		width: 40%;
+	}
+
+	.btn-quiz {
+		padding: 8px;
+		padding-left: 16px;
+		padding-right: 16px;
+		margin-top: 10px;
+		margin-bottom: 10px;
 	}
 
 	.end-btn-container {
