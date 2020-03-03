@@ -108,8 +108,8 @@ function displayQuizList( start = 0, filter = "", prev = false ) {
 			$('.btn-quizlist-next').attr('disabled', false);
 			$('.btn-quizlist-prev').attr('disabled', true);
 			for ( let idx = start ; idx >= 0 && found <= QUIZZES_PER_PAGE ; idx-- ) {
-				console.log(`Checking ${QUIZZES[idx].name} against filter ${filter}`);
-				if ( QUIZZES[idx].name.toLowerCase().includes( filter ) ) {
+				console.log(`Checking ${QUIZZES[idx].name} (keywords: ${QUIZZES[idx].keywords}) against filter ${filter}`);
+				if ( QUIZZES[idx].name.toLowerCase().includes( filter ) || QUIZZES[idx].keywords.includes( filter ) ) {
 					if ( found === QUIZZES_PER_PAGE ) {
 						$('.btn-quizlist-prev').attr('disabled', false);
 						break;
@@ -124,7 +124,7 @@ function displayQuizList( start = 0, filter = "", prev = false ) {
 			$('.btn-quizlist-prev').attr('disabled', ( start === 0 ) );
 			for ( let idx = start ; idx < QUIZZES.length && found <= QUIZZES_PER_PAGE ; idx++ ) {
 				console.log(`Checking ${QUIZZES[idx].name} against filter ${filter}`);
-				if ( QUIZZES[idx].name.toLowerCase().includes( filter ) ) {
+				if ( QUIZZES[idx].name.toLowerCase().includes( filter ) || QUIZZES[idx].keywords.includes( filter ) ) {
 					if ( found === QUIZZES_PER_PAGE ) {
 						$('.btn-quizlist-next').attr('disabled', false);
 						break;
@@ -276,9 +276,16 @@ function displayEndCard() {
 	$('.score').slideUp();
 	// How did we do?
 	let numberQuestions = ( QUESTIONS.length < QUESTIONS_PER_SESSION ) ? QUESTIONS.length : QUESTIONS_PER_SESSION;
-	$('.results-msg').text( resultsMessage( score / numberQuestions ) );
+	if ( numberQuestions === 0 ) {
+		$('.results-msg').text("Zero out of zero's not bad...");
+		$('.btn-try-again').attr('disabled', true);
+		$('.btn-restart').focus();
+	} else {
+		$('.btn-try-again').attr('disabled', false);
+		$('.results-msg').text( resultsMessage( score / numberQuestions ) );
+		$('.btn-try-again').focus();
+	}
 	$('.card-end').slideDown();
-	$('.btn-try-again').focus();
 }
 
 /**
@@ -301,10 +308,19 @@ function updateReply() {
 
 /**
  * Apply a theme from an external CSS file
- * @param {String} theme The theme css file. Should be relative to root or an absolute path
+ * @param {String} themeFile The theme css file. Should be relative to root or an absolute path
  */
-function loadTheme( theme ) {
-	$('head').append(`<link href="${theme}" rel="stylesheet" type="text/css">`);
+async function loadTheme( themeFile ) {
+	let ok = true;
+	try { 
+		await fetch( themeFile ).then( response => { if ( !response.ok) ok = false; } );
+	} catch ( e ) {
+		console.log(`Unable to load theme file ${themeFile}`)
+		return;
+	}
+	if ( !ok ) return;
+	console.log('Applying theme');
+	$('head').append(`<link href="${themeFile}" rel="stylesheet" type="text/css">`);
 }
 
 /**
@@ -312,8 +328,17 @@ function loadTheme( theme ) {
  * @param {String} quiz The quiz JSON file. Should be relative to root or an absolute path
  */
 async function loadQuiz( quiz ) {
-	let response = await fetch( quiz );
-	let json = await response.json();
+	let response;
+	let json;
+	try {
+		response = await fetch( quiz );
+		json = await response.json();
+	} catch( e ) {
+		console.log(`Unable to load quiz file ${quiz}`)
+		QUESTIONS = [];
+		MESSAGES = [];
+		return;
+	}
 	QUESTIONS = json.questions;
 	MESSAGES = json.messages;
 	// These functions need to be called after the json file is loaded and parsed.
@@ -327,8 +352,15 @@ async function loadQuiz( quiz ) {
  * Load the list of quizzes from the external JSON file in the hardcoded QUIZ_FILE constant.
  */
 async function loadQuizList() {
-	let response = await fetch( QUIZ_FILE );
-	let json = await response.json();
+	let response;
+	let json;
+	try {
+		response = await fetch( QUIZ_FILE );
+		json = await response.json();
+	} catch ( e ) {
+		QUIZZES = null;
+		return;
+	}
 	QUIZZES = json.quizzes;
 	console.log( `loaded ${QUIZZES.length} quizzes` );
 }
@@ -406,6 +438,12 @@ function quizHandler() {
 		loadTheme( QUIZZES[quiz].theme );
 		// We have to wait for the quiz to load before we can proceed
 		await loadQuiz( QUIZZES[quiz].quiz );
+		if ( !QUESTIONS || QUESTIONS.length === 0 ) {
+			$('header').find('h1').text( 'Error loading quiz' );
+			$('.card-start').slideUp();
+			displayEndCard();
+			return;
+		}
 		$('head').find('title').text( QUIZZES[quiz].name );
 		$('header').find('h1').text( QUIZZES[quiz].name );
 		$('.card-start').slideUp();
