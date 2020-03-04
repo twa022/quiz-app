@@ -547,7 +547,7 @@ function restartHandler() {
 }
 
 function searchQuizListHandler() {
-	$('.search-quizzes').change( function( event ) {
+	$('.search-quizzes').on('input', function( event ) {
 		displayQuizList( 0, $('.search-quizzes').val() );
 	});
 }
