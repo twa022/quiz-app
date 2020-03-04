@@ -230,12 +230,16 @@ input[type="text"] {
 	border: white 2px solid;
 }
 
-.btn-nav:enabled:focus {
+.btn-nav:enabled:focus, .btn-quizlist-nav:enabled:focus {
 	color: var(--highlight);
 	border: var(--highlight) 2px solid;
 }
 
-.btn-nav:disabled, .btn-nav:disabled:hover {
+.btn-nav:disabled, .btn-quizlist-nav:disabled {
+	display: none;
+}
+
+.btn-nav:disabled:hover {
 	border: unset;
 }
 
