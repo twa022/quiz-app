@@ -99,7 +99,6 @@ function displayQuizList( start = 0, filter = "", prev = false ) {
 	if ( start >= QUIZZES.length ) start = QUIZZES.length - QUIZZES_PER_PAGE;
 	$('.quizlist').html('');
 	if ( filter ) {
-		$('.btn-quizlist-next').attr('disabled', true);
 		$('.clear-search').removeClass('no-display');
 		$('.btn-random-quiz').addClass('no-display');
 		let found = 0;
@@ -110,6 +109,8 @@ function displayQuizList( start = 0, filter = "", prev = false ) {
 			for ( let idx = start ; idx >= 0 && found <= QUIZZES_PER_PAGE ; idx-- ) {
 				console.log(`Checking ${QUIZZES[idx].name} (keywords: ${QUIZZES[idx].keywords}) against filter ${filter}`);
 				if ( QUIZZES[idx].name.toLowerCase().includes( filter ) || QUIZZES[idx].keywords.includes( filter ) ) {
+					// We search for one more match than we actually want to display. If we find it 
+					// we know there are more matches not displayed and we should enable the next page button
 					if ( found === QUIZZES_PER_PAGE ) {
 						$('.btn-quizlist-prev').attr('disabled', false);
 						break;
@@ -121,10 +122,13 @@ function displayQuizList( start = 0, filter = "", prev = false ) {
 				}
 			}			
 		} else {
+			$('.btn-quizlist-next').attr('disabled', true);
 			$('.btn-quizlist-prev').attr('disabled', ( start === 0 ) );
 			for ( let idx = start ; idx < QUIZZES.length && found <= QUIZZES_PER_PAGE ; idx++ ) {
 				console.log(`Checking ${QUIZZES[idx].name} against filter ${filter}`);
 				if ( QUIZZES[idx].name.toLowerCase().includes( filter ) || QUIZZES[idx].keywords.includes( filter ) ) {
+					// We search for one more match than we actually want to display. If we find it 
+					// we know there are more matches not displayed and we should enable the next page button
 					if ( found === QUIZZES_PER_PAGE ) {
 						$('.btn-quizlist-next').attr('disabled', false);
 						break;
@@ -207,7 +211,8 @@ function displayQuestion( num ) {
 		// Add the disabled styling to the labels (which we display like buttons)
 		$('.answer-list').find('button').addClass('btn-answer-disabled');
 		// Collapse the answers other than the one we chose and the correct answer
-			if ( window.orientation === 90 || window.orientation === -90 ) {
+		console.log( `window.innerHeight: ${window.innerHeight}`);
+		if ( window.orientation === 90 || window.orientation === -90 || window.innerHeight < 640 ) {
 			collapseAnswers();
 		}
 		// Add the answered (wrong) styling to the labels which corresponds to what we answered
@@ -277,7 +282,6 @@ function displayEndCard() {
 	// How did we do?
 	let numberQuestions = ( QUESTIONS.length < QUESTIONS_PER_SESSION ) ? QUESTIONS.length : QUESTIONS_PER_SESSION;
 	if ( numberQuestions === 0 ) {
-		updateScore();
 		$('.results-msg').text("Only the owl and planets quiz are currently available. Try one of those!");
 		$('.btn-try-again').attr('disabled', true);
 		$('.btn-restart').focus();
@@ -486,7 +490,7 @@ function submitHandler() {
 		// Show the text about the answer
 		console.log(`classes: ${$('.answer-reply').attr('class')}`);
 		// Collapse the answers other than the one we chose and the correct answer
-		if ( window.orientation === 90 || window.orientation === -90 ) {
+		if ( window.orientation === 90 || window.orientation === -90 || window.innerHeight < 640 ) {
 			collapseAnswers();
 		}
 		$('.answer-reply').slideDown();

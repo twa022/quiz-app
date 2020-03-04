@@ -200,11 +200,12 @@ input[type="text"] {
 }
 
 .btn-answer-answered, .btn-answer-answered:hover {
-	border: var(--incorrect) 2px solid;
+	border: var(--incorrect) 2px dashed;
+	background-color: rgba(128, 128, 128, 0.5);
 }
 
 .btn-answer-correct, .btn-answer-correct:hover {
-	border: var(--correct) 2px solid;
+	border: var(--correct) 6px solid;
 }
 
 .btn-nav, .btn-quizlist-nav {
