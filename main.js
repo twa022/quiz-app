@@ -97,7 +97,7 @@ function collapseAnswers(method="hide") {
 	}
 }
 
-function displayQuizList( start = 0, filter = "", prev = false ) {
+function displayQuizList( start = 0, filter = "", reverseOrd = false ) {
 	let lastQuiz;
 	if ( start < 0 ) start = 0;
 	if ( start >= QUIZZES.length ) start = QUIZZES.length - QUIZZES_PER_PAGE;
@@ -107,40 +107,20 @@ function displayQuizList( start = 0, filter = "", prev = false ) {
 		$('.btn-random-quiz').addClass('no-display');
 		let found = 0;
 		filter = filter.toLowerCase();
-		if ( prev ) {
-			$('.btn-quizlist-next').attr('disabled', false);
-			$('.btn-quizlist-prev').attr('disabled', true);
-			for ( let idx = start ; idx >= 0 && found <= QUIZZES_PER_PAGE ; idx-- ) {
-				console.log(`Checking ${QUIZZES[idx].name} (keywords: ${QUIZZES[idx].keywords}) against filter ${filter}`);
-				if ( QUIZZES[idx].name.toLowerCase().includes( filter ) || QUIZZES[idx].keywords.some( k => { return k.includes( filter ) } ) ) {
-					// We search for one more match than we actually want to display. If we find it 
-					// we know there are more matches not displayed and we should enable the next page button
-					if ( found === QUIZZES_PER_PAGE ) {
-						$('.btn-quizlist-prev').attr('disabled', false);
-						break;
-					}
-					$('.quizlist').prepend(`
-						<button _idx="${idx}" class="btn btn-quiz">${QUIZZES[idx].name}</button>`
-					);
-					found++;
+		$('.btn-quizlist-next').attr('disabled', !reverseOrd );
+		$('.btn-quizlist-prev').attr('disabled', ( reverseOrd || start === 0 ) );
+		for ( let idx = start ; ( reverseOrd ) ? idx >= 0 : idx < QUIZZES.length && found <= QUIZZES_PER_PAGE ; (reverseOrd) ? idx-- : idx++ ) {
+			console.log(`Checking ${QUIZZES[idx].name} (keywords: ${QUIZZES[idx].keywords}) against filter ${filter}`);
+			if ( QUIZZES[idx].name.toLowerCase().includes( filter ) || QUIZZES[idx].keywords.some( k => { return k.includes( filter ) } ) ) {
+				// We search for one more match than we actually want to display. If we find it 
+				// we know there are more matches not displayed and we should enable the next page button
+				if ( found === QUIZZES_PER_PAGE ) {
+					$( function() { return (reverseOrd) ? '.btn-quizlist-prev' : '.btn-quizlist-next'; }).attr('disabled', false);
+					break;
 				}
-			}			
-		} else {
-			$('.btn-quizlist-next').attr('disabled', true);
-			$('.btn-quizlist-prev').attr('disabled', ( start === 0 ) );
-			for ( let idx = start ; idx < QUIZZES.length && found <= QUIZZES_PER_PAGE ; idx++ ) {
-				if ( QUIZZES[idx].name.toLowerCase().includes( filter ) || QUIZZES[idx].keywords.some( k => { return k.includes( filter ) } ) ) {
-					// We search for one more match than we actually want to display. If we find it 
-					// we know there are more matches not displayed and we should enable the next page button
-					if ( found === QUIZZES_PER_PAGE ) {
-						$('.btn-quizlist-next').attr('disabled', false);
-						break;
-					}
-					$('.quizlist').append(`
-						<button _idx="${idx}" class="btn btn-quiz">${QUIZZES[idx].name}</button>`
-					);
-					found++;
-				}
+				let html = `<button _idx="${idx}" class="btn btn-quiz">${QUIZZES[idx].name}</button>`;
+				( reverseOrd ) ? $('.quizlist').prepend( html ) : $('.quizlist').append( html );
+				found++;
 			}
 		}
 	} else {
@@ -154,12 +134,11 @@ function displayQuizList( start = 0, filter = "", prev = false ) {
 		}
 		$('.clear-search').addClass('no-display');
 		$('.btn-random-quiz').removeClass('no-display');
-		for ( let idx = start ; idx < lastQuiz ; idx++ ) {
-			$('.quizlist').append(`
-				<button _idx="${idx}" class="btn btn-quiz">${QUIZZES[idx].name}</button>`
-			);
+		for ( let idx = start ; ( reverseOrd ) ? ( idx > start - QUIZZES_PER_PAGE && idx >= 0 ) : idx < lastQuiz ; (reverseOrd) ? idx-- : idx++ ) {
+			let html = `<button _idx="${idx}" class="btn btn-quiz">${QUIZZES[idx].name}</button>`;
+			( reverseOrd ) ? $('.quizlist').prepend( html ) : $('.quizlist').append( html );
 		}
-
+	$('.search-quizzes').focus();
 	}
 }
 
@@ -561,12 +540,8 @@ function nextQuizPageHandler() {
 
 function previousQuizPageHandler() {
 	$('.btn-quizlist-prev').click( function( event ) {
-		console.log(`clicked previous quiz list page, will display starting with ${Number($('.btn-quiz:first-child').attr('_idx')) - QUIZZES_PER_PAGE}`);
-		if ( $('.search-quizzes').val() ) {
-			displayQuizList( Number($('.btn-quiz:first-child').attr('_idx')) - 1, $('.search-quizzes').val(), true );
-		} else {
-			displayQuizList( Number($('.btn-quiz:first-child').attr('_idx')) - QUIZZES_PER_PAGE );
-		}
+		console.log(`clicked previous quiz list page, will display ending with ${Number($('.btn-quiz:first-child').attr('_idx')) - 1}`);
+		displayQuizList( Number($('.btn-quiz:first-child').attr('_idx')) - 1, $('.search-quizzes').val(), true );
 	});
 }
 
