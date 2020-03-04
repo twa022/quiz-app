@@ -277,7 +277,8 @@ function displayEndCard() {
 	// How did we do?
 	let numberQuestions = ( QUESTIONS.length < QUESTIONS_PER_SESSION ) ? QUESTIONS.length : QUESTIONS_PER_SESSION;
 	if ( numberQuestions === 0 ) {
-		$('.results-msg').text("Zero out of zero's not bad...");
+		updateScore();
+		$('.results-msg').text("Only the owl and planets quiz are currently available. Try one of those!");
 		$('.btn-try-again').attr('disabled', true);
 		$('.btn-restart').focus();
 	} else {
@@ -438,14 +439,15 @@ function quizHandler() {
 		loadTheme( QUIZZES[quiz].theme );
 		// We have to wait for the quiz to load before we can proceed
 		await loadQuiz( QUIZZES[quiz].quiz );
+		$('head').find('title').text( `${QUIZZES[quiz].name} Quiz` );
 		if ( !QUESTIONS || QUESTIONS.length === 0 ) {
 			$('header').find('h1').text( 'Error loading quiz' );
+			$('.final-score').addClass('no-display');
 			$('.card-start').slideUp();
 			displayEndCard();
 			return;
 		}
-		$('head').find('title').text( QUIZZES[quiz].name );
-		$('header').find('h1').text( QUIZZES[quiz].name );
+		$('header').find('h1').text( `${QUIZZES[quiz].name} Quiz` );
 		$('.card-start').slideUp();
 		$('.score').slideDown();
 		$('.card-question').slideDown();
@@ -502,6 +504,7 @@ function nextQuestionHandler() {
 		currentQuestion++;
 		let numberQuestions = ( QUESTIONS.length < QUESTIONS_PER_SESSION ) ? QUESTIONS.length : QUESTIONS_PER_SESSION;
 		if ( answers.length === numberQuestions ) {
+			$('.final-score').removeClass('no-display');
 			displayEndCard();
 		} else if ( currentQuestion < asked.length ) {
 			displayQuestion( asked[currentQuestion] );
