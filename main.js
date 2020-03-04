@@ -78,6 +78,10 @@ function updateQuestionNumber() {
  *            slide: Slide up the buttons to hide them
  */
 function collapseAnswers(method="hide") {
+	// Only collapse answers on landscape or if the window height is particularly short
+	if ( !( window.orientation === 90 || window.orientation === -90 || window.innerHeight < 640 ) ) {
+		return;
+	}
 	for ( let i = 0 ; i < QUESTIONS[asked[currentQuestion]].answers.length ; i++ ) {
 		if ( i ===  QUESTIONS[asked[currentQuestion]].correctAnswer ) {
 			$(`button[_answer="${i}"]`).addClass('btn-answer-correct');
@@ -108,7 +112,7 @@ function displayQuizList( start = 0, filter = "", prev = false ) {
 			$('.btn-quizlist-prev').attr('disabled', true);
 			for ( let idx = start ; idx >= 0 && found <= QUIZZES_PER_PAGE ; idx-- ) {
 				console.log(`Checking ${QUIZZES[idx].name} (keywords: ${QUIZZES[idx].keywords}) against filter ${filter}`);
-				if ( QUIZZES[idx].name.toLowerCase().includes( filter ) || QUIZZES[idx].keywords.includes( filter ) ) {
+				if ( QUIZZES[idx].name.toLowerCase().includes( filter ) || QUIZZES[idx].keywords.some( k => { return k.includes( filter ) } ) ) {
 					// We search for one more match than we actually want to display. If we find it 
 					// we know there are more matches not displayed and we should enable the next page button
 					if ( found === QUIZZES_PER_PAGE ) {
@@ -125,8 +129,7 @@ function displayQuizList( start = 0, filter = "", prev = false ) {
 			$('.btn-quizlist-next').attr('disabled', true);
 			$('.btn-quizlist-prev').attr('disabled', ( start === 0 ) );
 			for ( let idx = start ; idx < QUIZZES.length && found <= QUIZZES_PER_PAGE ; idx++ ) {
-				console.log(`Checking ${QUIZZES[idx].name} against filter ${filter}`);
-				if ( QUIZZES[idx].name.toLowerCase().includes( filter ) || QUIZZES[idx].keywords.includes( filter ) ) {
+				if ( QUIZZES[idx].name.toLowerCase().includes( filter ) || QUIZZES[idx].keywords.some( k => { return k.includes( filter ) } ) ) {
 					// We search for one more match than we actually want to display. If we find it 
 					// we know there are more matches not displayed and we should enable the next page button
 					if ( found === QUIZZES_PER_PAGE ) {
@@ -211,10 +214,7 @@ function displayQuestion( num ) {
 		// Add the disabled styling to the labels (which we display like buttons)
 		$('.answer-list').find('button').addClass('btn-answer-disabled');
 		// Collapse the answers other than the one we chose and the correct answer
-		console.log( `window.innerHeight: ${window.innerHeight}`);
-		if ( window.orientation === 90 || window.orientation === -90 || window.innerHeight < 640 ) {
-			collapseAnswers();
-		}
+		collapseAnswers();
 		// Add the answered (wrong) styling to the labels which corresponds to what we answered
 		$(`button[_answer="${ans}"]`).addClass('btn-answer-answered');
 		// Add the correct answer styling to the labe for the correct answer (this will override the styling for answered,
@@ -480,19 +480,15 @@ function submitHandler() {
 		}
 		// Update the score 
 		updateScore();
-
 		// Change button activation
 		$('.btn-submit-answer').attr('disabled', true);
 		$('.btn-next').attr('disabled', false);
 		$('button[class="btn-answer"]').addClass('btn-answer-disabled');
 		$(`button[_answer="${answers[currentQuestion]}`).addClass('btn-answer-answered');
 		$(`button[_answer="${QUESTIONS[asked[currentQuestion]].correctAnswer}"]`).addClass('btn-answer-correct');
-		// Show the text about the answer
-		console.log(`classes: ${$('.answer-reply').attr('class')}`);
 		// Collapse the answers other than the one we chose and the correct answer
-		if ( window.orientation === 90 || window.orientation === -90 || window.innerHeight < 640 ) {
-			collapseAnswers();
-		}
+		collapseAnswers();
+		// Show the text about the answer
 		$('.answer-reply').slideDown();
 		// Focus on the next question button
 		$('.btn-next').focus();

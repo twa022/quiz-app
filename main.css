@@ -215,14 +215,15 @@ input[type="text"] {
 	transform: translateY(-50%);
 	border: none;
 	background-color: unset;
+	padding: 5px;
 }
 
 .btn-prev, .btn-quizlist-prev {
-	left: -3%;
+	left: -2%;
 }
 
 .btn-next, .btn-quizlist-next {
-	right: -3%;
+	right: -2%;
 }
 
 .btn-nav:enabled:hover {
