@@ -103,9 +103,8 @@ function collapseAnswers(method="hide") {
  * @param {Boolean} reverseOrd Whether or not to look backwards through the quiz list from the start index
  */
 function displayQuizList( start = 0, filter = "", reverseOrd = false ) {
-	let lastQuiz;
 	if ( start < 0 ) start = 0;
-	if ( start >= QUIZ_LIST.length ) start = QUIZ_LIST.length - QUIZZES_PER_PAGE;
+	if ( start >= QUIZ_LIST.length ) start = ( reverseOrd ) ? QUIZ_LIST.length - 1 : QUIZ_LIST.length - QUIZZES_PER_PAGE;
 	$('.quizlist').html('');
 	if ( filter ) {
 		$('.clear-search').removeClass('no-display');
@@ -129,17 +128,17 @@ function displayQuizList( start = 0, filter = "", reverseOrd = false ) {
 			}
 		}
 	} else {
-		$('.btn-quizlist-prev').attr('disabled', ( start === 0 ) );
-		if ( QUIZ_LIST.length > start + QUIZZES_PER_PAGE ) {
-			lastQuiz = start + QUIZZES_PER_PAGE;
-			$('.btn-quizlist-next').attr('disabled', false);
+		let lastQuiz;
+		if ( reverseOrd ) {
+			lastQuiz = ( start - QUIZZES_PER_PAGE + 1 >= 0 ) ? start - QUIZZES_PER_PAGE + 1 : 0;
 		} else {
-			lastQuiz = QUIZ_LIST.length;
-			$('.btn-quizlist-next').attr('disabled', true);
+			lastQuiz = ( QUIZ_LIST.length > start + QUIZZES_PER_PAGE ) ? start + QUIZZES_PER_PAGE - 1 : QUIZ_LIST.length - 1;
 		}
+		$('.btn-quizlist-next').attr('disabled', start >= QUIZ_LIST.length - 1 || lastQuiz >= QUIZ_LIST.length - 1 );
+		$('.btn-quizlist-prev').attr('disabled', start <= 0 || lastQuiz <= 0 );
 		$('.clear-search').addClass('no-display');
 		$('.btn-random-quiz').removeClass('no-display');
-		for ( let idx = start ; ( reverseOrd ) ? ( idx > start - QUIZZES_PER_PAGE && idx >= 0 ) : idx < lastQuiz ; (reverseOrd) ? idx-- : idx++ ) {
+		for ( let idx = start ; ( reverseOrd ) ? idx >= lastQuiz: idx <= lastQuiz ; (reverseOrd) ? idx-- : idx++ ) {
 			let html = `<button _idx="${idx}" class="btn btn-quiz">${QUIZ_LIST[idx].name}</button>`;
 			( reverseOrd ) ? $('.quizlist').prepend( html ) : $('.quizlist').append( html );
 		}
@@ -308,7 +307,7 @@ async function loadTheme( themeFile ) {
 	}
 	if ( !ok ) return;
 	console.log('Applying theme');
-	$('head').append(`<link href="${themeFile}" rel="stylesheet" type="text/css">`);
+	$('head').append(`<link href="${themeFile}" rel="stylesheet" type="text/css" class="quiz-theme">`);
 }
 
 /**
@@ -526,6 +525,7 @@ function restartHandler() {
 		$('.question-number').text('_ / _');
 		$('head').find('title').text( 'What Is... Trivia?' );
 		$('header').find('h1').text( 'What Is... Trivia?' );
+		$('head').find('link[class="quiz-theme"]').remove();
 	});
 }
 
