@@ -12,8 +12,6 @@ let MESSAGES = {};
 const QUIZ_FILE = 'quizzes.json';
 /* The quiz objects of available quizzes. Will be loaded from the external QUIZ_FILE json file */
 let QUIZZES = [];
-
-let QUIZZES_FILTERED = [];
 /* The question which you are currently displaying */
 let currentQuestion = 0;
 /* Your current number of correct questions */
@@ -26,8 +24,9 @@ const unasked = [];
 const answers = [];
 /* The maximum number of quesitons per session */
 const QUESTIONS_PER_SESSION = 3;
-
+/* The maximum number of quizzes to display per page on the quiz list */
 const QUIZZES_PER_PAGE = 6;
+
 /* ********************************
  *		   FUNCTIONS			*
  **********************************/
@@ -97,6 +96,12 @@ function collapseAnswers(method="hide") {
 	}
 }
 
+/**
+ * Display the list of quizzes
+ * @param {Number} start The index of the QUIZZES array to start finding displayable quizzes
+ * @param {String} filter A text search term to filter the resulting list
+ * @param {Boolean} reverseOrd Whether or not to look backwards through the quiz list from the start index
+ */
 function displayQuizList( start = 0, filter = "", reverseOrd = false ) {
 	let lastQuiz;
 	if ( start < 0 ) start = 0;
@@ -113,7 +118,7 @@ function displayQuizList( start = 0, filter = "", reverseOrd = false ) {
 			console.log(`Checking ${QUIZZES[idx].name} (keywords: ${QUIZZES[idx].keywords}) against filter ${filter}`);
 			if ( QUIZZES[idx].name.toLowerCase().includes( filter ) || QUIZZES[idx].keywords.some( k => { return k.includes( filter ) } ) ) {
 				// We search for one more match than we actually want to display. If we find it 
-				// we know there are more matches not displayed and we should enable the next page button
+				// we know there are more matches not displayed and we should enable the next / previous page button
 				if ( found === QUIZZES_PER_PAGE ) {
 					$( function() { return (reverseOrd) ? '.btn-quizlist-prev' : '.btn-quizlist-next'; }).attr('disabled', false);
 					break;
@@ -213,6 +218,7 @@ function displayQuestion( num ) {
  * Return a results message based on the user's score. Use the messages from the quiz JSON file if available or 
  * default messages otherwise.
  * @param {Number} pct The percentage of correct answers
+ * @returns The results message string
  */
 function resultsMessage( pct ) {
 	let message;
@@ -252,7 +258,7 @@ function resultsMessage( pct ) {
 }
 
 /**
- * Switch card display model to display the end card
+ * Display the summary card
  */
 function displayEndCard() {
 	$('.card-question').slideUp();
@@ -297,7 +303,9 @@ function updateReply() {
 async function loadTheme( themeFile ) {
 	let ok = true;
 	try { 
-		await fetch( themeFile ).then( response => { if ( !response.ok) ok = false; } );
+		// On a 404 or other load issue, fetch doesn't throw an error, but sets the ok key to false
+		// Record if there was an issue so we can fail gracefully-ish
+		await fetch( themeFile ).then( response => { if ( !response.ok ) ok = false; } );
 	} catch ( e ) {
 		console.log(`Unable to load theme file ${themeFile}`)
 		return;
@@ -525,12 +533,19 @@ function restartHandler() {
 	});
 }
 
+/**
+ * Event handler when user enters / changes the search term in the quiz list search field.
+ * Called any time the text in the input field changes
+ */
 function searchQuizListHandler() {
 	$('.search-quizzes').on('input', function( event ) {
 		displayQuizList( 0, $('.search-quizzes').val() );
 	});
 }
 
+/**
+ * Event handler when the next page button on the quiz list page is clicked 
+ */
 function nextQuizPageHandler() {
 	$('.btn-quizlist-next').click( function( event ) {
 		console.log(`clicked next quiz list page, will display starting with ${Number($('.btn-quiz:last-child').attr('_idx')) + 1}`);
@@ -538,6 +553,9 @@ function nextQuizPageHandler() {
 	});
 }
 
+/**
+ * Event handler when the previous page button on the quiz list page is clicked 
+ */
 function previousQuizPageHandler() {
 	$('.btn-quizlist-prev').click( function( event ) {
 		console.log(`clicked previous quiz list page, will display ending with ${Number($('.btn-quiz:first-child').attr('_idx')) - 1}`);
@@ -545,6 +563,10 @@ function previousQuizPageHandler() {
 	});
 }
 
+/**
+ * Event handler when the clear search field button is clicked
+ * (Clear the search field and reset the list of displayed quizzes to default (starts at index 0, no filter))
+ */
 function clearSearchHandler() {
 	$('.clear-search').click( function( event ) {
 		$('.search-quizzes').val('');
