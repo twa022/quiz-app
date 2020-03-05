@@ -3,8 +3,8 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width">
-		<title>Quiz about Something!</title>
-		<meta name="description" content="Challenge your knowledge of TBD!">
+		<title>What Is... Trivia?</title>
+		<meta name="description" content="The Ultimate Quiz Site">
 		
 		<!-- Fonts -->
 		<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap" rel="stylesheet">
@@ -19,15 +19,15 @@
 		<div class="outer-container">
 			<div class="inner-container">
 				<div class="left-container">
-					<header class="bubble bubble-top bubble-top-left">
-						<h1>Quiz about Something!</h1>
+					<header class="card card-title card-top card-top-left">
+						<h1>What Is... Trivia?</h1>
 					</header>
-					<section class="score bubble no-display">
+					<section class="card card-score no-display">
 						<!-- Don't want to wrap the line in the middle of the score 2 / newline 3!-->
 						<div class="inline">Question: <span class="question-number nowrap">_ / _</span></div>
 						<div class="inline">Score: <span class="score-number nowrap">0 / 0</span></div>
 					</section>
-					<section class="card card-start bubble bubble-bottom bubble-bottom-left bubble-bottom-right">
+					<section class="card card-search card-bottom card-bottom-left card-bottom-right">
 						<label for="search-quizzes" class="no-display">Search Quizzes</label>
 						<div class="inline search-quizzes-container">
 							<input type="text" name="search-quizzes" id="search-quizzes" class="search-quizzes" placeholder="Search Quizzes">
@@ -36,30 +36,30 @@
 						<button class="btn btn-inactive btn-quizlist-prev btn-quizlist-nav" disabled><i class="fas fa-chevron-left"></i></button>
 						<button class="btn btn-inactive btn-quizlist-next btn-quizlist-nav" disabled><i class="fas fa-chevron-right"></i></button>
 						<div class="quizlist">
-							<!-- Quiz list buttons inserting here! -->
+							<!-- Quiz buttons inserted here! -->
 						</div>
 						<button _idx="random" class="btn btn-quiz btn-random-quiz">Random Quiz</button>
 					</section>
-					<section class="card card-end bubble bubble-bottom bubble-bottom-right no-display">
-						<p class="results-msg">You did blank!</p>
+					<section class="card card-result card-bottom card-bottom-right no-display">
+						<p class="result-msg">You did blank!</p>
 						<p class="final-score">Final score: <span class="score-number">_ / _</span></p>
 						<div class="end-btn-container">
 							<button class="btn btn-active btn-try-again">Try Again</button>
 							<button class="btn btn-active btn-restart">Choose a New Quiz</button>
 						</div>
 					</section>
-					<section class="card-question bubble bubble-bottom-left no-display">
-						<p class="question">Placeholder Question?</p>
+					<section class="card card-question card-bottom-left no-display">
+						<!-- Question inserted here by main.js -->
 					</section>
 				</div>
-				<section class="card card-answers bubble bubble-bottom bubble-bottom-right bubble-top-right no-display">
+				<section class="card card-answers card-bottom card-bottom-right card-top-right no-display">
 					<div class="answer-list">
 						<!-- Answer buttons inserted here by main.js-->
 					</div>
 					<button class="btn btn-inactive btn-prev btn-nav" disabled><i class="fas fa-chevron-left"></i></button>
 					<button class="btn btn-inactive btn-next btn-nav" disabled><i class="fas fa-chevron-right"></i></button>
 					<div class="answer-reply no-display">
-						<p>Some text about your answer</p>
+						<!-- Some text about the answer inserted here by main.js-->
 					</div>
 				</section>
 			</div>

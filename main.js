@@ -174,7 +174,7 @@ function displayQuestion( num ) {
 	updateQuestionNumber();
 	updateReply();
 	console.log(`Asking question ${num}`);
-	$('.question').text(`${QUESTIONS[num].question}`);
+	$('.card-question').html(`<p class="question">${QUESTIONS[num].question}</p>`);
 	let alreadyAsked = asked.includes( num );
 	let alreadyAnswered = ( alreadyAsked && answers.length > asked.indexOf( num) );
 	if ( !alreadyAsked ) {
@@ -215,12 +215,12 @@ function displayQuestion( num ) {
 }
 
 /**
- * Return a results message based on the user's score. Use the messages from the quiz JSON file if available or 
+ * Return a result message based on the user's score. Use the messages from the quiz JSON file if available or 
  * default messages otherwise.
  * @param {Number} pct The percentage of correct answers
- * @returns The results message string
+ * @returns The result message string
  */
-function resultsMessage( pct ) {
+function resultMessage( pct ) {
 	let message;
 	if ( pct >= 1 ) {
 		try {
@@ -263,19 +263,19 @@ function resultsMessage( pct ) {
 function displayEndCard() {
 	$('.card-question').slideUp();
 	$('.card-answers').slideUp();
-	$('.score').slideUp();
+	$('.card-score').slideUp();
 	// How did we do?
 	let numberQuestions = ( QUESTIONS.length < QUESTIONS_PER_SESSION ) ? QUESTIONS.length : QUESTIONS_PER_SESSION;
 	if ( numberQuestions === 0 ) {
-		$('.results-msg').text("Only the owl and planets quiz are currently available. Try one of those!");
+		$('.result-msg').text("Only the owl and planets quiz are currently available. Try one of those!");
 		$('.btn-try-again').attr('disabled', true);
 		$('.btn-restart').focus();
 	} else {
 		$('.btn-try-again').attr('disabled', false);
-		$('.results-msg').text( resultsMessage( score / numberQuestions ) );
+		$('.result-msg').text( resultMessage( score / numberQuestions ) );
 		$('.btn-try-again').focus();
 	}
-	$('.card-end').slideDown();
+	$('.card-result').slideDown();
 }
 
 /**
@@ -422,7 +422,7 @@ function previousQuestionHandler() {
  * Event handler when a quiz button from the list of quizzes is clicked
  */
 function quizHandler() {
-	$('.card-start').on('click', '.btn-quiz', async function( event ) {
+	$('.card-search').on('click', '.btn-quiz', async function( event ) {
 		let quiz = $(this).attr('_idx');
 		if ( quiz === 'random' ) {
 			quiz = Math.floor( Math.random() * QUIZZES.length );
@@ -434,13 +434,13 @@ function quizHandler() {
 		if ( !QUESTIONS || QUESTIONS.length === 0 ) {
 			$('header').find('h1').text( 'Error loading quiz' );
 			$('.final-score').addClass('no-display');
-			$('.card-start').slideUp();
+			$('.card-search').slideUp();
 			displayEndCard();
 			return;
 		}
 		$('header').find('h1').text( `${QUIZZES[quiz].name} Quiz` );
-		$('.card-start').slideUp();
-		$('.score').slideDown();
+		$('.card-search').slideUp();
+		$('.card-score').slideDown();
 		$('.card-question').slideDown();
 		$('.card-answers').slideDown();
 		displayRandomUnaskedQuestion();
@@ -491,7 +491,7 @@ function nextQuestionHandler() {
 		currentQuestion++;
 		let numberQuestions = ( QUESTIONS.length < QUESTIONS_PER_SESSION ) ? QUESTIONS.length : QUESTIONS_PER_SESSION;
 		if ( answers.length === numberQuestions ) {
-			$('.final-score').removeClass('no-display');
+			$('.final-card-score').removeClass('no-display');
 			displayEndCard();
 		} else if ( currentQuestion < asked.length ) {
 			displayQuestion( asked[currentQuestion] );
@@ -508,10 +508,10 @@ function tryAgainHandler() {
 	$('.btn-try-again').click( function( event ) {
 		reset();
 		displayRandomUnaskedQuestion();
-		$('.card-end').slideUp();
+		$('.card-result').slideUp();
 		$('.card-question').slideDown();
 		$('.card-answers').slideDown();
-		$('.score').slideDown();
+		$('.card-score').slideDown();
 		updateScore();
 		updateQuestionNumber();
 	});
@@ -524,12 +524,12 @@ function restartHandler() {
 	$('.btn-restart').click( function( event ) {
 		console.log('Calling restart handler');
 		reset( true );
-		$('.card-end').slideUp();
-		$('.card-start').slideDown();
+		$('.card-result').slideUp();
+		$('.card-search').slideDown();
 		updateScore();
 		$('.question-number').text('_ / _');
-		$('head').find('title').text( 'Quiz about Something!' );
-		$('header').find('h1').text( 'Quiz about Something!' );
+		$('head').find('title').text( 'What Is... Trivia?' );
+		$('header').find('h1').text( 'What Is... Trivia?' );
 	});
 }
 

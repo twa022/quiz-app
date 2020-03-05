@@ -105,29 +105,29 @@ h1 {
 	justify-content: flex-start;
 }
 
-.bubble {
+.card {
 	background-color: var(--section);
 	padding: 10px;
 	border-radius: 20px;
 	margin-top: 10px;
 }
 
-.bubble-top {
+.card-top {
 	margin-top: 0;
 	border-top-left-radius: 60px;
 	border-top-right-radius: 40px;
 }
 
-.bubble-bottom {
+.card-bottom {
 	border-bottom-right-radius: 60px;
 	border-bottom-left-radius: 40px;
 }
 
-.card-start {
+.card-search {
 	position: relative;
 }
 
-.score {
+.card-score {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-evenly;
@@ -137,11 +137,11 @@ h1 {
 	margin: 0;
 }
 
-.card-answers, .card-start {
+.card-answers, .card-search {
 	position: relative;
 }
 
-.card-end p {
+.card-result p {
 	margin: 20px;
 }
 
@@ -307,17 +307,17 @@ button.clear-search {
 		padding-bottom: 20px;
 	}
 
-	.bubble {
+	.card {
 		margin-top: 20px;
 	}
 
-	.bubble-top {
+	.card-top {
 		border-top-left-radius: 40px;
 		border-top-right-radius: 20px;
 		margin-top: 0px;
 	}
 
-	.bubble-bottom {
+	.card-bottom {
 		border-bottom-right-radius: 40px;
 		border-bottom-left-radius: 20px;
 	}
@@ -335,23 +335,23 @@ button.clear-search {
 		flex: 1 0;
 	}
 
-	.bubble-top, .bubble-bottom {
+	.card-top, .card-bottom {
 		border-radius: 20px;
 	}
 
-	.bubble-bottom-right {
+	.card-bottom-right {
 		border-bottom-right-radius: 60px;
 	}
 	
-	.bubble-top-left {
+	.card-top-left {
 		border-top-left-radius: 60px;
 	}
 	
-	.bubble-bottom-left {
+	.card-bottom-left {
 		border-bottom-left-radius: 40px;
 	}
 	
-	.bubble-top-right {
+	.card-top-right {
 		border-top-right-radius: 40px;
 	}
 
