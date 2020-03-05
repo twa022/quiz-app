@@ -6,12 +6,12 @@
 
 /* Questions will be loaded from an external json file */
 let QUESTIONS = [];
-
+/* The results messages loaded from the external quiz json file */
 let MESSAGES = {};
 /* The file that contains the listing of available quizzes */
-const QUIZ_FILE = 'quizzes.json';
-/* The quiz objects of available quizzes. Will be loaded from the external QUIZ_FILE json file */
-let QUIZZES = [];
+const QUIZ_LIST_FILE = 'quizzes.json';
+/* The quiz objects of available quizzes. Will be loaded from the external QUIZ_LIST_FILE json file */
+let QUIZ_LIST = [];
 /* The question which you are currently displaying */
 let currentQuestion = 0;
 /* Your current number of correct questions */
@@ -35,7 +35,7 @@ const QUIZZES_PER_PAGE = 6;
   * Update the score text
   */
 function updateScore() {
-	$('.score-number').text( `${score} / ${answers.length}` );
+	$('.score').text( `${score} / ${answers.length}` );
 }
 
 /**
@@ -98,14 +98,14 @@ function collapseAnswers(method="hide") {
 
 /**
  * Display the list of quizzes
- * @param {Number} start The index of the QUIZZES array to start finding displayable quizzes
+ * @param {Number} start The index of the QUIZ_LIST array to start finding displayable quizzes
  * @param {String} filter A text search term to filter the resulting list
  * @param {Boolean} reverseOrd Whether or not to look backwards through the quiz list from the start index
  */
 function displayQuizList( start = 0, filter = "", reverseOrd = false ) {
 	let lastQuiz;
 	if ( start < 0 ) start = 0;
-	if ( start >= QUIZZES.length ) start = QUIZZES.length - QUIZZES_PER_PAGE;
+	if ( start >= QUIZ_LIST.length ) start = QUIZ_LIST.length - QUIZZES_PER_PAGE;
 	$('.quizlist').html('');
 	if ( filter ) {
 		$('.clear-search').removeClass('no-display');
@@ -114,33 +114,33 @@ function displayQuizList( start = 0, filter = "", reverseOrd = false ) {
 		filter = filter.toLowerCase();
 		$('.btn-quizlist-next').attr('disabled', !reverseOrd );
 		$('.btn-quizlist-prev').attr('disabled', ( reverseOrd || start === 0 ) );
-		for ( let idx = start ; ( reverseOrd ) ? idx >= 0 : idx < QUIZZES.length && found <= QUIZZES_PER_PAGE ; (reverseOrd) ? idx-- : idx++ ) {
-			console.log(`Checking ${QUIZZES[idx].name} (keywords: ${QUIZZES[idx].keywords}) against filter ${filter}`);
-			if ( QUIZZES[idx].name.toLowerCase().includes( filter ) || QUIZZES[idx].keywords.some( k => { return k.includes( filter ) } ) ) {
+		for ( let idx = start ; ( reverseOrd ) ? idx >= 0 : idx < QUIZ_LIST.length && found <= QUIZZES_PER_PAGE ; (reverseOrd) ? idx-- : idx++ ) {
+			console.log(`Checking ${QUIZ_LIST[idx].name} (keywords: ${QUIZ_LIST[idx].keywords}) against filter ${filter}`);
+			if ( QUIZ_LIST[idx].name.toLowerCase().includes( filter ) || QUIZ_LIST[idx].keywords.some( k => { return k.includes( filter ) } ) ) {
 				// We search for one more match than we actually want to display. If we find it 
 				// we know there are more matches not displayed and we should enable the next / previous page button
 				if ( found === QUIZZES_PER_PAGE ) {
 					$( function() { return (reverseOrd) ? '.btn-quizlist-prev' : '.btn-quizlist-next'; }).attr('disabled', false);
 					break;
 				}
-				let html = `<button _idx="${idx}" class="btn btn-quiz">${QUIZZES[idx].name}</button>`;
+				let html = `<button _idx="${idx}" class="btn btn-quiz">${QUIZ_LIST[idx].name}</button>`;
 				( reverseOrd ) ? $('.quizlist').prepend( html ) : $('.quizlist').append( html );
 				found++;
 			}
 		}
 	} else {
 		$('.btn-quizlist-prev').attr('disabled', ( start === 0 ) );
-		if ( QUIZZES.length > start + QUIZZES_PER_PAGE ) {
+		if ( QUIZ_LIST.length > start + QUIZZES_PER_PAGE ) {
 			lastQuiz = start + QUIZZES_PER_PAGE;
 			$('.btn-quizlist-next').attr('disabled', false);
 		} else {
-			lastQuiz = QUIZZES.length;
+			lastQuiz = QUIZ_LIST.length;
 			$('.btn-quizlist-next').attr('disabled', true);
 		}
 		$('.clear-search').addClass('no-display');
 		$('.btn-random-quiz').removeClass('no-display');
 		for ( let idx = start ; ( reverseOrd ) ? ( idx > start - QUIZZES_PER_PAGE && idx >= 0 ) : idx < lastQuiz ; (reverseOrd) ? idx-- : idx++ ) {
-			let html = `<button _idx="${idx}" class="btn btn-quiz">${QUIZZES[idx].name}</button>`;
+			let html = `<button _idx="${idx}" class="btn btn-quiz">${QUIZ_LIST[idx].name}</button>`;
 			( reverseOrd ) ? $('.quizlist').prepend( html ) : $('.quizlist').append( html );
 		}
 	$('.search-quizzes').focus();
@@ -151,10 +151,6 @@ function displayQuizList( start = 0, filter = "", reverseOrd = false ) {
  * Populate the start card with the quiz list from the external json file
  */
 async function populateStartCard() {
-	// TODO: This works okay with the two quizzes I have, but it would be good to make it display better 
-	// if there were more buttons.
-	// Display X at a time; display the forward and backwards arrows?
-	// Use the same principles to decide how many buttons per row as the questions card?
 	await loadQuizList();
 	displayQuizList();
 }
@@ -341,20 +337,20 @@ async function loadQuiz( quiz ) {
 }
 
 /**
- * Load the list of quizzes from the external JSON file in the hardcoded QUIZ_FILE constant.
+ * Load the list of quizzes from the external JSON file in the hardcoded QUIZ_LIST_FILE constant.
  */
 async function loadQuizList() {
 	let response;
 	let json;
 	try {
-		response = await fetch( QUIZ_FILE );
+		response = await fetch( QUIZ_LIST_FILE );
 		json = await response.json();
 	} catch ( e ) {
-		QUIZZES = null;
+		QUIZ_LIST = null;
 		return;
 	}
-	QUIZZES = json.quizzes;
-	console.log( `loaded ${QUIZZES.length} quizzes` );
+	QUIZ_LIST = json.quizzes;
+	console.log( `loaded ${QUIZ_LIST.length} quizzes` );
 }
 
 /**
@@ -425,12 +421,12 @@ function quizHandler() {
 	$('.card-search').on('click', '.btn-quiz', async function( event ) {
 		let quiz = $(this).attr('_idx');
 		if ( quiz === 'random' ) {
-			quiz = Math.floor( Math.random() * QUIZZES.length );
+			quiz = Math.floor( Math.random() * QUIZ_LIST.length );
 		}
-		loadTheme( QUIZZES[quiz].theme );
+		loadTheme( QUIZ_LIST[quiz].theme );
 		// We have to wait for the quiz to load before we can proceed
-		await loadQuiz( QUIZZES[quiz].quiz );
-		$('head').find('title').text( `${QUIZZES[quiz].name} Quiz` );
+		await loadQuiz( QUIZ_LIST[quiz].quiz );
+		$('head').find('title').text( `${QUIZ_LIST[quiz].name} Quiz` );
 		if ( !QUESTIONS || QUESTIONS.length === 0 ) {
 			$('header').find('h1').text( 'Error loading quiz' );
 			$('.final-score').addClass('no-display');
@@ -438,7 +434,7 @@ function quizHandler() {
 			displayEndCard();
 			return;
 		}
-		$('header').find('h1').text( `${QUIZZES[quiz].name} Quiz` );
+		$('header').find('h1').text( `${QUIZ_LIST[quiz].name} Quiz` );
 		$('.card-search').slideUp();
 		$('.card-score').slideDown();
 		$('.card-question').slideDown();
