@@ -127,7 +127,7 @@ h1 {
 	position: relative;
 }
 
-.card-score {
+.score-inner-container {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-evenly;
