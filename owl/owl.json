@@ -23,7 +23,7 @@
 			"answers": [ "Owl Chicks", "Owlets", "Owl cubs", "Owl Pups" ],
 			"correctAnswer": 1,
 			"incorrectMessage": "Baby owls are called owlets. (When in doubt always guess the cutest answer)",
-			"correctMessage": "Good job!"
+			"correctMessage": "That's right baby owls are owlets."
 		},
 		{
 			"question": "Some owls eat other owls. True or False?",
