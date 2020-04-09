@@ -23,7 +23,7 @@ const unasked = [];
 /* The answers you gave to the questions in the order they were asked */
 const answers = [];
 /* The maximum number of quesitons per session */
-const QUESTIONS_PER_SESSION = 3;
+const QUESTIONS_PER_SESSION = 5;
 /* The maximum number of quizzes to display per page on the quiz list */
 const QUIZZES_PER_PAGE = 6;
 

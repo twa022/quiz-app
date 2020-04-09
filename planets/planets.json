@@ -12,24 +12,62 @@
 			"incorrectMessage": "Jupiter&apos;s moon Ganymede is the largest and is larger than Mercury!"
 		},
 		{
-			"question": "This is question 3",
-			"answers": [ "longer answer text blah de blah", "ans2", "ans3", "ans4" ],
-			"correctAnswer": 2
+			"question": "Venus's atmosphere is composed primarily of what?",
+			"answers": [ "Nitrogen", "Oxygen", "Ozone", "Carbon Monoxide" ],
+			"correctAnswer": 3
 		},
 		{
-			"question": "This is question 4",
-			"answers": [ "ans1", "ans2", "ans3", "ans4" ],
-			"correctAnswer": 2
+			"question": "The only planet(s) in our solar system with a regrograde rotation are: ",
+			"answers": [ "Venus", "Mercury", "Neptune", "Venus and Uranus", "Mercury and Neptune" ],
+			"correctAnswer": 3,
+			"CorrectMessage": "That's right. Pluto too if you remember when it used to be a planet...",
+			"incorrectMessage": "Sorry that's wrong. If you chose none of the above because Pluto wasn't listed it's not a planet anymore..."
 		},
 		{
-			"question": "This is question 5",
-			"answers": [ "ans1", "ans2", "ans3" ],
-			"correctAnswer": 2
+			"question": "What was the only probe to pass by Neptune and Uranus?",
+			"answers": [ "Voyager 1", "New Horizons", "Voyager 2", "Galileo" ],
+			"correctAnswer": 2,
+			"incorrectMessage": "No, it was Voyager 2 which did a flyby of Uranus in 1986 and Neptune in 1989.",
+			"correctMessage": "That's right! Voyager 2 did a flyby of Uranus in 1986 and Neptune in 1989."
 		},
 		{
-			"question": "This is question 6",
-			"answers": [ "ans1", "ans2", "ans3", "ans4", "ans5" ],
-			"correctAnswer": 2
+			"question": "What was the first probe to fly by Mercury?",
+			"answers": [ "Voyager 1", "Mariner 10", "MESSENGER", "Viking 1" ],
+			"correctAnswer": 1
+		},
+		{
+			"question": "How long is a Martian Day?",
+			"answers": [ "24 Hours", "24 Martian Hours", "24 Hours 37 Minutes", "32 Hours 5 Minutes" ],
+			"correctAnswer": 2,
+			"incorrectAnswer": "Sorry, that's wrong. A Martian day is 24 hours and 37 minutes.",
+			"correctMessage": "You got it even without the extra 37 minutes of sleep!"
+		},
+		{
+			"question": "What planet has the longest year?",
+			"answers": [ "Jupiter", "Neptune", "Uranus", "Saturn" ],
+			"correctAnswer": 1,
+			"incorrectAnswer": "No it's Neptune with a year that lasts just under 165 Earth years.",
+			"correctMessage": "You got it! With it's relatively short day of 16 hours a Neptune year has almost 90000 days. That's more than 12000 Fridays."
+		},
+		{
+			"question": "What planet has the shortest day?",
+			"answers": [ "Jupiter", "Neptune", "Mercury", "Venus" ],
+			"correctAnswer": 0,
+			"incorrectAnswer": "Despite being the biggest planet, Jupiter has the fastest rotational period. A day is less than 10 hours.",
+			"correctMessage": "That's right! At less than 10 hours, Jupiter's day is the shortest in our solar system."
+		},
+		{
+			"question": "What is the most common element in Jupiter's atmosphere?",
+			"answers": [ "Hydrogen", "Helium", "Argon", "Nitrogen", "Methane" ],
+			"correctAnswer": 0,
+			"incorrectAnswer": "Nope. Actually all the gas giants have atmospheres composed primarily of hydrogen"
 		}
-	]
+	],
+	"messages": {
+		"perfect": "If I google planetary science will I find your name?",
+		"great": "You really know your planets!",
+		"good": "Good job",
+		"bad": "Better luck next time",
+		"terrible": "Hope you learned something about the planets!"
+	}
 }
