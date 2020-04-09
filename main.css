@@ -199,6 +199,12 @@ i {
 	width: 75%;
 }
 
+.answer-reply {
+	text-align: center;
+	margin-right: 10%;
+	margin-left: 10%;
+}
+
 .btn:disabled, .btn:disabled:hover {
 	color: var(--inactive);
 	border: var(--inactive-border) 2px solid;
@@ -381,7 +387,7 @@ button.clear-search {
 	.btn-quiz {
 		width: 40%;
 	}
-	
+
 	.btn-quizlist-prev {
 		left: 0%;
 	}
