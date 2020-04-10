@@ -61,13 +61,6 @@
 			"correctMessage": "That's right! And their habitat overlaps with the Western Screech Owl that far west."
 		},
 		{
-			"question": "Eastern screech owls can be found up and down the east coast of the US and how far west?",
-			"answers": [ "The Appalachians", "The Mississippi River", "The eastern Rockies", "Ohio" ],
-			"correctAnswer": 2,
-			"incorrectMessage": "They can be found all the way to the Rocky mountains!",
-			"correctMessage": "That's right! And their habitat overlaps with the Western Screech Owl that far west."
-		},
-		{
 			"question": "As a result of their tube-shaped eyes, what can an owl not do?",
 			"answers": [ "A: Turn their eyes", "B: See to far distances", "C: See at close range", "A and C", "All the above" ],
 			"correctAnswer": 3,
