@@ -271,13 +271,14 @@ function displayEndCard() {
 	if ( numberQuestions === 0 ) {
 		$('.result-msg').text("Only the owl and planets quiz are currently available. Try one of those!");
 		$('.btn-try-again').attr('disabled', true);
+		$('.card-result').slideDown();
 		$('.btn-restart').focus();
 	} else {
 		$('.btn-try-again').attr('disabled', false);
 		$('.result-msg').text( resultMessage( score / numberQuestions ) );
+		$('.card-result').slideDown();
 		$('.btn-try-again').focus();
 	}
-	$('.card-result').slideDown();
 }
 
 /**
