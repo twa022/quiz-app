@@ -206,7 +206,7 @@ i {
 }
 
 .btn:disabled, .btn:disabled:hover {
-	color: var(--inactive);
+	color: var(--font-color);
 	border: var(--inactive-border) 2px solid;
 }
 
@@ -214,17 +214,15 @@ i {
 	border: var(--highlight) 2px solid;
 }
 
-.btn-answer-disabled:hover {
-	border: var(--active) 2px solid;
-}
-
-.btn-answer-answered, .btn-answer-answered:hover {
+.btn-answer-answered:disabled, .btn-answer-answered:hover:disabled {
 	border: var(--incorrect) 2px dashed;
 	background-color: rgba(128, 128, 128, 0.5);
+	text-decoration: line-through;
 }
 
-.btn-answer-correct, .btn-answer-correct:hover {
+.btn-answer-correct:disabled, .btn-answer-correct:hover:disabled {
 	border: var(--correct) 6px solid;
+	text-decoration: unset;
 }
 
 .btn-nav, .btn-quizlist-nav {

@@ -463,9 +463,8 @@ function submitHandler() {
 		// Update the score 
 		updateScore();
 		// Change button activation
-		$('.btn-submit-answer').attr('disabled', true);
 		$('.btn-next').attr('disabled', false);
-		$('button[class="btn-answer"]').addClass('btn-answer-disabled');
+		$('button.answer').attr('disabled', true);;
 		$(`button[_answer="${answers[currentQuestion]}`).addClass('btn-answer-answered');
 		$(`button[_answer="${QUESTIONS[asked[currentQuestion]].correctAnswer}"]`).addClass('btn-answer-correct');
 		// Collapse the answers other than the one we chose and the correct answer
