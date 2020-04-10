@@ -176,6 +176,13 @@ function displayQuestion( num ) {
 		// Add the question number to the asked array and remove it from the unasked array
 		asked.push(num);
 		unasked.splice(unasked.indexOf(num), 1);
+		if ( unasked.length === 0 ) {
+			for ( let i = 0 ; i < QUESTIONS.length ; i++ ) {
+				if ( !asked.includes(i) ) {
+					unasked.push(i);
+				}
+			}
+		}
 	}
 	$('.answer-list').html(''); // Clear out the answer buttons from any previous iterations
 	QUESTIONS[num].answers.forEach( function( answer, i ) {
@@ -485,7 +492,6 @@ function nextQuestionHandler() {
 		currentQuestion++;
 		let numberQuestions = ( QUESTIONS.length < QUESTIONS_PER_SESSION ) ? QUESTIONS.length : QUESTIONS_PER_SESSION;
 		if ( answers.length === numberQuestions ) {
-			$('.final-card-score').removeClass('no-display');
 			displayEndCard();
 		} else if ( currentQuestion < asked.length ) {
 			displayQuestion( asked[currentQuestion] );
