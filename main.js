@@ -198,7 +198,7 @@ function displayQuestion( num ) {
 	if ( alreadyAnswered ) {
 		let ans = answers[currentQuestion];
 		// Add the disabled styling to the labels (which we display like buttons)
-		$('.answer-list').find('button').addClass('btn-answer-disabled');
+		$('.answer-list').find('button').attr('disabled', true);
 		// Collapse the answers other than the one we chose and the correct answer
 		collapseAnswers();
 		// Add the answered (wrong) styling to the labels which corresponds to what we answered
