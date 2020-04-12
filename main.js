@@ -526,6 +526,7 @@ function restartHandler() {
 		console.log('Calling restart handler');
 		reset( true );
 		$('.card-result').slideUp();
+		$('.search-quizzes').val('');
 		displayQuizList();
 		$('.card-search').slideDown();
 		updateScore();
