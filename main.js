@@ -214,6 +214,7 @@ function displayQuestion( num ) {
 		// Hide the reply text
 		$('.answer-reply').slideUp();
 	}
+	$('.question').focus();
 }
 
 /**
