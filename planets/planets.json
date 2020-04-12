@@ -17,11 +17,11 @@
 			"correctAnswer": 3
 		},
 		{
-			"question": "The only planet(s) in our solar system with a regrograde rotation are: ",
+			"question": "What are the only planet(s) in our solar system with a regrograde rotation?",
 			"answers": [ "Venus", "Mercury", "Neptune", "Venus and Uranus", "Mercury and Neptune" ],
 			"correctAnswer": 3,
 			"CorrectMessage": "That's right. Pluto too if you remember when it used to be a planet...",
-			"incorrectMessage": "Sorry that's wrong. If you chose none of the above because Pluto wasn't listed it's not a planet anymore..."
+			"incorrectMessage": "Sorry that's wrong, it's Venus and Uranus. Pluto too if you remember when it used to be a planet..."
 		},
 		{
 			"question": "What was the only probe to pass by Neptune and Uranus?",

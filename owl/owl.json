@@ -47,8 +47,8 @@
 			"correctMessage": "That's right! The burrowing owl hisses and makes a rattling sound like a rattlesnake to try and frighten off predators."
 		},
 		{
-			"question": "What does the facial disc on some owls do?",
-			"answers": [ "Attracting females", "Decreasing aerodynamic drag", "Amplifying sounds", "Improving Night Vision" ],
+			"question": "What is the advantage of the facial disc on some owls?",
+			"answers": [ "Attracting females", "Decreasing aerodynamic drag", "Amplifying sounds", "Improving night vision" ],
 			"correctAnswer": 2,
 			"incorrectMessage": "Sorry, that's wrong. The facial disc can amplify sounds up to 10 times by funneling sound waves to the owls ears!",
 			"correctMessage": "Good job! The facial disc can amplify sounds up to 10 times by funneling sound waves to the owls ears!"
