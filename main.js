@@ -578,4 +578,4 @@ function clearSearchHandler() {
 	})
 }
 
-main();
+$( document ).ready( function() { main(); } );
