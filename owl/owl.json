@@ -50,8 +50,8 @@
 			"question": "What is the advantage of the facial disc on some owls?",
 			"answers": [ "Attracting females", "Decreasing aerodynamic drag", "Amplifying sounds", "Improving night vision" ],
 			"correctAnswer": 2,
-			"incorrectMessage": "Sorry, that's wrong. The facial disc can amplify sounds up to 10 times by funneling sound waves to the owls ears!",
-			"correctMessage": "Good job! The facial disc can amplify sounds up to 10 times by funneling sound waves to the owls ears!"
+			"incorrectMessage": "Sorry, that's wrong. The facial disc can amplify sounds up to 10 times by funneling sound waves to the owl's ears!",
+			"correctMessage": "Good job! The facial disc can amplify sounds up to 10 times by funneling sound waves to the owl's ears!"
 		},
 		{
 			"question": "Eastern screech owls can be found up and down the east coast of the US and how far west?",
@@ -64,14 +64,14 @@
 			"question": "As a result of their tube-shaped eyes, what can an owl not do?",
 			"answers": [ "A: Turn their eyes", "B: See to far distances", "C: See at close range", "A and C", "All the above" ],
 			"correctAnswer": 3,
-			"incorrectMessage": "Owls eyes are fixed and they cannot focus on objects close to them.",
+			"incorrectMessage": "Owl's eyes are fixed and they cannot focus on objects close to them.",
 			"correctMessage": "That's right! Now you know why owls need reading glasses and not bifocals."
 		}
 	],
 	"messages": {
 		"perfect": "You're an owl expert!",
 		"great": "You really know your owls!",
-		"good": "Hoot hoot",
+		"good": "Not bad. Hoot hoot",
 		"bad": "Better luck next time",
 		"terrible": "Hope you learned something about owls!"
 	}

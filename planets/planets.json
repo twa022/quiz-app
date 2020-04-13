@@ -9,7 +9,7 @@
 			"question": "What is the largest moon in our solar system?",
 			"answers": [ "Earth's moon", "Ganymede", "Titan",  "Charon", "Io"],
 			"correctAnswer": 1,
-			"incorrectMessage": "Jupiter&apos;s moon Ganymede is the largest and is larger than Mercury!"
+			"incorrectMessage": "Jupiter's moon Ganymede is the largest, and it is larger than Mercury!"
 		},
 		{
 			"question": "Venus's atmosphere is composed primarily of what?",
@@ -36,18 +36,18 @@
 			"correctAnswer": 1
 		},
 		{
-			"question": "How long is a Martian Day?",
-			"answers": [ "24 Hours", "24 Martian Hours", "24 Hours 37 Minutes", "32 Hours 5 Minutes" ],
+			"question": "How long is a Martian day?",
+			"answers": [ "24 hours", "24 Martian hours", "24 hours, 37 minutes", "32 hours, 5 minutes" ],
 			"correctAnswer": 2,
 			"incorrectAnswer": "Sorry, that's wrong. A Martian day is 24 hours and 37 minutes.",
-			"correctMessage": "You got it even without the extra 37 minutes of sleep!"
+			"correctMessage": "You got it even without the 37 extra minutes of sleep!"
 		},
 		{
 			"question": "What planet has the longest year?",
 			"answers": [ "Jupiter", "Neptune", "Uranus", "Saturn" ],
 			"correctAnswer": 1,
 			"incorrectAnswer": "No it's Neptune with a year that lasts just under 165 Earth years.",
-			"correctMessage": "You got it! With it's relatively short day of 16 hours a Neptune year has almost 90000 days. That's more than 12000 Fridays."
+			"correctMessage": "You got it! With it's relatively short day of 16 hours a Neptune year has almost 90,000 days. That's more than 12,000 Fridays."
 		},
 		{
 			"question": "What planet has the shortest day?",
