@@ -398,6 +398,9 @@ function reset( full = false ) {
 	STORE.currentQuestion = 0;
 }
 
+function searchQuizListSubmit() {
+	return false;
+}
 /**
  * Program start. Create the initial card view and activate all the event handlers
  */
@@ -411,6 +414,7 @@ function main() {
 	$( submitHandler );
 	$( quizHandler );
 	$( searchQuizListHandler );
+	$( searchQuizListSubmitHandler );
 	$( nextQuizPageHandler );
 	$( previousQuizPageHandler );
 	$( clearSearchHandler );
@@ -560,6 +564,26 @@ function restartHandler() {
 function searchQuizListHandler() {
 	$('.search-quizzes').on('input', function( event ) {
 		displayQuizList( 0, $('.search-quizzes').val() );
+	});
+}
+
+/**
+ * Handle special keypresses in the search quiz list input
+ */
+function searchQuizListSubmitHandler() {
+	$('.search-quizzes').on('keydown', function( event ) {
+		// Enter key should not submit the form
+		if (event.keyCode === 13) {
+			event.stopPropagation();
+			event.preventDefault();
+		}
+		// Escape key should clear the field and reset the search.
+		if (event.keyCode === 27) {
+			event.stopPropagation();
+			event.preventDefault();
+			$('.search-quizzes').val('');
+			displayQuizList();
+		}
 	});
 }
 
