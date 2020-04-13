@@ -75,8 +75,8 @@ function incorrectMessage( idx ) {
  * Update the question number text
  */
 function updateQuestionNumber() {
-	let q = ( STORE.questions.length < QUESTIONS_PER_SESSION ) ? STORE.questions.length : QUESTIONS_PER_SESSION;
-	$('.question-number').text( `${STORE.currentQuestion + 1} / ${q}` );
+	const numQuestions = ( STORE.questions.length < QUESTIONS_PER_SESSION ) ? STORE.questions.length : QUESTIONS_PER_SESSION;
+	$('.question-number').text( `${STORE.currentQuestion + 1} / ${numQuestions}` );
 }
 
 /**
@@ -135,7 +135,7 @@ function displayQuizList( start = 0, filter = "", reverseOrd = false ) {
 					$( function() { return (reverseOrd) ? '.btn-quizlist-prev' : '.btn-quizlist-next'; }).prop('disabled', false);
 					break;
 				}
-				let html = `<button data-idx="${idx}" class="btn btn-quiz">${STORE.quizList[idx].name}</button>`;
+				const html = `<button data-idx="${idx}" class="btn btn-quiz">${STORE.quizList[idx].name}</button>`;
 				( reverseOrd ) ? $('.quizlist').prepend( html ) : $('.quizlist').append( html );
 				found++;
 			}
@@ -152,7 +152,7 @@ function displayQuizList( start = 0, filter = "", reverseOrd = false ) {
 		$('.clear-search').addClass('no-display');
 		$('.btn-random-quiz').removeClass('no-display');
 		for ( let idx = start ; ( reverseOrd ) ? idx >= lastQuiz: idx <= lastQuiz ; (reverseOrd) ? idx-- : idx++ ) {
-			let html = `<button data-idx="${idx}" class="btn btn-quiz">${STORE.quizList[idx].name}</button>`;
+			const html = `<button data-idx="${idx}" class="btn btn-quiz">${STORE.quizList[idx].name}</button>`;
 			( reverseOrd ) ? $('.quizlist').prepend( html ) : $('.quizlist').append( html );
 		}
 	$('.search-quizzes').focus();
@@ -183,8 +183,8 @@ function displayQuestion( num ) {
 	updateReply();
 	console.log(`Asking question ${num}`);
 	$('.question-ctr').html(`<p class="question">${STORE.questions[num].question}</p>`);
-	let alreadyAsked = STORE.asked.includes( num );
-	let alreadyAnswered = ( alreadyAsked && STORE.answered.length > STORE.asked.indexOf( num) );
+	const alreadyAsked = STORE.asked.includes( num );
+	const alreadyAnswered = ( alreadyAsked && STORE.answered.length > STORE.asked.indexOf( num) );
 	if ( !alreadyAsked ) {
 		// Add the question number to the asked array and remove it from the unasked array
 		STORE.asked.push(num);
@@ -209,7 +209,7 @@ function displayQuestion( num ) {
 	$('.btn-submit-answer').prop('disabled', alreadyAnswered);
 
 	if ( alreadyAnswered ) {
-		let ans = STORE.answered[STORE.currentQuestion];
+		const ans = STORE.answered[STORE.currentQuestion];
 		// Add the disabled styling to the labels (which we display like buttons)
 		$('.answer-list').find('button').prop('disabled', true);
 		// Collapse the answers other than the one we chose and the correct answer
@@ -281,7 +281,7 @@ function displayEndCard() {
 	$('.card-answers').slideUp();
 	$('.card-score').slideUp();
 	// How did we do?
-	let numberQuestions = ( STORE.questions.length < QUESTIONS_PER_SESSION ) ? STORE.questions.length : QUESTIONS_PER_SESSION;
+	const numberQuestions = ( STORE.questions.length < QUESTIONS_PER_SESSION ) ? STORE.questions.length : QUESTIONS_PER_SESSION;
 	if ( numberQuestions === 0 ) {
 		$('.result-msg').text("Only the owl and planets quiz are currently available. Try one of those!");
 		$('.btn-try-again').prop('disabled', true);
@@ -303,9 +303,8 @@ function updateReply() {
 		$('.answer-reply').html(`<p></p>`);
 		return;
 	}
-	let correct = ( STORE.questions[STORE.asked[STORE.currentQuestion]].correctAnswer === STORE.answered[STORE.currentQuestion] );
 	console.log(`Question: ${STORE.currentQuestion} Expected answer: ${STORE.questions[STORE.asked[STORE.currentQuestion]].correctAnswer}, answer: ${STORE.answered[STORE.currentQuestion]}`);
-	if ( correct ) {
+	if ( STORE.questions[STORE.asked[STORE.currentQuestion]].correctAnswer === STORE.answered[STORE.currentQuestion] ) {
 		$('.answer-reply').html(`<p>${correctMessage(STORE.asked[STORE.currentQuestion])}</p>`);
 	} else {
 		$('.answer-reply').html(`<p>${incorrectMessage(STORE.asked[STORE.currentQuestion])}</p>`);
@@ -473,7 +472,7 @@ function submitHandler() {
 		event.stopPropagation();
 		event.preventDefault();
 		console.log('called the submit answer handler');
-		let answer = Number($(this).attr('data-answer'));
+		const answer = Number($(this).attr('data-answer'));
 		// Did we get an answer?
 		if ( answer === NaN || answer === undefined ) {
 			return;
@@ -508,7 +507,7 @@ function nextQuestionHandler() {
 	$('.card-answers').on('click', '.btn-next', function( event ) {
 		event.stopPropagation();
 		STORE.currentQuestion++;
-		let numberQuestions = ( STORE.questions.length < QUESTIONS_PER_SESSION ) ? STORE.questions.length : QUESTIONS_PER_SESSION;
+		const numberQuestions = ( STORE.questions.length < QUESTIONS_PER_SESSION ) ? STORE.questions.length : QUESTIONS_PER_SESSION;
 		if ( STORE.answered.length === numberQuestions ) {
 			displayEndCard();
 		} else if ( STORE.currentQuestion < STORE.asked.length ) {
