@@ -1,31 +1,40 @@
-/* *************************************
- *			   GLOBALS			   *
- ***************************************/
-
 "using strict";
 
-/* Questions will be loaded from an external json file */
-let QUESTIONS = [];
-/* The results messages loaded from the external quiz json file */
-let MESSAGES = {};
-/* The file that contains the listing of available quizzes */
+/* ************************************ *
+ *			     GLOBALS			    *
+ * ************************************ */
+
+/* The JSON file containing the list of quizzes */
 const QUIZ_LIST_FILE = 'quizzes.json';
-/* The quiz objects of available quizzes. Will be loaded from the external QUIZ_LIST_FILE json file */
-let QUIZ_LIST = [];
-/* The question which you are currently displaying */
-let currentQuestion = 0;
-/* Your current number of correct questions */
-let score = 0;
-/* The numbers of the questions that have been asked in the order they were asked */
-const asked = [];
-/* The numbers of the questions that have not yet been asked */
-const unasked = [];
-/* The answers you gave to the questions in the order they were asked */
-const answers = [];
 /* The maximum number of quesitons per session */
 const QUESTIONS_PER_SESSION = 5;
 /* The maximum number of quizzes to display per page on the quiz list */
 const QUIZZES_PER_PAGE = 6;
+
+/* Stored variables about the quiz list and the currently runnign quiz */
+const STORE = {
+	/* The list of quiz objects of available quizzes. Will be loaded from the external QUIZ_LIST_FILE json file */
+	quizList: [],
+	
+	/* ******************************* *
+	 *     Currently playing quiz      *
+	 * ******************************* */
+
+	/* Questions will be loaded from an external json file */
+	questions: [],
+	/* The results messages loaded from the external quiz json file */
+	messages: {},
+	/* The question which you are currently displaying */
+	currentQuestion: 0,
+	/* Your current number of correct questions */
+	score: 0,
+	/* The numbers of the questions that have been asked in the order they were asked */
+	asked: [],
+	/* The numbers of the questions that have not yet been asked */
+	unasked: [],
+	/* The answers you gave to the questions in the order they were asked */
+	answered: [],
+};
 
 /* ********************************
  *		   FUNCTIONS			*
@@ -35,7 +44,7 @@ const QUIZZES_PER_PAGE = 6;
   * Update the score text
   */
 function updateScore() {
-	$('.score').text( `${score} / ${answers.length}` );
+	$('.score').text( `${STORE.score} / ${STORE.answered.length}` );
 }
 
 /**
@@ -44,8 +53,8 @@ function updateScore() {
  * @return The correct answer message
  */
 function correctMessage( idx ) {
-	if ( Object.keys( QUESTIONS[idx]).includes( 'correctMessage' ) ) {
-		return QUESTIONS[idx].correctMessage;
+	if ( Object.keys( STORE.questions[idx]).includes( 'correctMessage' ) ) {
+		return STORE.questions[idx].correctMessage;
 	}
 	return "That's right!";
 }
@@ -56,18 +65,18 @@ function correctMessage( idx ) {
  * @return The incorrect answer message
  */
 function incorrectMessage( idx ) {
-	if ( Object.keys( QUESTIONS[idx]).includes( 'incorrectMessage' ) ) {
-		return QUESTIONS[idx].incorrectMessage;
+	if ( Object.keys( STORE.questions[idx]).includes( 'incorrectMessage' ) ) {
+		return STORE.questions[idx].incorrectMessage;
 	}
-	return `Good try, but the answer is ${QUESTIONS[idx].answers[QUESTIONS[idx].correctAnswer]}`;
+	return `Good try, but the answer is ${STORE.questions[idx].answers[STORE.questions[idx].correctAnswer]}`;
 }
 
 /**
  * Update the question number text
  */
 function updateQuestionNumber() {
-	let q = ( QUESTIONS.length < QUESTIONS_PER_SESSION ) ? QUESTIONS.length : QUESTIONS_PER_SESSION;
-	$('.question-number').text( `${currentQuestion + 1} / ${q}` );
+	let q = ( STORE.questions.length < QUESTIONS_PER_SESSION ) ? STORE.questions.length : QUESTIONS_PER_SESSION;
+	$('.question-number').text( `${STORE.currentQuestion + 1} / ${q}` );
 }
 
 /**
@@ -81,10 +90,10 @@ function collapseAnswers(method="hide") {
 	if ( !( window.orientation === 90 || window.orientation === -90 || window.innerHeight < 640 ) ) {
 		return;
 	}
-	for ( let i = 0 ; i < QUESTIONS[asked[currentQuestion]].answers.length ; i++ ) {
-		if ( i ===  QUESTIONS[asked[currentQuestion]].correctAnswer ) {
+	for ( let i = 0 ; i < STORE.questions[STORE.asked[STORE.currentQuestion]].answers.length ; i++ ) {
+		if ( i ===  STORE.questions[STORE.asked[STORE.currentQuestion]].correctAnswer ) {
 			$(`button[_answer="${i}"]`).addClass('btn-answer-correct');
-		} else if ( i === answers[currentQuestion] ) {
+		} else if ( i === STORE.answered[STORE.currentQuestion] ) {
 			$(`button[_answer="${i}"`).addClass('btn-answer-answered');
 		} else {
 			if ( method.localeCompare("slide") === 0 ) {
@@ -98,13 +107,13 @@ function collapseAnswers(method="hide") {
 
 /**
  * Display the list of quizzes
- * @param {Number} start The index of the QUIZ_LIST array to start finding displayable quizzes
+ * @param {Number} start The index of the STORE.quizList array to start finding displayable quizzes
  * @param {String} filter A text search term to filter the resulting list
  * @param {Boolean} reverseOrd Whether or not to look backwards through the quiz list from the start index
  */
 function displayQuizList( start = 0, filter = "", reverseOrd = false ) {
 	if ( start < 0 ) start = 0;
-	if ( start >= QUIZ_LIST.length ) start = ( reverseOrd ) ? QUIZ_LIST.length - 1 : QUIZ_LIST.length - QUIZZES_PER_PAGE;
+	if ( start >= STORE.quizList.length ) start = ( reverseOrd ) ? STORE.quizList.length - 1 : STORE.quizList.length - QUIZZES_PER_PAGE;
 	$('.quizlist').html('');
 	if ( filter ) {
 		$('.clear-search').removeClass('no-display');
@@ -113,16 +122,16 @@ function displayQuizList( start = 0, filter = "", reverseOrd = false ) {
 		filter = filter.toLowerCase();
 		$('.btn-quizlist-next').prop('disabled', !reverseOrd );
 		$('.btn-quizlist-prev').prop('disabled', ( reverseOrd || start === 0 ) );
-		for ( let idx = start ; ( reverseOrd ) ? idx >= 0 : idx < QUIZ_LIST.length && found <= QUIZZES_PER_PAGE ; (reverseOrd) ? idx-- : idx++ ) {
-			console.log(`Checking ${QUIZ_LIST[idx].name} (keywords: ${QUIZ_LIST[idx].keywords}) against filter ${filter}`);
-			if ( QUIZ_LIST[idx].name.toLowerCase().includes( filter ) || QUIZ_LIST[idx].keywords.some( k => { return k.includes( filter ) } ) ) {
+		for ( let idx = start ; ( reverseOrd ) ? idx >= 0 : idx < STORE.quizList.length && found <= QUIZZES_PER_PAGE ; (reverseOrd) ? idx-- : idx++ ) {
+			console.log(`Checking ${STORE.quizList[idx].name} (keywords: ${STORE.quizList[idx].keywords}) against filter ${filter}`);
+			if ( STORE.quizList[idx].name.toLowerCase().includes( filter ) || STORE.quizList[idx].keywords.some( k => { return k.includes( filter ) } ) ) {
 				// We search for one more match than we actually want to display. If we find it 
 				// we know there are more matches not displayed and we should enable the next / previous page button
 				if ( found === QUIZZES_PER_PAGE ) {
 					$( function() { return (reverseOrd) ? '.btn-quizlist-prev' : '.btn-quizlist-next'; }).prop('disabled', false);
 					break;
 				}
-				let html = `<button _idx="${idx}" class="btn btn-quiz">${QUIZ_LIST[idx].name}</button>`;
+				let html = `<button _idx="${idx}" class="btn btn-quiz">${STORE.quizList[idx].name}</button>`;
 				( reverseOrd ) ? $('.quizlist').prepend( html ) : $('.quizlist').append( html );
 				found++;
 			}
@@ -132,14 +141,14 @@ function displayQuizList( start = 0, filter = "", reverseOrd = false ) {
 		if ( reverseOrd ) {
 			lastQuiz = ( start - QUIZZES_PER_PAGE + 1 >= 0 ) ? start - QUIZZES_PER_PAGE + 1 : 0;
 		} else {
-			lastQuiz = ( QUIZ_LIST.length > start + QUIZZES_PER_PAGE ) ? start + QUIZZES_PER_PAGE - 1 : QUIZ_LIST.length - 1;
+			lastQuiz = ( STORE.quizList.length > start + QUIZZES_PER_PAGE ) ? start + QUIZZES_PER_PAGE - 1 : STORE.quizList.length - 1;
 		}
-		$('.btn-quizlist-next').prop('disabled', start >= QUIZ_LIST.length - 1 || lastQuiz >= QUIZ_LIST.length - 1 );
+		$('.btn-quizlist-next').prop('disabled', start >= STORE.quizList.length - 1 || lastQuiz >= STORE.quizList.length - 1 );
 		$('.btn-quizlist-prev').prop('disabled', start <= 0 || lastQuiz <= 0 );
 		$('.clear-search').addClass('no-display');
 		$('.btn-random-quiz').removeClass('no-display');
 		for ( let idx = start ; ( reverseOrd ) ? idx >= lastQuiz: idx <= lastQuiz ; (reverseOrd) ? idx-- : idx++ ) {
-			let html = `<button _idx="${idx}" class="btn btn-quiz">${QUIZ_LIST[idx].name}</button>`;
+			let html = `<button _idx="${idx}" class="btn btn-quiz">${STORE.quizList[idx].name}</button>`;
 			( reverseOrd ) ? $('.quizlist').prepend( html ) : $('.quizlist').append( html );
 		}
 	$('.search-quizzes').focus();
@@ -158,45 +167,45 @@ async function populateStartCard() {
  * Display a random question from the list of unasked questions
  */
 function displayRandomUnaskedQuestion() {
-	displayQuestion( unasked[ Math.floor( Math.random() * unasked.length ) ] );
+	displayQuestion( STORE.unasked[ Math.floor( Math.random() * STORE.unasked.length ) ] );
 }
 
 /**
  * Display a question
- * @param {Number} num The index from the QUESTIONS array of the question to display
+ * @param {Number} num The index from the STORE.questions array of the question to display
  */
 function displayQuestion( num ) {
 	updateQuestionNumber();
 	updateReply();
 	console.log(`Asking question ${num}`);
-	$('.question-ctr').html(`<p class="question">${QUESTIONS[num].question}</p>`);
-	let alreadyAsked = asked.includes( num );
-	let alreadyAnswered = ( alreadyAsked && answers.length > asked.indexOf( num) );
+	$('.question-ctr').html(`<p class="question">${STORE.questions[num].question}</p>`);
+	let alreadyAsked = STORE.asked.includes( num );
+	let alreadyAnswered = ( alreadyAsked && STORE.answered.length > STORE.asked.indexOf( num) );
 	if ( !alreadyAsked ) {
 		// Add the question number to the asked array and remove it from the unasked array
-		asked.push(num);
-		unasked.splice(unasked.indexOf(num), 1);
-		if ( unasked.length === 0 ) {
-			for ( let i = 0 ; i < QUESTIONS.length ; i++ ) {
-				if ( !asked.includes(i) ) {
-					unasked.push(i);
+		STORE.asked.push(num);
+		STORE.unasked.splice(STORE.unasked.indexOf(num), 1);
+		if ( STORE.unasked.length === 0 ) {
+			for ( let i = 0 ; i < STORE.questions.length ; i++ ) {
+				if ( !STORE.asked.includes(i) ) {
+					STORE.unasked.push(i);
 				}
 			}
 		}
 	}
 	$('.answer-list').html(''); // Clear out the answer buttons from any previous iterations
-	QUESTIONS[num].answers.forEach( function( answer, i ) {
+	STORE.questions[num].answers.forEach( function( answer, i ) {
 		$('.answer-list').append(`<button class="btn btn-answer answer" _answer=${i}>${answer}</button>`);
 	});
 	// Previous button should be enabled unless we're on the first question
-	$('.btn-prev').prop('disabled', ( currentQuestion === 0 ) );
+	$('.btn-prev').prop('disabled', ( STORE.currentQuestion === 0 ) );
 	// Next button should be disabled if the question hasn't been answered
 	$('.btn-next').prop('disabled', !alreadyAnswered );
 	// Submit button should be disabled if the question has already been answered
 	$('.btn-submit-answer').prop('disabled', alreadyAnswered);
 
 	if ( alreadyAnswered ) {
-		let ans = answers[currentQuestion];
+		let ans = STORE.answered[STORE.currentQuestion];
 		// Add the disabled styling to the labels (which we display like buttons)
 		$('.answer-list').find('button').prop('disabled', true);
 		// Collapse the answers other than the one we chose and the correct answer
@@ -205,7 +214,7 @@ function displayQuestion( num ) {
 		$(`button[_answer="${ans}"]`).addClass('btn-answer-answered');
 		// Add the correct answer styling to the labe for the correct answer (this will override the styling for answered,
 		// So if we selected the correct answer it will style it wrong, then restyle it correct)
-		$(`button[_answer="${QUESTIONS[asked[currentQuestion]].correctAnswer}"]`).addClass('btn-answer-correct');
+		$(`button[_answer="${STORE.questions[STORE.asked[STORE.currentQuestion]].correctAnswer}"]`).addClass('btn-answer-correct');
 		// Display the reply text
 		$('.answer-reply').slideDown();
 		// Focus on the next question button
@@ -227,31 +236,31 @@ function resultMessage( pct ) {
 	let message;
 	if ( pct >= 1 ) {
 		try {
-			message = MESSAGES.perfect;
+			message = STORE.messages.perfect;
 		} catch ( e ) {
 			message = "Perfect!"
 		};
 	} else if ( pct >= 0.8 ) {
 		try {
-			message = MESSAGES.great;
+			message = STORE.messages.great;
 		} catch ( e ) { 
 			message = "Great Job!"
 		}
 	} else if ( pct >= 0.6 ) {
 		try {
-			message = MESSAGES.good;
+			message = STORE.messages.good;
 		} catch ( e ) {
 			message = "Good Job!"
 		}
 	} else if ( pct >= 0.4 ) {
 		try {
-			message = MESSAGES.bad;
+			message = STORE.messages.bad;
 		} catch ( e ) { 
 			message = "Keep Trying!" 
 		}
 	} else {
 		try {
-			message = MESSAGES.terrible;
+			message = STORE.messages.terrible;
 		} catch ( e ) {
 			message = "Better Luck Next Time!"
 		}
@@ -268,14 +277,14 @@ function displayEndCard() {
 	$('.card-answers').slideUp();
 	$('.card-score').slideUp();
 	// How did we do?
-	let numberQuestions = ( QUESTIONS.length < QUESTIONS_PER_SESSION ) ? QUESTIONS.length : QUESTIONS_PER_SESSION;
+	let numberQuestions = ( STORE.questions.length < QUESTIONS_PER_SESSION ) ? STORE.questions.length : QUESTIONS_PER_SESSION;
 	if ( numberQuestions === 0 ) {
 		$('.result-msg').text("Only the owl and planets quiz are currently available. Try one of those!");
 		$('.btn-try-again').prop('disabled', true);
 		$('.card-result').slideDown();
 	} else {
 		$('.btn-try-again').prop('disabled', false);
-		$('.result-msg').text( resultMessage( score / numberQuestions ) );
+		$('.result-msg').text( resultMessage( STORE.score / numberQuestions ) );
 		$('.card-result').slideDown();
 	}
 	$('.results-msg').focus();
@@ -286,16 +295,16 @@ function displayEndCard() {
  * This does not display or hide the element, just updates the text.
  */
 function updateReply() {
-	if ( currentQuestion >= answers.length ) {
+	if ( STORE.currentQuestion >= STORE.answered.length ) {
 		$('.answer-reply').html(`<p></p>`);
 		return;
 	}
-	let correct = ( QUESTIONS[asked[currentQuestion]].correctAnswer === answers[currentQuestion] );
-	console.log(`Question: ${currentQuestion} Expected answer: ${QUESTIONS[asked[currentQuestion]].correctAnswer}, answer: ${answers[currentQuestion]}`);
+	let correct = ( STORE.questions[STORE.asked[STORE.currentQuestion]].correctAnswer === STORE.answered[STORE.currentQuestion] );
+	console.log(`Question: ${STORE.currentQuestion} Expected answer: ${STORE.questions[STORE.asked[STORE.currentQuestion]].correctAnswer}, answer: ${STORE.answered[STORE.currentQuestion]}`);
 	if ( correct ) {
-		$('.answer-reply').html(`<p>${correctMessage(asked[currentQuestion])}</p>`);
+		$('.answer-reply').html(`<p>${correctMessage(STORE.asked[STORE.currentQuestion])}</p>`);
 	} else {
-		$('.answer-reply').html(`<p>${incorrectMessage(asked[currentQuestion])}</p>`);
+		$('.answer-reply').html(`<p>${incorrectMessage(STORE.asked[STORE.currentQuestion])}</p>`);
 	}
 }
 
@@ -330,16 +339,16 @@ async function loadQuiz( quiz ) {
 		json = await response.json();
 	} catch( e ) {
 		console.log(`Unable to load quiz file ${quiz}`)
-		QUESTIONS = [];
-		MESSAGES = [];
+		STORE.questions = [];
+		STORE.messages = [];
 		return;
 	}
-	QUESTIONS = json.questions;
-	MESSAGES = json.messages;
+	STORE.questions = json.questions;
+	STORE.messages = json.messages;
 	// These functions need to be called after the json file is loaded and parsed.
 	
 	updateQuestionNumber();
-	console.log( `loaded ${QUESTIONS.length} questions` );
+	console.log( `loaded ${STORE.questions.length} questions` );
 	reset();
 }
 
@@ -353,11 +362,11 @@ async function loadQuizList() {
 		response = await fetch( QUIZ_LIST_FILE );
 		json = await response.json();
 	} catch ( e ) {
-		QUIZ_LIST = null;
+		STORE.quizList = null;
 		return;
 	}
-	QUIZ_LIST = json.quizzes;
-	console.log( `loaded ${QUIZ_LIST.length} quizzes` );
+	STORE.quizList = json.quizzes;
+	console.log( `loaded ${STORE.quizList.length} quizzes` );
 }
 
 /**
@@ -368,20 +377,20 @@ async function loadQuizList() {
  */
 function reset( full = false ) {
 	if ( full ) {
-		unasked.splice(0, unasked.length );
-		QUESTIONS.splice(0, QUESTIONS.length);
+		STORE.unasked.splice(0, STORE.unasked.length );
+		STORE.questions.splice(0, STORE.questions.length);
 	} else { // do a partial reset (doing the same quiz)
 		// Reset the unasked question array
-		if ( unasked.length === 0 ) {
-			for ( let i = 0 ; i < QUESTIONS.length ; i++ ) {
-				unasked.push(i);
+		if ( STORE.unasked.length === 0 ) {
+			for ( let i = 0 ; i < STORE.questions.length ; i++ ) {
+				STORE.unasked.push(i);
 			}
 		}
 	}
-	asked.splice(0, asked.length);
-	answers.splice(0, answers.length);
-	score = 0;
-	currentQuestion = 0;
+	STORE.asked.splice(0, STORE.asked.length);
+	STORE.answered.splice(0, STORE.answered.length);
+	STORE.score = 0;
+	STORE.currentQuestion = 0;
 }
 
 /**
@@ -412,12 +421,12 @@ function main() {
 function previousQuestionHandler() {
 	$('.btn-prev').click( function( event ) {
 		event.stopPropagation();
-		currentQuestion--;
-		console.log(`before displaying question answers: ${answers}`);
-		displayQuestion( asked[currentQuestion] );
+		STORE.currentQuestion--;
+		console.log(`before displaying question answers: ${STORE.answered}`);
+		displayQuestion( STORE.asked[STORE.currentQuestion] );
 		$('.btn-submit-answer').prop('disabled', true);
 		$('.btn-next').prop('disabled', false);
-		console.log(`after displaying question answers: ${answers}`);
+		console.log(`after displaying question answers: ${STORE.answered}`);
 	});
 }
 
@@ -428,20 +437,20 @@ function quizHandler() {
 	$('.card-search').on('click', '.btn-quiz', async function( event ) {
 		let quiz = $(this).attr('_idx');
 		if ( quiz === 'random' ) {
-			quiz = Math.floor( Math.random() * QUIZ_LIST.length );
+			quiz = Math.floor( Math.random() * STORE.quizList.length );
 		}
-		loadTheme( QUIZ_LIST[quiz].theme );
+		loadTheme( STORE.quizList[quiz].theme );
 		// We have to wait for the quiz to load before we can proceed
-		await loadQuiz( QUIZ_LIST[quiz].quiz );
-		$('head').find('title').text( `${QUIZ_LIST[quiz].name} Quiz` );
-		if ( !QUESTIONS || QUESTIONS.length === 0 ) {
+		await loadQuiz( STORE.quizList[quiz].quiz );
+		$('head').find('title').text( `${STORE.quizList[quiz].name} Quiz` );
+		if ( !STORE.questions || STORE.questions.length === 0 ) {
 			$('header').find('h1').text( 'Error loading quiz' );
 			$('.final-score').addClass('no-display');
 			$('.card-search').slideUp();
 			displayEndCard();
 			return;
 		}
-		$('header').find('h1').text( `${QUIZ_LIST[quiz].name} Quiz` );
+		$('header').find('h1').text( `${STORE.quizList[quiz].name} Quiz` );
 		$('.card-search').slideUp();
 		$('.card-score').slideDown();
 		$('.card-question').slideDown();
@@ -462,19 +471,19 @@ function submitHandler() {
 		// Did we get an answer?
 		if ( answer === NaN || answer === undefined ) return;
 		console.log(`pushing ${answer} to the answers array`);
-		answers.push(answer);
+		STORE.answered.push(answer);
 		// Update the reply text about your answer
 		updateReply();
-		if ( answer === QUESTIONS[asked[currentQuestion]].correctAnswer ) {
-			score++;
+		if ( answer === STORE.questions[STORE.asked[STORE.currentQuestion]].correctAnswer ) {
+			STORE.score++;
 		}
 		// Update the score 
 		updateScore();
 		// Change button activation
 		$('.btn-next').prop('disabled', false);
 		$('button.answer').prop('disabled', true);;
-		$(`button[_answer="${answers[currentQuestion]}`).addClass('btn-answer-answered');
-		$(`button[_answer="${QUESTIONS[asked[currentQuestion]].correctAnswer}"]`).addClass('btn-answer-correct');
+		$(`button[_answer="${STORE.answered[STORE.currentQuestion]}`).addClass('btn-answer-answered');
+		$(`button[_answer="${STORE.questions[STORE.asked[STORE.currentQuestion]].correctAnswer}"]`).addClass('btn-answer-correct');
 		// Collapse the answers other than the one we chose and the correct answer
 		collapseAnswers();
 		// Show the text about the answer
@@ -490,12 +499,12 @@ function submitHandler() {
 function nextQuestionHandler() {
 	$('.card-answers').on('click', '.btn-next', function( event ) {
 		event.stopPropagation();
-		currentQuestion++;
-		let numberQuestions = ( QUESTIONS.length < QUESTIONS_PER_SESSION ) ? QUESTIONS.length : QUESTIONS_PER_SESSION;
-		if ( answers.length === numberQuestions ) {
+		STORE.currentQuestion++;
+		let numberQuestions = ( STORE.questions.length < QUESTIONS_PER_SESSION ) ? STORE.questions.length : QUESTIONS_PER_SESSION;
+		if ( STORE.answered.length === numberQuestions ) {
 			displayEndCard();
-		} else if ( currentQuestion < asked.length ) {
-			displayQuestion( asked[currentQuestion] );
+		} else if ( STORE.currentQuestion < STORE.asked.length ) {
+			displayQuestion( STORE.asked[STORE.currentQuestion] );
 		} else {
 			displayRandomUnaskedQuestion();
 		}
