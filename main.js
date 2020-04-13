@@ -169,7 +169,7 @@ function displayQuestion( num ) {
 	updateQuestionNumber();
 	updateReply();
 	console.log(`Asking question ${num}`);
-	$('.card-question').html(`<p class="question">${QUESTIONS[num].question}</p>`);
+	$('.question-ctr').html(`<p class="question">${QUESTIONS[num].question}</p>`);
 	let alreadyAsked = asked.includes( num );
 	let alreadyAnswered = ( alreadyAsked && answers.length > asked.indexOf( num) );
 	if ( !alreadyAsked ) {

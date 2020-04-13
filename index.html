@@ -23,6 +23,7 @@
 						<h1>What Is... Trivia?</h1>
 					</header>
 					<section class="card card-score no-display">
+						<h2>Scoreboard</h2>
 						<div class="score-inner-container">
 							<!-- Don't want to wrap the line in the middle of the score 2 / newline 3!-->
 							<div class="inline">Question: <span class="question-number nowrap">_ / _</span></div>
@@ -30,6 +31,7 @@
 						</div>
 					</section>
 					<section class="card card-search card-bottom card-bottom-left card-bottom-right">
+						<h2>Search Quizzes</h2>
 						<div class="inline search-quizzes-container">
 							<label for="search-quizzes" class="no-display">Search Quizzes</label>
 							<input type="text" name="search-quizzes" id="search-quizzes" class="search-quizzes" placeholder="Search Quizzes">
@@ -43,6 +45,7 @@
 						<button class="btn btn-inactive btn-quizlist-next btn-quizlist-nav" aria-label="Next Page" disabled><i class="fas fa-chevron-right"></i></button>
 					</section>
 					<section class="card card-result card-bottom card-bottom-right no-display">
+						<h2>Results</h2>
 						<p class="result-msg">You did blank!</p>
 						<p class="final-score">Final score: <span class="score">_ / _</span></p>
 						<nav class="end-btn-container">
@@ -51,10 +54,14 @@
 						</nav>
 					</section>
 					<section class="card card-question card-bottom-left no-display">
-						<!-- Question inserted here by main.js -->
+						<h2>Question</h2>
+						<div class="question-ctr">
+							<!-- Question inserted here by main.js -->
+						</div>
 					</section>
 				</div>
 				<section class="card card-answers card-bottom card-bottom-right card-top-right no-display">
+					<h2>Answers</h2>
 					<form>
 						<fieldset>
 							<legend>Answers</legend>
