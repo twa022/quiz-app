@@ -112,8 +112,12 @@ function collapseAnswers(method="hide") {
  * @param {Boolean} reverseOrd Whether or not to look backwards through the quiz list from the start index
  */
 function displayQuizList( start = 0, filter = "", reverseOrd = false ) {
-	if ( start < 0 ) start = 0;
-	if ( start >= STORE.quizList.length ) start = ( reverseOrd ) ? STORE.quizList.length - 1 : STORE.quizList.length - QUIZZES_PER_PAGE;
+	if ( start < 0 ) {
+		start = 0;
+	}
+	if ( start >= STORE.quizList.length ) {
+		start = ( reverseOrd ) ? STORE.quizList.length - 1 : STORE.quizList.length - QUIZZES_PER_PAGE;
+	}
 	$('.quizlist').html('');
 	if ( filter ) {
 		$('.clear-search').removeClass('no-display');
@@ -322,7 +326,9 @@ async function loadTheme( themeFile ) {
 		console.log(`Unable to load theme file ${themeFile}`)
 		return;
 	}
-	if ( !ok ) return;
+	if ( !ok ) {
+		return;
+	}
 	console.log('Applying theme');
 	$('head').append(`<link href="${themeFile}" rel="stylesheet" type="text/css" class="quiz-theme">`);
 }
@@ -469,7 +475,9 @@ function submitHandler() {
 		console.log('called the submit answer handler');
 		let answer = Number($(this).attr('_answer'));
 		// Did we get an answer?
-		if ( answer === NaN || answer === undefined ) return;
+		if ( answer === NaN || answer === undefined ) {
+			return;
+		}
 		console.log(`pushing ${answer} to the answers array`);
 		STORE.answered.push(answer);
 		// Update the reply text about your answer
