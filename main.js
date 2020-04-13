@@ -111,15 +111,15 @@ function displayQuizList( start = 0, filter = "", reverseOrd = false ) {
 		$('.btn-random-quiz').addClass('no-display');
 		let found = 0;
 		filter = filter.toLowerCase();
-		$('.btn-quizlist-next').attr('disabled', !reverseOrd );
-		$('.btn-quizlist-prev').attr('disabled', ( reverseOrd || start === 0 ) );
+		$('.btn-quizlist-next').prop('disabled', !reverseOrd );
+		$('.btn-quizlist-prev').prop('disabled', ( reverseOrd || start === 0 ) );
 		for ( let idx = start ; ( reverseOrd ) ? idx >= 0 : idx < QUIZ_LIST.length && found <= QUIZZES_PER_PAGE ; (reverseOrd) ? idx-- : idx++ ) {
 			console.log(`Checking ${QUIZ_LIST[idx].name} (keywords: ${QUIZ_LIST[idx].keywords}) against filter ${filter}`);
 			if ( QUIZ_LIST[idx].name.toLowerCase().includes( filter ) || QUIZ_LIST[idx].keywords.some( k => { return k.includes( filter ) } ) ) {
 				// We search for one more match than we actually want to display. If we find it 
 				// we know there are more matches not displayed and we should enable the next / previous page button
 				if ( found === QUIZZES_PER_PAGE ) {
-					$( function() { return (reverseOrd) ? '.btn-quizlist-prev' : '.btn-quizlist-next'; }).attr('disabled', false);
+					$( function() { return (reverseOrd) ? '.btn-quizlist-prev' : '.btn-quizlist-next'; }).prop('disabled', false);
 					break;
 				}
 				let html = `<button _idx="${idx}" class="btn btn-quiz">${QUIZ_LIST[idx].name}</button>`;
@@ -134,8 +134,8 @@ function displayQuizList( start = 0, filter = "", reverseOrd = false ) {
 		} else {
 			lastQuiz = ( QUIZ_LIST.length > start + QUIZZES_PER_PAGE ) ? start + QUIZZES_PER_PAGE - 1 : QUIZ_LIST.length - 1;
 		}
-		$('.btn-quizlist-next').attr('disabled', start >= QUIZ_LIST.length - 1 || lastQuiz >= QUIZ_LIST.length - 1 );
-		$('.btn-quizlist-prev').attr('disabled', start <= 0 || lastQuiz <= 0 );
+		$('.btn-quizlist-next').prop('disabled', start >= QUIZ_LIST.length - 1 || lastQuiz >= QUIZ_LIST.length - 1 );
+		$('.btn-quizlist-prev').prop('disabled', start <= 0 || lastQuiz <= 0 );
 		$('.clear-search').addClass('no-display');
 		$('.btn-random-quiz').removeClass('no-display');
 		for ( let idx = start ; ( reverseOrd ) ? idx >= lastQuiz: idx <= lastQuiz ; (reverseOrd) ? idx-- : idx++ ) {
@@ -189,16 +189,16 @@ function displayQuestion( num ) {
 		$('.answer-list').append(`<button class="btn btn-answer answer" _answer=${i}>${answer}</button>`);
 	});
 	// Previous button should be enabled unless we're on the first question
-	$('.btn-prev').attr('disabled', ( currentQuestion === 0 ) );
+	$('.btn-prev').prop('disabled', ( currentQuestion === 0 ) );
 	// Next button should be disabled if the question hasn't been answered
-	$('.btn-next').attr('disabled', !alreadyAnswered );
+	$('.btn-next').prop('disabled', !alreadyAnswered );
 	// Submit button should be disabled if the question has already been answered
-	$('.btn-submit-answer').attr('disabled', alreadyAnswered);
+	$('.btn-submit-answer').prop('disabled', alreadyAnswered);
 
 	if ( alreadyAnswered ) {
 		let ans = answers[currentQuestion];
 		// Add the disabled styling to the labels (which we display like buttons)
-		$('.answer-list').find('button').attr('disabled', true);
+		$('.answer-list').find('button').prop('disabled', true);
 		// Collapse the answers other than the one we chose and the correct answer
 		collapseAnswers();
 		// Add the answered (wrong) styling to the labels which corresponds to what we answered
@@ -271,10 +271,10 @@ function displayEndCard() {
 	let numberQuestions = ( QUESTIONS.length < QUESTIONS_PER_SESSION ) ? QUESTIONS.length : QUESTIONS_PER_SESSION;
 	if ( numberQuestions === 0 ) {
 		$('.result-msg').text("Only the owl and planets quiz are currently available. Try one of those!");
-		$('.btn-try-again').attr('disabled', true);
+		$('.btn-try-again').prop('disabled', true);
 		$('.card-result').slideDown();
 	} else {
-		$('.btn-try-again').attr('disabled', false);
+		$('.btn-try-again').prop('disabled', false);
 		$('.result-msg').text( resultMessage( score / numberQuestions ) );
 		$('.card-result').slideDown();
 	}
@@ -415,8 +415,8 @@ function previousQuestionHandler() {
 		currentQuestion--;
 		console.log(`before displaying question answers: ${answers}`);
 		displayQuestion( asked[currentQuestion] );
-		$('.btn-submit-answer').attr('disabled', true);
-		$('.btn-next').attr('disabled', false);
+		$('.btn-submit-answer').prop('disabled', true);
+		$('.btn-next').prop('disabled', false);
 		console.log(`after displaying question answers: ${answers}`);
 	});
 }
@@ -471,8 +471,8 @@ function submitHandler() {
 		// Update the score 
 		updateScore();
 		// Change button activation
-		$('.btn-next').attr('disabled', false);
-		$('button.answer').attr('disabled', true);;
+		$('.btn-next').prop('disabled', false);
+		$('button.answer').prop('disabled', true);;
 		$(`button[_answer="${answers[currentQuestion]}`).addClass('btn-answer-answered');
 		$(`button[_answer="${QUESTIONS[asked[currentQuestion]].correctAnswer}"]`).addClass('btn-answer-correct');
 		// Collapse the answers other than the one we chose and the correct answer
