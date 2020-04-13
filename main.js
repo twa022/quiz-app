@@ -92,14 +92,14 @@ function collapseAnswers(method="hide") {
 	}
 	for ( let i = 0 ; i < STORE.questions[STORE.asked[STORE.currentQuestion]].answers.length ; i++ ) {
 		if ( i ===  STORE.questions[STORE.asked[STORE.currentQuestion]].correctAnswer ) {
-			$(`button[_answer="${i}"]`).addClass('btn-answer-correct');
+			$(`button[data-answer="${i}"]`).addClass('btn-answer-correct');
 		} else if ( i === STORE.answered[STORE.currentQuestion] ) {
-			$(`button[_answer="${i}"`).addClass('btn-answer-answered');
+			$(`button[data-answer="${i}"`).addClass('btn-answer-answered');
 		} else {
 			if ( method.localeCompare("slide") === 0 ) {
-				$(`button[_answer="${i}"`).slideUp();
+				$(`button[data-answer="${i}"`).slideUp();
 			} else {
-				$(`button[_answer="${i}"`).addClass('no-display');
+				$(`button[data-answer="${i}"`).addClass('no-display');
 			}
 		}
 	}
@@ -135,7 +135,7 @@ function displayQuizList( start = 0, filter = "", reverseOrd = false ) {
 					$( function() { return (reverseOrd) ? '.btn-quizlist-prev' : '.btn-quizlist-next'; }).prop('disabled', false);
 					break;
 				}
-				let html = `<button _idx="${idx}" class="btn btn-quiz">${STORE.quizList[idx].name}</button>`;
+				let html = `<button data-idx="${idx}" class="btn btn-quiz">${STORE.quizList[idx].name}</button>`;
 				( reverseOrd ) ? $('.quizlist').prepend( html ) : $('.quizlist').append( html );
 				found++;
 			}
@@ -152,7 +152,7 @@ function displayQuizList( start = 0, filter = "", reverseOrd = false ) {
 		$('.clear-search').addClass('no-display');
 		$('.btn-random-quiz').removeClass('no-display');
 		for ( let idx = start ; ( reverseOrd ) ? idx >= lastQuiz: idx <= lastQuiz ; (reverseOrd) ? idx-- : idx++ ) {
-			let html = `<button _idx="${idx}" class="btn btn-quiz">${STORE.quizList[idx].name}</button>`;
+			let html = `<button data-idx="${idx}" class="btn btn-quiz">${STORE.quizList[idx].name}</button>`;
 			( reverseOrd ) ? $('.quizlist').prepend( html ) : $('.quizlist').append( html );
 		}
 	$('.search-quizzes').focus();
@@ -199,7 +199,7 @@ function displayQuestion( num ) {
 	}
 	$('.answer-list').html(''); // Clear out the answer buttons from any previous iterations
 	STORE.questions[num].answers.forEach( function( answer, i ) {
-		$('.answer-list').append(`<button class="btn btn-answer answer" _answer=${i}>${answer}</button>`);
+		$('.answer-list').append(`<button class="btn btn-answer answer" data-answer=${i}>${answer}</button>`);
 	});
 	// Previous button should be enabled unless we're on the first question
 	$('.btn-prev').prop('disabled', ( STORE.currentQuestion === 0 ) );
@@ -215,10 +215,10 @@ function displayQuestion( num ) {
 		// Collapse the answers other than the one we chose and the correct answer
 		collapseAnswers();
 		// Add the answered (wrong) styling to the labels which corresponds to what we answered
-		$(`button[_answer="${ans}"]`).addClass('btn-answer-answered');
+		$(`button[data-answer="${ans}"]`).addClass('btn-answer-answered');
 		// Add the correct answer styling to the labe for the correct answer (this will override the styling for answered,
 		// So if we selected the correct answer it will style it wrong, then restyle it correct)
-		$(`button[_answer="${STORE.questions[STORE.asked[STORE.currentQuestion]].correctAnswer}"]`).addClass('btn-answer-correct');
+		$(`button[data-answer="${STORE.questions[STORE.asked[STORE.currentQuestion]].correctAnswer}"]`).addClass('btn-answer-correct');
 		// Display the reply text
 		$('.answer-reply').slideDown();
 		// Focus on the next question button
@@ -441,7 +441,7 @@ function previousQuestionHandler() {
  */
 function quizHandler() {
 	$('.card-search').on('click', '.btn-quiz', async function( event ) {
-		let quiz = $(this).attr('_idx');
+		let quiz = $(this).attr('data-idx');
 		if ( quiz === 'random' ) {
 			quiz = Math.floor( Math.random() * STORE.quizList.length );
 		}
@@ -473,7 +473,7 @@ function submitHandler() {
 		event.stopPropagation();
 		event.preventDefault();
 		console.log('called the submit answer handler');
-		let answer = Number($(this).attr('_answer'));
+		let answer = Number($(this).attr('data-answer'));
 		// Did we get an answer?
 		if ( answer === NaN || answer === undefined ) {
 			return;
@@ -490,8 +490,8 @@ function submitHandler() {
 		// Change button activation
 		$('.btn-next').prop('disabled', false);
 		$('button.answer').prop('disabled', true);;
-		$(`button[_answer="${STORE.answered[STORE.currentQuestion]}`).addClass('btn-answer-answered');
-		$(`button[_answer="${STORE.questions[STORE.asked[STORE.currentQuestion]].correctAnswer}"]`).addClass('btn-answer-correct');
+		$(`button[data-answer="${STORE.answered[STORE.currentQuestion]}`).addClass('btn-answer-answered');
+		$(`button[data-answer="${STORE.questions[STORE.asked[STORE.currentQuestion]].correctAnswer}"]`).addClass('btn-answer-correct');
 		// Collapse the answers other than the one we chose and the correct answer
 		collapseAnswers();
 		// Show the text about the answer
@@ -569,8 +569,8 @@ function searchQuizListHandler() {
  */
 function nextQuizPageHandler() {
 	$('.btn-quizlist-next').click( function( event ) {
-		console.log(`clicked next quiz list page, will display starting with ${Number($('.btn-quiz:last-child').attr('_idx')) + 1}`);
-		displayQuizList( Number($('.btn-quiz:last-child').attr('_idx')) + 1, $('.search-quizzes').val() );
+		console.log(`clicked next quiz list page, will display starting with ${Number($('.btn-quiz:last-child').attr('data-idx')) + 1}`);
+		displayQuizList( Number($('.btn-quiz:last-child').attr('data-idx')) + 1, $('.search-quizzes').val() );
 	});
 }
 
@@ -579,8 +579,8 @@ function nextQuizPageHandler() {
  */
 function previousQuizPageHandler() {
 	$('.btn-quizlist-prev').click( function( event ) {
-		console.log(`clicked previous quiz list page, will display ending with ${Number($('.btn-quiz:first-child').attr('_idx')) - 1}`);
-		displayQuizList( Number($('.btn-quiz:first-child').attr('_idx')) - 1, $('.search-quizzes').val(), true );
+		console.log(`clicked previous quiz list page, will display ending with ${Number($('.btn-quiz:first-child').attr('data-idx')) - 1}`);
+		displayQuizList( Number($('.btn-quiz:first-child').attr('data-idx')) - 1, $('.search-quizzes').val(), true );
 	});
 }
 
