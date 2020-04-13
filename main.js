@@ -239,33 +239,33 @@ function displayQuestion( num ) {
 function resultMessage( pct ) {
 	let message;
 	if ( pct >= 1 ) {
-		try {
+		if ( STORE.messages.hasOwnProperty('perfect') ) {
 			message = STORE.messages.perfect;
-		} catch ( e ) {
+		} else {
 			message = "Perfect!"
 		};
 	} else if ( pct >= 0.8 ) {
-		try {
+		if ( STORE.messages.hasOwnProperty('great') ) {
 			message = STORE.messages.great;
-		} catch ( e ) { 
+		} else { 
 			message = "Great Job!"
 		}
 	} else if ( pct >= 0.6 ) {
-		try {
+		if ( STORE.messages.hasOwnProperty('good') ) {
 			message = STORE.messages.good;
-		} catch ( e ) {
+		} else { 
 			message = "Good Job!"
 		}
 	} else if ( pct >= 0.4 ) {
-		try {
+		if ( STORE.messages.hasOwnProperty('bad') ) {
 			message = STORE.messages.bad;
-		} catch ( e ) { 
+		} else { 
 			message = "Keep Trying!" 
 		}
 	} else {
-		try {
+		if ( STORE.messages.hasOwnProperty('terrible') ) {
 			message = STORE.messages.terrible;
-		} catch ( e ) {
+		} else { 
 			message = "Better Luck Next Time!"
 		}
 	}
