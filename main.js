@@ -444,7 +444,7 @@ function previousQuestionHandler() {
  */
 function quizHandler() {
 	$('.card-search').on('click', '.btn-quiz', async function( event ) {
-		let quiz = $(this).attr('data-idx');
+		let quiz = $(this).data('idx');
 		if ( quiz === 'random' ) {
 			quiz = Math.floor( Math.random() * STORE.quizList.length );
 		}
@@ -476,7 +476,7 @@ function submitHandler() {
 		event.stopPropagation();
 		event.preventDefault();
 		console.log('called the submit answer handler');
-		const answer = Number($(this).attr('data-answer'));
+		const answer = Number($(this).data('answer'));
 		// Did we get an answer?
 		if ( answer === NaN || answer === undefined ) {
 			return;
@@ -592,8 +592,8 @@ function searchQuizListSubmitHandler() {
  */
 function nextQuizPageHandler() {
 	$('.btn-quizlist-next').click( function( event ) {
-		console.log(`clicked next quiz list page, will display starting with ${Number($('.btn-quiz:last-child').attr('data-idx')) + 1}`);
-		displayQuizList( Number($('.btn-quiz:last-child').attr('data-idx')) + 1, $('.search-quizzes').val() );
+		console.log(`clicked next quiz list page, will display starting with ${Number($('.btn-quiz:last-child').data('idx')) + 1}`);
+		displayQuizList( Number($('.btn-quiz:last-child').data('idx')) + 1, $('.search-quizzes').val() );
 	});
 }
 
@@ -602,8 +602,8 @@ function nextQuizPageHandler() {
  */
 function previousQuizPageHandler() {
 	$('.btn-quizlist-prev').click( function( event ) {
-		console.log(`clicked previous quiz list page, will display ending with ${Number($('.btn-quiz:first-child').attr('data-idx')) - 1}`);
-		displayQuizList( Number($('.btn-quiz:first-child').attr('data-idx')) - 1, $('.search-quizzes').val(), true );
+		console.log(`clicked previous quiz list page, will display ending with ${Number($('.btn-quiz:first-child').data('idx')) - 1}`);
+		displayQuizList( Number($('.btn-quiz:first-child').data('idx')) - 1, $('.search-quizzes').val(), true );
 	});
 }
 
