@@ -12,6 +12,8 @@ find . -mindepth 1 -maxdepth 2 -type f -name "*.json" -not -name "*.min.json" -e
 git rm deploy.sh
 git rm reset.sh
 
-git push -f
+git add .
+git commit -m "Deploy from commit $( git rev-parse HEAD )"
+#git push -f
 
 exit 0
