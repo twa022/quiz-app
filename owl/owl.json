@@ -8,7 +8,7 @@
 		},
 		{
 			"question": "What is a group of owls called?",
-			"answers": [ "murder", "shrewdness", "quiver", "parliament", "pack", "senate" ],
+			"answers": [ "Murder", "Shrewdness", "Quiver", "Parliament", "Pack", "Senate" ],
 			"correctAnswer": 3
 		},
 		{
@@ -20,10 +20,10 @@
 		},
 		{
 			"question": "What are baby owls are called?",
-			"answers": [ "Owl Chicks", "Owlets", "Owl cubs", "Owl Pups" ],
+			"answers": [ "Owl chicks", "Owlets", "Owl cubs", "Owl pups" ],
 			"correctAnswer": 1,
-			"incorrectMessage": "Baby owls are called owlets. (When in doubt always guess the cutest answer)",
-			"correctMessage": "That's right baby owls are owlets."
+			"incorrectMessage": "Baby owls are called owlets. (When in doubt always guess the cutest answer.)",
+			"correctMessage": "That's right! Baby owls are owlets."
 		},
 		{
 			"question": "Some owls eat other owls. True or False?",
@@ -37,7 +37,7 @@
 			"answers": [ "2 toes", "3 toes", "4 toes", "5 toes" ],
 			"correctAnswer": 2,
 			"incorrectMessage": "Nope. They've got 4 toes: two facing forwards and two facing backwards.",
-			"correctMessage": "That's right! (They've got 4 toes: two facing forwards and two facing backwards)"
+			"correctMessage": "That's right! (They've got 4 toes: two facing forwards and two facing backwards.)"
 		},
 		{
 			"question": "A burrowing owl makes a sound like what animal when threatened?",
@@ -57,22 +57,22 @@
 			"question": "Eastern screech owls can be found up and down the east coast of the US and how far west?",
 			"answers": [ "The Appalachians", "The Mississippi River", "The eastern Rockies", "Ohio" ],
 			"correctAnswer": 2,
-			"incorrectMessage": "They can be found all the way to the Rocky mountains!",
+			"incorrectMessage": "They can be found all the way to the Rocky Mountains!",
 			"correctMessage": "That's right! And their habitat overlaps with the Western Screech Owl that far west."
 		},
 		{
 			"question": "As a result of their tube-shaped eyes, what can an owl not do?",
 			"answers": [ "A: Turn their eyes", "B: See to far distances", "C: See at close range", "A and C", "All the above" ],
 			"correctAnswer": 3,
-			"incorrectMessage": "Owl's eyes are fixed and they cannot focus on objects close to them.",
+			"incorrectMessage": "Owls' eyes are fixed and they cannot focus on objects close to them.",
 			"correctMessage": "That's right! Now you know why owls need reading glasses and not bifocals."
 		}
 	],
 	"messages": {
 		"perfect": "You're an owl expert!",
 		"great": "You really know your owls!",
-		"good": "Not bad. Hoot hoot",
-		"bad": "Better luck next time",
+		"good": "Not bad. Hoot hoot.",
+		"bad": "Better luck next time.",
 		"terrible": "Hope you learned something about owls!"
 	}
 }

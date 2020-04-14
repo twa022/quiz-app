@@ -20,8 +20,8 @@
 			"question": "What are the only planet(s) in our solar system with a regrograde rotation?",
 			"answers": [ "Venus", "Mercury", "Neptune", "Venus and Uranus", "Mercury and Neptune" ],
 			"correctAnswer": 3,
-			"CorrectMessage": "That's right. Pluto too if you remember when it used to be a planet...",
-			"incorrectMessage": "Sorry that's wrong, it's Venus and Uranus. Pluto too if you remember when it used to be a planet..."
+			"CorrectMessage": "That's right! Pluto too if you remember when it used to be a planet...",
+			"incorrectMessage": "Sorry, it's Venus and Uranus. Pluto, too, if you remember when it used to be a planet..."
 		},
 		{
 			"question": "What was the only probe to pass by Neptune and Uranus?",
@@ -46,7 +46,7 @@
 			"question": "What planet has the longest year?",
 			"answers": [ "Jupiter", "Neptune", "Uranus", "Saturn" ],
 			"correctAnswer": 1,
-			"incorrectAnswer": "No it's Neptune with a year that lasts just under 165 Earth years.",
+			"incorrectAnswer": "No, it's Neptune with a year that lasts just under 165 Earth years.",
 			"correctMessage": "You got it! With it's relatively short day of 16 hours a Neptune year has almost 90,000 days. That's more than 12,000 Fridays."
 		},
 		{
@@ -60,14 +60,14 @@
 			"question": "What is the most common element in Jupiter's atmosphere?",
 			"answers": [ "Hydrogen", "Helium", "Argon", "Nitrogen", "Methane" ],
 			"correctAnswer": 0,
-			"incorrectAnswer": "Nope. Actually all the gas giants have atmospheres composed primarily of hydrogen"
+			"incorrectAnswer": "Nope. Actually, all the gas giants have atmospheres composed primarily of hydrogen."
 		}
 	],
 	"messages": {
 		"perfect": "If I google planetary science will I find your name?",
 		"great": "You really know your planets!",
-		"good": "Good job",
-		"bad": "Better luck next time",
+		"good": "Good job.",
+		"bad": "Better luck next time.",
 		"terrible": "Hope you learned something about the planets!"
 	}
 }
