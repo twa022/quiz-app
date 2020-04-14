@@ -1,13 +1,1 @@
-:root {
-	--section: rgba( 128, 77, 64, 0.4);
-	--border: rgba( 128, 77, 64, 0.4);
-	--button: rgba( 0, 0, 0, 0.4);
-	--highlight: red;
-	--correct: lightgreen;
-	--incorrect: red;
-	--active: white;
-	--inactive: #a2a2a2;
-	--inactive-border: grey;
-	--font-color: white;
-	--background-image: url('planets/planets.jpg');
-}
+:root{--section: rgba( 128, 77, 64, 0.4);--border: rgba( 128, 77, 64, 0.4);--button: rgba( 0, 0, 0, 0.4);--highlight: red;--correct: lightgreen;--incorrect: red;--active: white;--inactive: #a2a2a2;--inactive-border: grey;--font-color: white;--background-image: url('planets/planets.jpg')}
