@@ -9,7 +9,7 @@ find . -mindepth 1 -maxdepth 2 -type f -name "*.json" -not -name "*.min.json" -e
 
 git stash
 git branch gh-pages
-git checkout gh-pages
+git checkout gh-pages || exit 1
 git stash pop
 
 git rm deploy.sh
